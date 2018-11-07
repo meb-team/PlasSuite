@@ -4,7 +4,7 @@
 
 Only keep sequences given by user, with option to search in SILVA database 
 ```
-usage: python3 seq_from_list.py`
+usage: python3 seq_from_list.py
 Options : 
 -h, --help  show this help message and exit
 --input_fasta <input.fasta> Input fasta file where seq to keep are present
@@ -12,6 +12,16 @@ Options :
 --output_fasta <output.fasta> Output fasta file with seq to keep
 --silva <True/False> search in silva fasta database (True or False, default: false)
 ```
+
+* **sequences_length.py** 
+
+Take fasta as input and generate a tsv summary file about sequences with their length and length category
+*INPUT* : fasta file 
+*OUTPUT* : tsv file with column `sequences_id	length(pb)	length_category`
+
+```
+usage : python3 sequences_length.py <input.fasta> <output.tsv>
+```	
                         
 * **write_separate_fasta.py**
 
