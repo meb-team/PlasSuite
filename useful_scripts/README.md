@@ -3,8 +3,8 @@
 * **seq_from_list.py** 
 
 Only keep sequences given by user, with option to search in SILVA database 
-```usage: python3 seq_from_list.py [-h] [--input_fasta INPUT_FASTA] [--keep KEEP] [--output_fasta OUTPUT_FASTA] [--silva SILVA]
-optional arguments:
+```usage: python3 seq_from_list.py
+Options : 
 -h, --help  show this help message and exit
 --input_fasta <input.fasta> Input fasta file where seq to keep are present
 --keep <id file> File with only id of seq to keep
