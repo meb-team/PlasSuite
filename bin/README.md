@@ -1,5 +1,16 @@
 # Useful scripts 
 
+* **common_functions.sh** 
+
+Contains bash functions used in several scripts. Use `source common_functions.sh` in bash script to use functions. 
+Contains : 
+	- verif_file <file_path> <message to display if not found> <message to display if found> : Check existence of file. If exists, display message and continue. If not, display message and exit script. 
+	- verif_dir <directory_path> <message to display if not found> <message to display if found> : Same as verif_file but for directories. 
+	- verif_blast_db <db_path> <type_db> <message to display if not found> <message to display if found> : Check existence of blast database for fasta file. If not exists, create it. <type_db> if "nucl" or "prot" 
+	- verif_result <file> : Check if a result exists and return $file_exist variable, =1 if exists, 0 if not. Take into account $FORCE variable. If $FORCE==1, 0 is always returned  
+	
+	 
+
 * **seq_from_list.py** 
 
 Only keep sequences given by user, with option to search in SILVA database 
