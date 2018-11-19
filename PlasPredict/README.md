@@ -2,7 +2,7 @@
 
 PlasPredict takes an input assembly and predict plasmids in this assembly. 
 
-**pipeline figure soon...** 
+*pipeline figure soon...*
 
 ### How to launch 
 
@@ -33,6 +33,7 @@ The script will generate several output files.
 
 #### Intermediate subdirectory
 Pipeline will create several subdirectories for each step in your output directory  
+
 | Directory | Description | 
 |---------|------------|
 |chrm_search|Contains **.id** and **.paf** files. **.paf** is results of treated minimap2 alignment between all contigs and chromosomes database. **.id** lists contigs id with chromosomes alignment| 
