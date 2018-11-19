@@ -50,15 +50,6 @@ function verif_result(){
 	fi 	
 }
 
-function run_proteins_prediction(){
-	dir=$1
-	prefix=$2
-	assembly=$3
-	out=$dir/$prefix.predicted_proteins
-	echo "[protein_prediction] Run Prodigal..."
-	prodigal -i $assembly -c -m -p meta -a $out.faa -o $out.gff -q
-	rm $out.gff
-}	
 
 function launch_last(){
 	query=$1
