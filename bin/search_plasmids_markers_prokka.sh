@@ -1,7 +1,7 @@
 set -e 
 
 function usage(){ 
-	echo "bash search_plasmids_markers.sh -f <assembly.fasta> -o <outdir> -d <Plasmids markers database directory> -p <predicted proteins>
+	echo "bash search_plasmids_markers.sh -p <proteins.fasta> -o <outdir> -d <cds_dna.fasta> -g <prokka gff> --db <plasmids markers database directory>
 	Options : 
 	--prefix <prefix> : prefix for results files, default : name of the fasta assembly
 	--force : overwrite results if already exists
@@ -11,9 +11,9 @@ function usage(){
 }
 
 function treat_args(){
-	if [[ ! $assembly ]];then
+	if [[ ! $proteins ]];then
 		quit=1
-		echo "You must give fasta assembly. Use -f option"
+		echo "You must give fasta proteins. Use -p option"
 	fi		
 	if [[ ! $outdir ]]; then 
 		quit=1 
@@ -21,11 +21,19 @@ function treat_args(){
 	fi
 	if [[ ! $db ]]; then 
 		quit=1
-		echo "You must give plasmids markers databases directory. Use -d option" 
+		echo "You must give plasmids markers databases directory. Use --db option" 
 	fi
-	if [[ ! $predicted_proteins ]]; then 
+	if [[ ! $cds ]]; then 
 		quit=1
-		echo "You must give predict proteins file. Use -p option" 
+		echo "You must give DNA CDS. Use -d option" 
+	fi
+	if [[ ! $prefix ]]; then 
+		quit=1 
+		echo "You must give prefix for results. Use --prefix option" 
+	fi 
+	if [[ ! $gff ]]; then
+		quit=1
+		echo "You must give prokka gff. Use -g option" 
 	fi
 	if [[ $quit ]]; then 
 		exit 1
@@ -33,15 +41,13 @@ function treat_args(){
 }	
 
 function verif_args(){
-	verif_file $assembly "[plasmids_markers] Assembly file doesn't found in $assembly" "[plasmids_markers] Assembly file found in $assembly"
+	verif_file $proteins "[plasmids_markers] Proteins file doesn't found in $proteins" "[plasmids_markers] Proteins file found in $proteins"
+	verif_file $cds "[plasmids_markers] CDS file doesn't found in $cds" "[plasmids_markers] CDS file found in $cds"
 	verif_file $db/mob.proteins.faa "[plasmids_markers] Mob database doesn't found in $db/mob.proteins.faa" "[plasmids_markers] Mob database found in $db/mob.proteins.faa"
 	verif_file $db/mpf.proteins.faa "[plasmids_markers] Mpf database doesn't found in $db/mpf.proteins.faa" "[plasmids_markers] Mpf database found in $db/mpf.proteins.faa"
 	verif_file $db/rep.dna.fas "[plasmids_markers] Rep database doesn't found in $db/rep.dna.fas" "[plasmids_markers] Mpf database found in $db/rep.dna.fas"
-	verif_file $db/orit.fas "[plasmids_markers] OriT database doesn't found in $db/orit.fas" "[plasmids_markers] OriT database found in $db/orit.fas"
+	verif_file $gff "[plasmids_markers] Prokka gff doesn't found in $gff" "[plasmids_markers] Prokka gff found in $gff"
 	mkdir -p $outdir 
-	if [[ ! $prefix ]]; then 
-		prefix=$(echo $assembly | rev | cut -f 1 -d "/" | cut -f 2- -d "." | rev)
-	fi
 }	
 
 function run_proteins_prediction(){
@@ -54,37 +60,30 @@ function run_proteins_prediction(){
 }	
 
 function treat_blast(){
-	echo "TREAT" 
 	blast=$1
 	id=$2
 	cov=$3
-	type=$4
 	awk '{if ($13 >= '$id' && $15 >= '$cov') print}' $blast.tsv > $blast.conserve.tsv
-	if [[ $type == "raw" ]]; then 
-		cut -f 2 $blast.conserve.tsv | sort -u > $blast.conserve.contigs.id
-		cut -f 1 $blast.conserve.tsv | sort -u > $blast.conserve.searched.id 
-	elif [[ $type == "predicted" ]]; then 
-		cut -f 1 $blast.conserve.tsv | sort -u > $blast.conserve.predicted_proteins.id 
-		cut -f 2 $blast.conserve.tsv | sort -u > $blast.conserve.searched.id 
-		cat $blast.conserve.predicted_proteins.id | rev | cut -f 2- -d "_" | rev > $blast.conserve.contigs.id 
-	fi   
 }		
 
-TEMP=$(getopt -o h,f:,o:,d:,p: -l prefix:,force  -- "$@")
+TEMP=$(getopt -o h,p:,d:,o:,g: -l prefix:,force,db:  -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
-		-f)
-			assembly=$2
+		-p)
+			proteins=$2
 			shift 2;; 
 		-o)
 			outdir=$2
 			shift 2;; 
-		-d) 
+		-g)
+			gff=$2
+			shift 2;; 	
+		--db) 
 			db=$2
 			shift 2;; 
-		-p)
-			predicted_proteins=$2
+		-d)
+			cds=$2
 			shift 2;; 	
 		--prefix)
 			prefix=$2 
@@ -114,26 +113,15 @@ verif_result $out.tsv
 if [[ $file_exist == 1 ]]; then 
 	echo "[plasmids_markers] Searching rep DNA results already exists. Use --force to overwrite it" 
 else 
-	echo "[plasmids_markers] Use $assembly" 
-	verif_blast_db $assembly nucl "[plasmids_markers] Make blast db for $assembly..." "[plasmids_markers] Blast db found for $assembly"
+	current_db=$db/rep.dna.fas
+	verif_blast_db $current_db nucl "[plasmids_markers] Make blast db for $current_db..." "[plasmids_markers] Blast db found for $current_db"
 	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $db/rep.dna.fas $assembly $out.tsv 32 blastn
-	echo "[plasmids_markers] Treat Blast..."
+	bash $BIN/parallelize_blast.sh $cds $current_db $out.tsv 32 blastn
+	echo "[plasmids_markers] Treat blast..." 
 	treat_blast $out 80 80 raw
-fi
-
-echo "# Search oriT DNA"
-out=$outdir/$prefix.orit.blast
-verif_result $out.tsv 
-if [[ $file_exist == 1 ]]; then 
-	echo "[plasmids_markers] Searching oriT DNA results already exists. Use --force to overwrite it" 
-else 
-	echo "[plasmids_markers] Use $assembly" 
-	verif_blast_db $assembly nucl "[plasmids_markers] Make blast db for $assembly..." "[plasmids_markers] Blast db found for $assembly"
-	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $db/orit.fas $assembly $out.tsv 32 blastn
-	echo "[plasmids_markers] Treat Blast..."
-	treat_blast $out 90 90 raw
+	echo "[plasmids_markers] Modif gff..."
+	python3 $BIN/add_markers_to_prokka_results.py $out.conserve.tsv $gff $gff.2 rep_dna
+	
 fi
 
 echo "Search MOB proteins..."
@@ -145,9 +133,10 @@ else
 	echo "[plasmids_markers] Use $predicted_proteins" 
 	verif_blast_db $db/mob.proteins.faa prot "[plasmids_markers] Make blast db for $db/mob.proteins.faa..." "[plasmids_markers] Blast db found for $db/mob.proteins.faa"
 	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $predicted_proteins $db/mob.proteins.faa $out.tsv 32 blastp
+	bash $BIN/parallelize_blast.sh $proteins $db/mob.proteins.faa $out.tsv 32 blastp
 	echo "[plasmids_markers] Treat Blast..."
 	treat_blast $out 80 80 predicted
+	python3 $BIN/add_markers_to_prokka_results.py $out.conserve.tsv $gff.2 $gff.3 mob_prot
 fi
 
 echo "# Search MPF proteins..."
@@ -159,10 +148,11 @@ else
 	echo "[plasmids_markers] Use $predicted_proteins" 
 	verif_blast_db $db/mpf.proteins.faa prot "[plasmids_markers] Make blast db for $db/mpf.proteins.faa..." "[plasmids_markers] Blast db found for $db/mpf.proteins.faa"
 	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $predicted_proteins $db/mpf.proteins.faa $out.tsv 32 blastp
+	bash $BIN/parallelize_blast.sh $proteins $db/mpf.proteins.faa $out.tsv 32 blastp
 	echo "[plasmids_markers] Treat Blast..."
 	treat_blast $out 80 80 predicted
+	python3 $BIN/add_markers_to_prokka_results.py $out.conserve.tsv $gff.3 $gff.4 mpf_prot
 fi
 
-cat $outdir/*.contigs.id | sort -u > $outdir/$prefix.all_markers.contigs.id
-python3 $BIN/delete_seq_from_file.py $assembly $outdir/$prefix.all_markers.contigs.id $outdir/$prefix.nomarkers.fasta normal
+mv $gff.4 $(echo $gff | rev | cut -f 2- -d "." | rev).markers.gff 
+rm $gff.*
