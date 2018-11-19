@@ -4,9 +4,11 @@
 
 ` bash PlasPredict.sh -a <assembly.fasta> -o <outdir>`
 
-Output options : \\
+Output options : 
 * --prefix <prefix> : prefix for output files (default : assembly.fasta name) 
-Databases options : \\
+
+Databases options : 
+
 If not specified, databases are searched in `hilpert/databis/plasmidome_databases`
 * --chrm_db <fasta> : fasta file with bacterial chromosomes sequences you want to use 
 * --rna_db <fasta> : fasta file with rRNA sequences (must be back transcribed) you want to use
