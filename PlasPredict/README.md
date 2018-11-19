@@ -46,13 +46,20 @@ Pipeline will create several subdirectories for each step in your output directo
 |rna_search|`.tsv` is treated blast results between contigs and RNA. `.id` lists contigs id with RNA alignment|    
 
 
-### Required tools 
-Version indicated are tested versions. It can be work (or not) with others. 
+### Required tools/libraries/languages
+Version indicated are tested versions. It can be work (or not) with others.  
+It has been tested with Ubuntu 16.04.03 distribution.  
 * [Prodigal](https://github.com/hyattpd/Prodigal) V2.6.3 
 * [HHMER](http://hmmer.org/) V3.1b2
 * [Minimap2](https://github.com/lh3/minimap2) V2.12-r827
 * [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download) v2.2.31+
 * [PlasFlow](https://github.com/smaegol/PlasFlow) V1.1
+* [Python](https://www.python.org/download/releases/3.0/) v3.5.2
+* [BioPython](https://biopython.org/) v1.68
+* [Perl](https://www.perl.org/) v5.22.1
+
+
+
 
 
 
