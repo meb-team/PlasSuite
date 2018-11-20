@@ -31,10 +31,9 @@ If not specified, databases are searched in `hilpert/databis/plasmidome_database
 ### Required tools/libraries/languages
 Version indicated are tested versions. It can be work (or not) with others.  
 It has been tested with Ubuntu 16.04.03 distribution.  
-* [Python](https://www.python.org/download/releases/3.0/) v3.5.2
+* [Python](https://www.python.org/download/releases/3.0/) v3.5.5
 * [Prokka](https://github.com/tseemann/prokka) v1.13.3
-* [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download) v2.2.31+
-* [R](https://www.r-project.org/) v3.4.3
+* [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download) v2.7.1+
 * [genoPlotR](http://genoplotr.r-forge.r-project.org/) v0.8.7
 * [circlize](https://github.com/jokergoo/circlize) v0.4.4
 

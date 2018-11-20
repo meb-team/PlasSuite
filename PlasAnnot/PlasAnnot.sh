@@ -105,13 +105,11 @@ verif_result $prokka_gff
 if [[ $file_exist == 1 ]]; then
 	echo "Prokka annotation results already exists. Use --force to overwrite" 
 else 
-	source activate plasmidome 
 	if [[ ! -f $hmm.h3f ]]; then 
 		hmmpress $hmm 
 	fi
 	echo "[annotation] Run Prokka..." 
 	prokka $assembly --outdir $outdir --prefix $prefix --metagenome --hmms $hmm --quiet --rawproduct --force
-	source deactivate plasmidome 
 	rm $outdir/$prefix.sqn $outdir/$prefix.fna $outdir/$prefix.fsa $outdir/$prefix.tbl $outdir/$prefix.gbk 
 fi
 
