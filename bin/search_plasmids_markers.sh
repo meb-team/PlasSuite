@@ -117,7 +117,7 @@ else
 	echo "[plasmids_markers] Use $assembly" 
 	verif_blast_db $assembly nucl "[plasmids_markers] Make blast db for $assembly..." "[plasmids_markers] Blast db found for $assembly"
 	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $db/rep.dna.fas $assembly $out.tsv 32 blastn
+	bash $BIN/parallelize_blast.sh $db/rep.dna.fas $assembly $out.tsv 32 blastn
 	echo "[plasmids_markers] Treat Blast..."
 	treat_blast $out 80 80 raw
 fi
@@ -131,7 +131,7 @@ else
 	echo "[plasmids_markers] Use $assembly" 
 	verif_blast_db $assembly nucl "[plasmids_markers] Make blast db for $assembly..." "[plasmids_markers] Blast db found for $assembly"
 	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $db/orit.fas $assembly $out.tsv 32 blastn
+	bash $BIN/parallelize_blast.sh $db/orit.fas $assembly $out.tsv 32 blastn
 	echo "[plasmids_markers] Treat Blast..."
 	treat_blast $out 90 90 raw
 fi
@@ -145,7 +145,7 @@ else
 	echo "[plasmids_markers] Use $predicted_proteins" 
 	verif_blast_db $db/mob.proteins.faa prot "[plasmids_markers] Make blast db for $db/mob.proteins.faa..." "[plasmids_markers] Blast db found for $db/mob.proteins.faa"
 	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $predicted_proteins $db/mob.proteins.faa $out.tsv 32 blastp
+	bash $BIN/parallelize_blast.sh $predicted_proteins $db/mob.proteins.faa $out.tsv 32 blastp
 	echo "[plasmids_markers] Treat Blast..."
 	treat_blast $out 80 80 predicted
 fi
@@ -159,7 +159,7 @@ else
 	echo "[plasmids_markers] Use $predicted_proteins" 
 	verif_blast_db $db/mpf.proteins.faa prot "[plasmids_markers] Make blast db for $db/mpf.proteins.faa..." "[plasmids_markers] Blast db found for $db/mpf.proteins.faa"
 	echo "[plasmids_markers] Run Blast..." 
-	bash $BIN2/parallelize_blast.sh $predicted_proteins $db/mpf.proteins.faa $out.tsv 32 blastp
+	bash $BIN/parallelize_blast.sh $predicted_proteins $db/mpf.proteins.faa $out.tsv 32 blastp
 	echo "[plasmids_markers] Treat Blast..."
 	treat_blast $out 80 80 predicted
 fi

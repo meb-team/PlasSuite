@@ -9,11 +9,10 @@ function usage(){
 	' 
 }
 
-TEMP=$(getopt -o o:,h -l tmp:,thres:,min_contigs: -- "$@")
+TEMP=$(getopt -o o:,h -l thres:,min_contigs: -- "$@")
 eval set -- "$TEMP" 
 
 outdir=results/plasflow 
-tmp_dir=`mktemp -d -p .`
 thres=0.7
 min_contigs=1000
 BIN2=/databis/hilpert/plasmidome_realdata2/bin
@@ -26,9 +25,6 @@ while true ; do
 		-o) 
 			outdir=$2
 			shift 2;;	
-		--tmp) 
-			tmp_dir=$2
-			shift 2;; 
 		--thres) 
 			thres=$2
 			shift 2;;	
@@ -76,9 +72,7 @@ for i in `seq 0 $len` ; do
 	echo $name 
 	outfile=$outdir/$name.plasflow$thres
 	echo "== plasflow $name"
-	source activate plasflow
-	PlasFlow.py --input $contigs --output $outfile --models ~/PlasFlow/models --thres $thres
-	source deactivate plasflow
+	PlasFlow.py --input $contigs --output $outfile --thres $thres
 	mv $outfile\_plasmids.fasta $outfile.plasmids.fasta 
 	mv $outfile\_chromosomes.fasta $outfile.chromosomes.fasta
 	mv $outfile\_unclassified.fasta $outfile.unclassified.fasta  
@@ -86,7 +80,5 @@ for i in `seq 0 $len` ; do
 	grep "^>" $outfile.chromosomes.fasta | cut -f 1 -d " " | cut -f 2 -d ">" > $outfile.chromosomes.id 
 	grep "^>" $outfile.unclassified.fasta | cut -f 1 -d " " | cut -f 2 -d ">" > $outfile.unclassified.id
 done 	
-
-rm -r $tmp_dir 
 
 bash $BIN2/taxo_plasflow.sh $outfile.plasmids.fasta $outfile.chromosomes.fasta $outfile.unclassified.fasta $outfile.taxo 

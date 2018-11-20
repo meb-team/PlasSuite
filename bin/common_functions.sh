@@ -49,20 +49,3 @@ function verif_result(){
 		file_exist=0	
 	fi 	
 }
-
-
-function launch_last(){
-	query=$1
-	db=$2
-	out=$3
-	source activate last
-	echo "## LAST" 
-	if [[ ! -f $db.tis ]]; then 
-		echo "# Make last db" 
-		lastdb $db $db
-	fi	
-	echo "# Launch last" 
-	echo $out
-	lastal $db $query -f BlastTab+ -P 12 > $out
-	source deactivate last	
-}

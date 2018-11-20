@@ -84,9 +84,7 @@ else
 	echo "[minimap] Count subject sequences..." 
 	nb_seq=$(grep "^>" -c $subject) 
 	echo "[minimap] Run minimap2..." 
-	source activate plasmidome 
 	minimap2 -x asm5 -N $nb_seq $subject $query 1> $out.paf
-	source deactivate plasmidome
 	echo "[minimap2] Treat minimap2..." 
 	awk '{if ($10/$2 >= '$cov') print}' $out.paf > $out.$cov.paf 
 	cut -f 1 $out.$cov.paf | sort -u > $out.$cov.id

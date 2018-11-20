@@ -43,7 +43,7 @@ function verif_args(){
 		chrm_db=/databis/hilpert/plasmidome_databases/all_prokaryotes.fasta 
 	fi 
 	if [[ ! $rna_db ]]; then 
-		rna_db=/databis/hilpert/plasmidome_databases/rRNA/SILVA_132_LSUParc_SSUParc_tax_silva_trunc.T.fasta
+		rna_db=/databis/hilpert/plasmidome_databases/rRNA/SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.fasta
 	fi 
 	if [[ ! $phylo_db ]]; then 
 		phylo_db=/databis/hilpert/plasmidome_databases/phylogenetic_markers/wu2013/bacteria_and_archaea_dir/BA.hmm	
@@ -153,6 +153,7 @@ mkdir -p $outdir
 resume=$outdir/$prefix.resume.tsv
 
 tmp=$(mktemp -d -p .) 
+echo $tmp 
 
 echo -e "step\tcontigs_number\tcontigs_length" > $resume 
 
@@ -289,8 +290,12 @@ echo "Time elapsed : $((end-start)) s"
 echo "=== TREATMENT ====" 
 
 echo "## VERIF LEARNING" 
-echo "TO DO" 
-#bash $BIN/treat_verif_learning.sh -f $assembly -o $outdir -r $outdir -p $prefix --thres 70
+verif_result $outdir/$prefix.verif_learning.tsv 
+if [[ $file_exist == 1 ]]; then 
+	echo "Verif learning results already exists. Use --force to overwrite" 
+else 
+	bash $BIN/treat_verif_learning.sh -f $assembly -o $outdir -r $outdir -p $prefix --thres 70
+fi 
 
 echo "==== CLEANING LEARNING PLASMIDS ====" 
 predicted_plasmids=$outdir/$prefix.predicted_plasmids
