@@ -44,6 +44,7 @@ function verif_args(){
 }
 
 function set_default(){
+	stats=$outdir/$prefix.stats 
 	prokka_gff=$outdir/$prefix.gff
 	prokka_gff_markers=$outdir/$prefix.markers.gff
 	prokka_gff_circular=$outdir/$prefix.markers.circular.gff
@@ -99,6 +100,8 @@ treat_args
 verif_args
 set_default 
 
+echo -e "Sample\tCDS with resistances\tLength CDS with resistances (nt)\t%resistances\tCDS with plasmids markers\tLength CDS with plasmids markers\t%plasmids markers" > $stats 
+
 current_dir=$(pwd) 
 echo "STEP 1 : PROKKA ANNOTATION" 
 verif_result $prokka_gff 
@@ -124,10 +127,28 @@ fi
 mv $prokka_gff_markers $prokka_gff 
 rm -r $outdir/markers 
 
+echo "STEP 3 : STATS" 
+grep "Resfams" $prokka_gff > $prokka_gff.resistances 
+grep "mob_suite" $prokka_gff > $prokka_gff.markers 
+markers=$outdir/$prefix.markers.id
+resistances=$outdir/$prefix.resistances.id 
+all=$outdir/$prefix.ffn
+cut -f 9 $prokka_gff.markers | cut -f 2 -d "=" | cut -f 1 -d ";" | sort -u > $markers 
+cut -f 9 $prokka_gff.resistances | cut -f 2 -d "=" | cut -f 1 -d ";" | sort -u > $resistances 
+nb_all=$(grep "^>" -c $all) 
+nb_resistances=$(wc -l $resistances | cut -f 1 -d " ") 
+nb_markers=$(wc -l $markers | cut -f 1 -d " ") 
+length_all=$(python3 $BIN/total_length_fasta.py $all) 
+length_resistances=$(python3 $BIN/total_length_contig_list.py $all $resistances) 
+length_markers=$(python3 $BIN/total_length_contig_list.py $all $markers) 
+perc_resistances=$(echo $length_all $length_resistances | awk '{print $2/$1*100}') 
+perc_markers=$(echo $length_all $length_markers | awk '{print $2/$1*100}') 
+echo -e "$prefix\t$nb_resistances\t$length_resistances\t$perc_resistances\t$nb_markers\t$length_markers\t$perc_markers" >> $stats
+
 grep -P '_circ\t' $prokka_gff > $prokka_gff.circular 
 grep -v -P '_circ\t' $prokka_gff > $prokka_gff.linear
 
-echo "STEP 3 : DRAW >10KB CONTIGS" 
+echo "STEP 4 : DRAW >10KB CONTIGS" 
 verif_result $draw_contigs_10kb
 if [[ $file_exist == 1 ]]; then 
 	echo ">10kb contigs are already representated. Use --force to overwrite" 
@@ -136,6 +157,7 @@ else
 fi 
 rm $prokka_gff.linear 
 
+echo "STEP 5 : DRAW CIRCULAR CONTIGS" 
 verif_result $draw_contigs_circular 
 if [[ $file_exist == 1 ]]; then 
 	echo "Circular contigs draws are already exists. Use --force to overwrite" 
