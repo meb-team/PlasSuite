@@ -44,6 +44,7 @@ function verif_args(){
 	rna=$results/rna_search/$prefix.rna.blast.all.contigs.id
 	plas_markers=$results/plasmids_markers/$prefix.all_markers.contigs.id
 	circular=$results/circular/$prefix.circular.id
+	circular_headers=$results/circular/$prefix.circular.headers.id 
 	plasmids=$results/plasmids_search/$prefix.0.8.id 
 	
 	verif_file $chrm "[treat_verif_learning] Chromosomes results doesn't found in $chrm" "[treat_verif_Chromosomes] Chromosomes results found in $chrm" 
@@ -138,5 +139,33 @@ for thr in $thresholds; do
 	echo -e "$prefix\tlearning$thr\tcircular\t$circular_length\t"$(echo $total_length $circular_length | awk '{print $2/$1*100}') >> $out2
 	plasmids_length=$(python3 $BIN/total_length_contig_list.py $learning $plasmids)
 	echo -e "$prefix\tlearning$thr\tplasmids\t$plasmids_length\t"$(echo $total_length $plasmids_length | awk '{print $2/$1*100}') >> $out2
+	all_plasmids_length=$(python3 $BIN/total_length_contig_list.py $learning $all_plasmids_id)
 	echo -e "$prefix\tlearning$thr\tall_plasmids\t$all_plasmids_length\t"$(echo $total_length $all_plasmids_length | awk '{print $2/$1*100}') >> $out2
 done 
+
+conserved_plasmids=$results/$prefix.predicted_plasmids.fasta
+total_length=$(python3 $BIN/total_length_fasta.py $conserved_plasmids)
+echo -e "$prefix\tPredicted plasmids\tall\t$total_length\t100" >> $out2 
+chrm_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $chrm)
+echo -e "$prefix\tPredicted plasmids\tchrm\t$chrm_length\t"$(echo $total_length $chrm_length | awk '{print $2/$1*100}') >> $out2
+rna_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $rna)
+echo -e "$prefix\tPredicted plasmids\trna\t$rna_length\t"$(echo $total_length $rna_length | awk '{print $2/$1*100}') >> $out2
+phylo_markers_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $phylo_markers)
+echo -e "$prefix\tPredicted plasmids\tphylo_markers\t$phylo_markers_length\t"$(echo $total_length $phylo_markers_length | awk '{print $2/$1*100}') >> $out2
+all_chrm_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $all_chrm_id)
+echo -e "$prefix\tPredicted plasmids\tall_chrm\t$all_chrm_length\t"$(echo $total_length $all_chrm_length | awk '{print $2/$1*100}') >> $out2
+markers_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $plas_markers)
+echo -e "$prefix\tPredicted plasmids\tplasmids_markers\t$markers_length\t"$(echo $total_length $markers_length | awk '{print $2/$1*100}') >> $out2
+
+for id in $(cat $circular); do 
+	echo "$id"_circ 
+done > $circular_headers
+
+circular_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $circular_headers)
+echo -e "$prefix\tPredicted plasmids\tcircular\t$circular_length\t"$(echo $total_length $circular_length | awk '{print $2/$1*100}') >> $out2
+plasmids_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $plasmids)
+echo -e "$prefix\tPredicted plasmids\tplasmids\t$plasmids_length\t"$(echo $total_length $plasmids_length | awk '{print $2/$1*100}') >> $out2
+all_plasmids_length=$(python3 $BIN/total_length_contig_list.py $conserved_plasmids $all_plasmids_id)
+echo -e "$prefix\tPredicted plasmids\tall_plasmids\t$all_plasmids_length\t"$(echo $total_length $all_plasmids_length | awk '{print $2/$1*100}') >> $out2
+
+
