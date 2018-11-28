@@ -15,7 +15,7 @@ eval set -- "$TEMP"
 outdir=results/plasflow 
 thres=0.7
 min_contigs=1000
-BIN2=/databis/hilpert/plasmidome_realdata2/bin
+
 
 while true ; do 
 	case "$1" in 
@@ -47,6 +47,14 @@ then
 	echo 'give contigs fasta files' 	
 	exit 1 
 fi 
+
+tool_dir=$(echo $0 | rev | cut -f 3- -d "/" | rev)
+if [[ $tool_dir == "" ]]; then 
+	tool_dir="." 
+elif [[ $tool_dir == $0 ]]; then 
+	tool_dir=".." 	
+fi 
+BIN=$tool_dir/bin
 
 mkdir -p $outdir 
 
@@ -81,4 +89,4 @@ for i in `seq 0 $len` ; do
 	grep "^>" $outfile.unclassified.fasta | cut -f 1 -d " " | cut -f 2 -d ">" > $outfile.unclassified.id
 done 	
 
-bash $BIN2/taxo_plasflow.sh $outfile.plasmids.fasta $outfile.chromosomes.fasta $outfile.unclassified.fasta $outfile.taxo 
+bash $BIN/taxo_plasflow.sh $outfile.plasmids.fasta $outfile.chromosomes.fasta $outfile.unclassified.fasta $outdir $name.plasflow$thres 

@@ -9,8 +9,15 @@ if [[ $# -ne 3 ]]; then
 	exit 1 
 fi 
 
-BIN=$(echo $0 | rev | cut -f 2- -d "/" | rev) 
-BIN=$(readlink -f $BIN) 
+tool_dir=$(echo $0 | rev | cut -f 3- -d "/" | rev)
+if [[ $tool_dir == "" ]]; then 
+	tool_dir="." 
+elif [[ $tool_dir == $0 ]]; then 
+	tool_dir=".." 	
+fi 
+tool_dir=$(readlink -f $tool_dir)
+BIN=$tool_dir/bin
+
 assembly=$1
 gff=$2
 outfile=$3

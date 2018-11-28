@@ -44,15 +44,6 @@ function verif_args(){
 	fi
 }	
 
-function run_proteins_prediction(){
-	mkdir -p $outdir/protein_prediction 
-	out=$outdir/protein_prediction/$prefix.predicted_proteins
-	echo "[protein_prediction] Use $assembly" 
-	echo "[protein_prediction] Run Prodigal..."
-	prodigal -i $assembly -c -m -p meta -f gff -a $out.faa -o $out.gff -q
-	predicted_proteins=$out.faa
-}	
-
 function treat_blast(){
 	echo "TREAT" 
 	blast=$1
@@ -66,7 +57,7 @@ function treat_blast(){
 	elif [[ $type == "predicted" ]]; then 
 		cut -f 1 $blast.conserve.tsv | sort -u > $blast.conserve.predicted_proteins.id 
 		cut -f 2 $blast.conserve.tsv | sort -u > $blast.conserve.searched.id 
-		cat $blast.conserve.predicted_proteins.id | rev | cut -f 2- -d "_" | rev > $blast.conserve.contigs.id 
+		cat $blast.conserve.predicted_proteins.id | rev | cut -f 2- -d "_" | rev | sort -u > $blast.conserve.contigs.id 
 	fi   
 }		
 
@@ -100,7 +91,13 @@ while true ; do
 	esac 
 done	
 
-BIN=$(echo $0 | rev | cut -f 2- -d "/" | rev) 
+tool_dir=$(echo $0 | rev | cut -f 3- -d "/" | rev)
+if [[ $tool_dir == "" ]]; then 
+	tool_dir="." 
+elif [[ $tool_dir == $0 ]]; then 
+	tool_dir=".." 	
+fi 
+BIN=$tool_dir/bin
 
 source $BIN/common_functions.sh 
 
@@ -164,5 +161,5 @@ else
 	treat_blast $out 80 80 predicted
 fi
 
-cat $outdir/*.contigs.id | sort -u > $outdir/$prefix.all_markers.contigs.id
+cat $outdir/$prefix.*.contigs.id | sort -u > $outdir/$prefix.all_markers.contigs.id
 python3 $BIN/delete_seq_from_file.py $assembly $outdir/$prefix.all_markers.contigs.id $outdir/$prefix.nomarkers.fasta normal
