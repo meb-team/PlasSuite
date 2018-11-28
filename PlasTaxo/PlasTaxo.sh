@@ -40,7 +40,10 @@ function treat_args(){
 		quit=1 
 		echo "You must give output prefix. Use --prefix option" 
 	fi	
-	
+	if [[ ! $predicted_plasmids ]]; then 
+		quit=1 
+		echo "You must give predicted plasmids id. Use --predicted_plasmids option" 
+	fi 	
 	if [[ $quit ]]; then 
 		exit 1
 	fi 
@@ -51,6 +54,7 @@ function verif_args(){
 	verif_file $plasmids_align "[PlasTaxo] Plasmids alignment doesn't found in $plasmids_align" "[PlasTaxo] Plasmids alignment found in $plasmids_align"
 	verif_file $chrm_align "[PlasTaxo] Chromosomes alignment doesn't found in $chrm_align" "[PlasTaxo] Chromosomes alignment found in $chrm_align"
 	verif_file $rna_align "[PlasTaxo] rRNA alignment doesn't found in $rna_align" "[PlasTaxo] rRNA alignment found in $rna_align"	
+	verif_file $predicted_plasmids "[PlasTaxo] Predicted plasmids ids doesn't found in $predicted_plasmids." "[PlasTaxo] Predicted plasmids ids found in $predicted_plasmids." 
 	mkdir -p $outdir 
 	if [[ ! $plasmids_db ]]; then 
 		plasmids_db=/databis/hilpert/plasmidome_databases/all_plasmids.fasta 
@@ -72,7 +76,7 @@ function verif_args(){
 
 }
 
-TEMP=$(getopt -o h,f:,o: -l prefix:,force,plasflow_taxo:,plasmids_align:,plasmids_db:,plasmids_info:,chrm_align:,chrm_db:,rna_align:,rna_db: -- "$@")
+TEMP=$(getopt -o h,f:,o: -l prefix:,force,plasflow_taxo:,plasmids_align:,plasmids_db:,plasmids_info:,chrm_align:,chrm_db:,rna_align:,rna_db:,predicted_plasmids: -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
@@ -111,6 +115,9 @@ while true ; do
 			shift 2;; 
 		--rna_db)
 			rna_db=$2
+			shift 2;; 
+		--predicted_plasmids) 
+			predicted_plasmids=$2
 			shift 2;; 
 		-h) 
 			usage 
@@ -175,21 +182,6 @@ cut -f 2 $taxo.differentTaxo | sort | uniq -c | awk '{print $2"\t"$1}' >> $taxo.
 
 python3 $BIN/count_taxo.py $taxo.sameTaxo.count $taxo.differentTaxo.count $taxo.plasflowPrediction.stats
 
-exit 
-
-python3 $BIN2/treat_taxo_plasmids.py $plasmids_align $pref.taxo.tsv $plasflow_taxo > $taxo 
-python3 $BIN2/comp_taxo_plasmids.py $taxo 
-
-tail -n +2 $taxo > $taxo.tmp
-all=$(awk -F "\t" '{if ($3!="-" || $4 != "-" || $5 != "-") print }' $taxo.tmp | wc -l | cut -f 1 -d " ")  
-same=$(wc -l $taxo.sameTaxo | cut -f 1 -d " ")   
-diff=$(wc -l $taxo.differentTaxo | cut -f 1 -d " ") 
-
-echo -e "Taxon\tNumber of contigs" > $taxo.sameTaxo.count
-cut -f 2 $taxo.sameTaxo| sort | uniq -c | awk '{print $2"\t"$1}'>> $taxo.sameTaxo.count
-echo -e "Taxon\tNumber of contigs" > $out.differentTaxo.count
-cut -f 2 $taxo.differentTaxo | sort | uniq -c | awk '{print $2"\t"$1}' >> $taxo.differentTaxo.count
-
-python3 $BIN2/count_taxo.py $taxo.sameTaxo.count $taxo.differentTaxo.count $taxo.plasflowPrediction.stats
+python3 $BIN/keep_taxo.py $taxo $predicted_plasmids > $taxo.predicted_plasmids
 
 rm $outdir/*.tmp 
