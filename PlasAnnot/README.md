@@ -19,6 +19,11 @@ If not specified, databases are searched in `hilpert/databis/plasmidome_database
 * --resfams <hmm> : Resfams hmm profile 
 * --markers_db <dir> : dir where plasmids markers databases are stored
 
+#### Used databases 
+*To come...* 
+* Resfams : 
+* Plasmids markers : mob_suite database 
+
 ### Outputs 
 
 | Suffix | Description | 

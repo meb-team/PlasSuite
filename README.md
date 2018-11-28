@@ -4,10 +4,10 @@ Scripts for plasmidome analysis
 ## [PlasPredict](PlasPredict) 
 Predict plasmids contigs from assembly 
 
-## [PlasAnnot](PlasAnnot)
+## [PlasAnnot](PlasAnnot)
 Annotate plasmids contigs from assembly (preferentially with only predicted plasmids) 
 
-## [PlasTaxo](PlasTaxo) 
+## [PlasTaxo](PlasTaxo) 
 Retrieve and compare taxonomy from assembly using PlasFlow taxonomy and plasmids alignment 
 
 ## [PlasResist](PlasResist) 

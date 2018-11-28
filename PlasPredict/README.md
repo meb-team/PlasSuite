@@ -20,6 +20,14 @@ If not specified, databases are searched in `hilpert/databis/plasmidome_database
 * --markers_db <dir> : dir where plasmids markers databases are stored
 * --plasmids_db <fasta> : fasta file with complete plasmids sequences you want to use
 
+**Default databases**
+*To come...* 
+* Chromosomes 
+* rRNA : SILVA 
+* Phylogenetic markers : wu2013
+* Plasmids markers 
+* Plasmids  
+
 ### Outputs 
 
 The script will generate several output files. 
@@ -30,6 +38,7 @@ The script will generate several output files.
 |---------|------------|
 |.predicted_plasmids.fasta|All predicted plasmids in fasta format| 
 |.resume.tsv|Give informations for each step of pipeline, with number of concerned contigs and cumulated length of concerned contigs| 
+|.verif_learning.tsv|Give contamination and plasmids contents before and after learning, and after all pipeline.| 
 
 #### Intermediate subdirectory
 Pipeline will create several subdirectories for each step in your output directory  
@@ -37,7 +46,7 @@ Pipeline will create several subdirectories for each step in your output directo
 | Directory | Description | 
 |---------|------------|
 |chrm_search|Contains `.id` and `.paf` files. `.paf` is results of treated minimap2 alignment between all contigs and chromosomes database. `.id` lists contigs id with chromosomes alignment| 
-|plasmids_search|Contains `.id` and `.paf` files. `.paf` is results of treated minimap2 alignment between all contigs and plasmids database. `.id` lists contigs id with plasmids alignment|
+|plasmids_search|Contains `.id` and `.paf` files. `.paf` is results of treated minimap2 alignment between all contigs and plasmids database. `.id` lists contigs id with plasmids alignment. Also contains `.complete.tsv` files, wich lists all contigs corresponding to complete plasmids in database.|
 |circular|Contains `.fasta` and `.id` files. `.fasta` is fasta file with circular contigs, `.id` lists circular contigs id|  
 |learning|Contains `.fasta`, `.id` and `.taxo` files. `.chromosomes.fasta`, `.plasmids.fasta`,`.unclassified.fasta` are respectively fasta files with PlasFlow predicted plasmids, predicted chromosomes and unclassified contigs. `.id` lists each fasta id. `.taxo` is a tsv file with contigs id in first column and PlasFlow predicted taxonomy in 2nd column.|
 |phylogenetic_markers|`.tsv` file is raw hmm results for alignment between predicted proteins and phylogenetic markers. `.contigs.id` lists contigs id with phylogenetic markers alignments. `.proteins_family.id` lists HMM profiles with alignments. `.predicted_proteins.id` lists predicted proteins ids with alignment| 
