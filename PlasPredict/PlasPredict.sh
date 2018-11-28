@@ -90,6 +90,16 @@ function run_proteins_prediction(){
 	rm $out.gff
 }	
 
+function identify_complete_plasmids(){ 
+	awk '{if ($10/$7>=0.8) print}' $contigs_plasmids.paf > $contigs_plasmids.complete.paf 
+	echo -e "#Contig\tPlasmid\tPlasmid description" > $contigs_plasmids.complete.tsv 
+	for c in $(cut -f 1 $contigs_plasmids.complete.paf | sort -u); do 
+		plasmid=$(grep -m 1 -w $c $contigs_plasmids.complete.paf | cut -f 6)
+		desc=$(grep -w $plasmid $plasmids_db | cut -f 2- -d " " | cut -f 1 -d ",")  
+		echo -e "$c\t$plasmid\t$desc" 
+	done >> $contigs_plasmids.complete.tsv 
+}	
+
 TEMP=$(getopt -o h,a:,o: -l prefix:,chrm_db:,rna_db:,phylo_db:,force,markers_db:,plasmids_db:  -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
@@ -260,6 +270,7 @@ if [[ $file_exist == 1 ]];then
 else 
 	bash $BIN/run_minimap.sh -q $assembly -o $dir -s $plasmids_db --prefix $prefix --force	
 fi 	
+identify_complete_plasmids
 end=$(date +%s)
 echo "Time elapsed : $((end-start)) s" 
 
