@@ -67,7 +67,10 @@ for l in gff :
 					if "gene=" in desc : 
 						name=desc.split("gene=")[1].split(";")[0]
 					else : 	
-						name="ARO:"+desc.split("[ARO:")[1].split(",")[0].rstrip("]")
+						try : 
+							name="ARO:"+desc.split("[ARO:")[1].split(",")[0].rstrip("]")
+						except : 
+							name="Resfams:"+desc.split("Resfams:")[1].split(";")[0] 
 				elif "mob_suite" in desc : 
 					col="forestgreen" 
 					if "gene=" in desc : 
