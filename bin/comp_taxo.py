@@ -5,6 +5,10 @@ def usage():
 	print("usage : python3 comp_taxo.py <taxo file>") 
 	
 def compare_two_taxo(taxo1,taxo2,ncbi): 
+	if taxo1=="DeinococcusThermus":
+		taxo1="Deinococcus-Thermus" 
+	if taxo2=="DeinococcusThermus": 
+		taxo2="Deinococcus-Thermus" 
 	if taxo1=="unclassified" or taxo1=="Undefined" or "uncultured bacterium" in taxo1: 
 		return True
 	elif taxo2=="unclassified" or taxo2=="Undefined" or "uncultured bacterium" in taxo2: 
