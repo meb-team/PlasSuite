@@ -7,6 +7,8 @@ function usage(){
 	--prefix <prefix for results (default : assembly name)
 	--force : overwrite results
 	--resfam : resfam hmm you want to use first for prokka annotation (default : plasmidome_databases/Resfams/Resfams.hmm)
+	--resfam_annot : resfam annotations (default : plasmidome_databases/Resfams/Resfams.annot) 
+	--resfam_info : Resfams metadata (default : plasmidome_databases/Resfams/Resfams.info) 
 	--markers_db : plasmids markers databases directory (default : plasmidome_databases/plasmids_markers)" 
 }	 
 
@@ -36,11 +38,19 @@ function verif_args(){
 	if [[ ! $hmm ]]; then 
 		hmm=plasmidome_databases/Resfams/Resfams.hmm 
 	fi
+	if [[ ! $resfam_annot ]]; then 
+		resfam_annot=plasmidome_databases/Resfams/Resfams.annot
+	fi 
+	if [[ ! $resfam_info ]]; then 
+		resfam_info=plasmidome_databases/Resfams/Resfams.info 
+	fi 
 	verif_file $hmm "[PlasAnnot] Resfam HMM profile doesn't found in $hmm. Use --resfam to specify an other." "[PlasAnnot] Resfam HMM profile found in $hmm"
 	verif_dir $markers_db "[PlasAnnot] Plasmids markers database doesn't found in $markers_db. Use --markers_db to specify an other." "[PlasAnnot] Plasmids markers database found in $markers_db" 
 	verif_file $markers_db/mob.proteins.faa "[PlasAnnot] Mob proteins doesn't found in $markers_db/mob.proteins.faa" "[PlasAnnot] Mob proteins found in $markers_db/mob.proteins.faa"
 	verif_file $markers_db/mpf.proteins.faa "[PlasAnnot] Mpf proteins doesn't found in $markers_db/mpf.proteins.faa" "[PlasAnnot] Mpf proteins found in $markers_db/mpf.proteins.faa"
 	verif_file $markers_db/rep.dna.fas "[PlasAnnot] Rep dna doesn't found in $markers_db/rep.dna.fas" "[PlasAnnot] Rep dna found in $markers_db/rep.dna.fas"
+	verif_file $resfam_annot "[PlasAnnot] Resfam annotations doesn't found in $resfam_annot. Use --resfam_annot to specify an other." "[PlasAnnot] Resfam annotations found in $resfam_annot"
+	verif_file $resfam_info "[PlasAnnot] Resfam metadata doesn't found in $resfam_info. Use --resfam_info to specify an other." "[PlasAnnot] Resfam metadata found in $resfam_info" 
 }
 
 function set_default(){
@@ -55,9 +65,10 @@ function set_default(){
 	draw_contigs_resistance=$outdir/$prefix.contigs.resistance.pdf 
 	draw_contigs_10kb=$outdir/$prefix.linear.10kb.pdf 
 	draw_contigs_circular=$outdir/$prefix.circular.pdf 
+	markers=$outdir/$prefix.markers.id
 }	
 
-TEMP=$(getopt -o h,f:,o: -l prefix:,force,resfam:,markers_db: -- "$@")
+TEMP=$(getopt -o h,f:,o: -l prefix:,force,resfam:,markers_db:,resfam_annot:,resfam_info: -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
@@ -79,6 +90,12 @@ while true ; do
 		--markers_db) 
 			markers_db=$2
 			shift 2;;
+		--resfam_annot)
+			resfam_annot=$2
+			shift 2 ;; 
+		--resfam_info)
+			resfam_info=$2 
+			shift 2 ;; 
 		-h) 
 			usage 
 			shift ;;
@@ -117,29 +134,38 @@ else
 fi
 
 echo "STEP 2 : RETRIEVE PLASMIDS MARKERS" 
-verif_result $prokka_gff_markers
+verif_result $prokka_gff.markers
 if [[ $file_exist == 1 ]]; then
 	echo "Retrieve plasmids results already exists. Use --force to overwrite" 
 else 
 	bash $BIN/search_plasmids_markers_prokka.sh -p $outdir/$prefix.faa -o $outdir/markers --db $markers_db -g $prokka_gff --prefix $prefix -d $outdir/$prefix.ffn --force
+	grep "mob_suite" $prokka_gff > $prokka_gff.markers 
+	cut -f 9 $prokka_gff.markers | cut -f 2 -d "=" | cut -f 1 -d ";" | sort -u > $markers 
+	mv $prokka_gff_markers $prokka_gff 
+	rm -r $outdir/markers 
 fi
 
-mv $prokka_gff_markers $prokka_gff 
-rm -r $outdir/markers 
+echo "STEP 3 : ISOLATE RESISTANCES" 
+resistances=$outdir/$prefix.resistances
+python3 $BIN/extract_res.py $prokka_gff > $resistances 
+tail -n +2 $resistances > $resistances.nohead
+echo -e "$(head -n 1 $resistances)\tResfams_Ab_classif\t$(head -n 1 $resfam_annot | cut -f 2-)" > $resistances.head
+for profile in $(tail -n +2 $resistances | cut -f 2); do
+	echo -e "$(grep -w $profile $resfam_info | cut -f 7)\t$(grep -w $profile $resfam_annot | cut -f 2-)" 
+done > $resistances.desc 
+paste $resistances.nohead $resistances.desc > $resistances.all_desc
+cat $resistances.head $resistances.all_desc > $resistances.detailed 
+rm $resistances.head $resistances.desc $resistances.nohead $resistances.all_desc
+mv $resistances.detailed $resistances 
 
-echo "STEP 3 : STATS" 
-grep "Resfams" $prokka_gff > $prokka_gff.resistances 
-grep "mob_suite" $prokka_gff > $prokka_gff.markers 
-markers=$outdir/$prefix.markers.id
-resistances=$outdir/$prefix.resistances.id 
+echo "STEP 4 : STATS" 
 all=$outdir/$prefix.ffn
-cut -f 9 $prokka_gff.markers | cut -f 2 -d "=" | cut -f 1 -d ";" | sort -u > $markers 
-cut -f 9 $prokka_gff.resistances | cut -f 2 -d "=" | cut -f 1 -d ";" | sort -u > $resistances 
 nb_all=$(grep "^>" -c $all) 
-nb_resistances=$(wc -l $resistances | cut -f 1 -d " ") 
+tail -n +2 $resistances | cut -f 1 > $resistances.id 
+nb_resistances=$(wc -l $resistances.id | cut -f 1 -d " ") 
 nb_markers=$(wc -l $markers | cut -f 1 -d " ") 
 length_all=$(python3 $BIN/total_length_fasta.py $all) 
-length_resistances=$(python3 $BIN/total_length_contig_list.py $all $resistances) 
+length_resistances=$(python3 $BIN/total_length_contig_list.py $all $resistances.id) 
 length_markers=$(python3 $BIN/total_length_contig_list.py $all $markers) 
 perc_resistances=$(echo $length_all $length_resistances | awk '{print $2/$1*100}') 
 perc_markers=$(echo $length_all $length_markers | awk '{print $2/$1*100}') 
@@ -148,7 +174,7 @@ echo -e "$prefix\t$nb_resistances\t$length_resistances\t$perc_resistances\t$nb_m
 grep -P '_circ\t' $prokka_gff > $prokka_gff.circular 
 grep -v -P '_circ\t' $prokka_gff > $prokka_gff.linear
 
-echo "STEP 4 : DRAW >10KB CONTIGS" 
+echo "STEP 5 : DRAW >10KB CONTIGS" 
 verif_result $draw_contigs_10kb
 if [[ $file_exist == 1 ]]; then 
 	echo ">10kb contigs are already representated. Use --force to overwrite" 
@@ -157,7 +183,7 @@ else
 fi 
 rm $prokka_gff.linear 
 
-echo "STEP 5 : DRAW CIRCULAR CONTIGS" 
+echo "STEP 6 : DRAW CIRCULAR CONTIGS" 
 verif_result $draw_contigs_circular 
 if [[ $file_exist == 1 ]]; then 
 	echo "Circular contigs draws are already exists. Use --force to overwrite" 
