@@ -62,6 +62,13 @@ function extract_resistances(){
 	bash $BIN/combined_files.sh $all_res > $all_resistances.tsv 
 }	
 
+function treat_matrix(){
+	echo $(head -n 1 $all_resistances.tsv | cut -f 2-)
+	for ref in $(tail -n +2 $1 | cut -f 1); do 
+		echo $(grep -w $ref $all_resistances.tsv | cut -f 2-)  
+	done 
+}	 
+
 TEMP=$(getopt -o h,i:,o: -l resfams_metadata:,force,annot_dir:,reads_dir: -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
@@ -125,17 +132,25 @@ fi
 echo "# REALIGN READS TO RESISTANCES" 
 dir=$outdir/mapping 
 mkdir -p $dir 
-/data/chochart/lib/MAPme/bin/MAPme -s $all_resistances.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16
-rm $dir/*.sam
+for prefix in $(ls $reads_dir); do 
+	echo $dir/$prefix.sorted.markdup.sorted.bam 
+	if [[ ! -f $dir/$prefix.sorted.markdup.sorted.bam ]];then
+		all_align=1 
+	fi   
+done 
+if [[ $all_align || $FORCE ]]; then 
+	/data/chochart/lib/MAPme/bin/MAPme -s $all_resistances.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16
+	rm $dir/*.sam	
+else
+	echo "Reads realignments already exists. Use --force to overwrite"
+fi 
 
 echo "# ABUNDANCE MATRIX" 
 ab_dir=$outdir/abundance_matrix
 mkdir -p $ab_dir 
 matrix=$ab_dir/resistance_matrix
-
 verif_result $matrix.matrix 
-
-if [[ $file_exist==1 ]];then 
+if [[ $file_exist == 1 ]];then 
 	echo "Abundance matrix already exists. Use --force to overwrite" 
 else 
 	for prefix in $(cat $i); do
@@ -150,6 +165,19 @@ else
 	done > $ab_dir/mama_input.txt 
 	/data/chochart/lib/MAMa/bin/MAMa.py -a $matrix.matrix -r $matrix.relative.matrix -n $matrix.normalized.matrix $all_resistances.ffn.fai $ab_dir/mama_input.txt  
 fi
+
+echo "# TREAT MATRIX" 
+
+treat_matrix $matrix.matrix > $matrix.matrix.desc 
+paste $matrix.matrix $matrix.matrix.desc > $matrix.matrix.detailed 
+
+treat_matrix $matrix.normalized.matrix > $matrix.normalized.matrix.desc  
+paste $matrix.normalized.matrix $matrix.normalized.matrix.desc > $matrix.normalized.matrix.detailed 
+
+treat_matrix $matrix.relative.matrix > $matrix.relative.matrix.desc 
+paste $matrix.relative.matrix $matrix.relative.matrix.desc > $matrix.relative.matrix.detailed 
+
+rm $matrix.*.desc 
 
 exit 
 
