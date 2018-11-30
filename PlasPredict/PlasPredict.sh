@@ -334,6 +334,7 @@ python3 $BIN/seq_from_list.py --input_fasta $assembly --output_fasta $predicted_
 python3 $BIN/seq_from_list.py --input_fasta $contigs_circular.fasta --output_fasta $predicted_plasmids.circular.fasta --keep $predicted_plasmids.circular.id 
 python3 $BIN/circular_headers.py $predicted_plasmids.circular.fasta $predicted_plasmids.circular.headers.fasta 
 cat $predicted_plasmids.linear.fasta $predicted_plasmids.circular.headers.fasta > $predicted_plasmids.fasta  
+grep "^>" $predicted_plasmids.fasta | cut -f 1 -d " " | cut -f 1,2 -d "_" | tr -d ">" > $predicted_plasmids.id 
 
 rm $predicted_plasmids.linear.fasta $predicted_plasmids.circular.headers.fasta $predicted_plasmids.circular.fasta
 
