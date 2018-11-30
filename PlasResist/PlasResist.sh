@@ -63,9 +63,9 @@ function extract_resistances(){
 }	
 
 function treat_matrix(){
-	echo $(head -n 1 $all_resistances.tsv | cut -f 2-)
+	head -n 1 $all_resistances.tsv | cut -f 2-
 	for ref in $(tail -n +2 $1 | cut -f 1); do 
-		echo $(grep -w $ref $all_resistances.tsv | cut -f 2-)  
+		grep -w $ref $all_resistances.tsv | cut -f 2- 
 	done 
 }	 
 
@@ -186,7 +186,7 @@ desc=$(grep "$(tail -n +2 $matrix.normalized.matrix | cut -f 1 $matrix.normalize
 
 set +e
 res_present=$(head -n 1 $matrix.matrix | grep "resistance_description") 
-set -e 
+set -e
 
 if [[ $res_present == "" ]]; then 
 	echo "resistance_description" > $matrix.desc 
