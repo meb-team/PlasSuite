@@ -50,15 +50,6 @@ function verif_args(){
 	mkdir -p $outdir 
 }	
 
-function run_proteins_prediction(){
-	mkdir -p $outdir/protein_prediction 
-	out=$outdir/protein_prediction/$prefix.predicted_proteins
-	echo "[protein_prediction] Use $assembly" 
-	echo "[protein_prediction] Run Prodigal..."
-	prodigal -i $assembly -c -m -p meta -f gff -a $out.faa -o $out.gff -q
-	predicted_proteins=$out.faa
-}	
-
 function treat_blast(){
 	blast=$1
 	id=$2
