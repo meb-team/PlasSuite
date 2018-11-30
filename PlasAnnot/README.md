@@ -1,6 +1,6 @@
 # PlasAnnot 
 
-PlasPredict takes an input assembly and annotate this assembly.   
+PlasAnnot takes an input assembly and annotate this assembly.   
 To annotate, prokka is used, with Resfams profile in priority to identify resistances.   
 Pipeline also draw circular contigs and linear contigs >= 10kb.    
 
