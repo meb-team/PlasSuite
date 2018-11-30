@@ -134,13 +134,12 @@ else
 fi
 
 echo "STEP 2 : RETRIEVE PLASMIDS MARKERS" 
-verif_result $prokka_gff.markers
+verif_result $markers
 if [[ $file_exist == 1 ]]; then
 	echo "Retrieve plasmids results already exists. Use --force to overwrite" 
 else 
 	bash $BIN/search_plasmids_markers_prokka.sh -p $outdir/$prefix.faa -o $outdir/markers --db $markers_db -g $prokka_gff --prefix $prefix -d $outdir/$prefix.ffn --force
-	grep "mob_suite" $prokka_gff > $prokka_gff.markers 
-	cut -f 9 $prokka_gff.markers | cut -f 2 -d "=" | cut -f 1 -d ";" | sort -u > $markers 
+	grep "mob_suite" $prokka_gff_markers | cut -f 9 | cut -f 2 -d "=" | cut -f 1 -d ";" | sort -u > $markers 
 	mv $prokka_gff_markers $prokka_gff 
 	rm -r $outdir/markers 
 fi
@@ -171,8 +170,10 @@ perc_resistances=$(echo $length_all $length_resistances | awk '{print $2/$1*100}
 perc_markers=$(echo $length_all $length_markers | awk '{print $2/$1*100}') 
 echo -e "$prefix\t$nb_resistances\t$length_resistances\t$perc_resistances\t$nb_markers\t$length_markers\t$perc_markers" >> $stats
 
+set +e 
 grep -P '_circ\t' $prokka_gff > $prokka_gff.circular 
 grep -v -P '_circ\t' $prokka_gff > $prokka_gff.linear
+set -e 
 
 echo "STEP 5 : DRAW >10KB CONTIGS" 
 verif_result $draw_contigs_10kb
@@ -183,12 +184,13 @@ else
 fi 
 rm $prokka_gff.linear 
 
-echo "STEP 6 : DRAW CIRCULAR CONTIGS" 
-verif_result $draw_contigs_circular 
-if [[ $file_exist == 1 ]]; then 
-	echo "Circular contigs draws are already exists. Use --force to overwrite" 
-else 
-	bash $BIN/draw_circular.sh $assembly $prokka_gff.circular $draw_contigs_circular
+if [[ -s $prokka_gff.circular ]]; then 
+	echo "STEP 6 : DRAW CIRCULAR CONTIGS" 
+	verif_result $draw_contigs_circular 
+	if [[ $file_exist == 1 ]]; then 
+		echo "Circular contigs draws are already exists. Use --force to overwrite" 
+	else 
+		bash $BIN/draw_circular.sh $assembly $prokka_gff.circular $draw_contigs_circular
+	fi	
 fi
 rm $prokka_gff.circular
-
