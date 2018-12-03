@@ -168,16 +168,20 @@ fi
 
 echo "# TREAT MATRIX" 
 
-treat_matrix $matrix.matrix > $matrix.matrix.desc 
-paste $matrix.matrix $matrix.matrix.desc > $matrix.matrix.detailed 
+#treat_matrix $matrix.matrix > $matrix.matrix.desc 
+#paste $matrix.matrix $matrix.matrix.desc > $matrix.matrix.detailed 
 
-treat_matrix $matrix.normalized.matrix > $matrix.normalized.matrix.desc  
-paste $matrix.normalized.matrix $matrix.normalized.matrix.desc > $matrix.normalized.matrix.detailed 
+#treat_matrix $matrix.normalized.matrix > $matrix.normalized.matrix.desc  
+#paste $matrix.normalized.matrix $matrix.normalized.matrix.desc > $matrix.normalized.matrix.detailed 
 
-treat_matrix $matrix.relative.matrix > $matrix.relative.matrix.desc 
-paste $matrix.relative.matrix $matrix.relative.matrix.desc > $matrix.relative.matrix.detailed 
+#treat_matrix $matrix.relative.matrix > $matrix.relative.matrix.desc 
+#paste $matrix.relative.matrix $matrix.relative.matrix.desc > $matrix.relative.matrix.detailed 
 
-rm $matrix.*.desc 
+#rm $matrix.*.desc 
+
+python3 $BIN/sum_resistance_matrix.py $matrix.matrix.detailed $matrix.matrix.sum
+python3 $BIN/sum_resistance_matrix.py $matrix.normalized.matrix.detailed $matrix.normalized.matrix.sum
+python3 $BIN/sum_resistance_matrix.py $matrix.relative.matrix.detailed $matrix.relative.matrix.sum
 
 exit 
 
@@ -199,9 +203,7 @@ if [[ $res_present == "" ]]; then
 	mv $matrix.matrix2 $matrix.normalized.matrix 
 fi
 
-python3 $BIN/sum_resistance_matrix.py $matrix.matrix > $matrix.desc_matrix
-python3 $BIN/sum_resistance_matrix.py $matrix.normalized.matrix > $matrix.normalized.desc_matrix
-python3 $BIN/sum_resistance_matrix.py $matrix.relative.matrix > $matrix.relative.desc_matrix
+
 
 
 
