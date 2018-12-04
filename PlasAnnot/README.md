@@ -8,7 +8,7 @@ Pipeline also draw circular contigs and linear contigs >= 10kb.
 
 ### How to launch 
 
-` bash PlasAnnot.sh -f <assembly.fasta> -o <outdir>`
+```bash PlasAnnot.sh -f <assembly.fasta> -o <outdir>```
 
 **Options**
 * --prefix <prefix> : prefix for output files (default : assembly.fasta name) 

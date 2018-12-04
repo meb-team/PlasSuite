@@ -6,7 +6,7 @@ PlasPredict takes an input assembly and predict plasmids in this assembly.
 
 ### How to launch 
 
-` bash PlasPredict.sh -a <assembly.fasta> -o <outdir>`
+```bash PlasPredict.sh -a <assembly.fasta> -o <outdir>```
 
 Output options : 
 * --prefix <prefix> : prefix for output files (default : assembly.fasta name) 

@@ -4,7 +4,7 @@ PlasTaxo uses PlasPredict outputs to determine assembly taxonomy.
 
 ### How to launch ? 
 
-`bash PlasTaxo.sh  bash PlasTaxo.sh --predicted_plasmids_dir <input directory> --predicted_plasmids_prefix <input prefix> -o <output directory> --prefix <output prefix>`
+```bash PlasTaxo.sh  bash PlasTaxo.sh --predicted_plasmids_dir <input directory> --predicted_plasmids_prefix <input prefix> -o <output directory> --prefix <output prefix>```
 
 **Databases** :  
 Databases are by default searched in `$HOME/plasmidome_databases`. For PlasTaxo, this directory must contains the 3 databases taxonomy files, 1 for plasmids database, 1 for chromosomes database and 1 for rRNA database. Files has to be stored like :  
