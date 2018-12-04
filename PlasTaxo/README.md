@@ -6,7 +6,7 @@ PlasTaxo uses PlasPredict outputs to determine assembly taxonomy.
 
 `bash PlasTaxo.sh  bash PlasTaxo.sh --predicted_plasmids_dir <input directory> --predicted_plasmids_prefix <input prefix> -o <output directory> --prefix <output prefix>`
 
-** Databases ** 
+**Databases** :  
 Databases are by default searched in `$HOME/plasmidome_databases`. For PlasTaxo, this directory must contains 3 taxonomy files, 1 for plasmids database, 1 for chromosomes database and 1 for rRNA database. Files has to be stored like :  
 ```$HOME/plasmidome_databases
 	-- all_plasmids.taxo.tsv *(file 1)*
@@ -18,7 +18,7 @@ You can also directly specified databases files by optionnal arguments `--plasmi
 Taxonomy files can be obtained by provided scripts : 
 *** to complete***	
 
-** Mandatory arguments ** :  
+**Mandatory arguments** :  
 Input directory is output directory from PlasPredict and input prefix in output prefix from PlasPredict. If PlasPredict wasn't used, you must have 4 files in input directory, stored like this :  
 ```*output_directory* 
 	-- chrm_search
@@ -28,7 +28,8 @@ Input directory is output directory from PlasPredict and input prefix in output 
 	-- rna_search 
 		-- *input_prefix*.rna.blast.all.contigs.tsv 
 	-- learning
-		-- *input_prefix*.plasflow0.7.taxo```
+		-- *input_prefix*.plasflow0.7.taxo
+```
 
 
 
