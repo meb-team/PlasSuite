@@ -21,7 +21,8 @@ Taxonomy files can be obtained by provided scripts :
 
 **Mandatory arguments** :  
 Input directory is output directory from PlasPredict and input prefix is output prefix from PlasPredict. If PlasPredict wasn't used, you must have 4 files in input directory, stored like this :    
-|-- *utput_directory*  
+```bash
+|-- *output_directory*  
 	|-- chrm_search  
 		|-- *input_prefix*.0.8.paf **<-**   
 	|-- plasmids_search  
@@ -30,7 +31,7 @@ Input directory is output directory from PlasPredict and input prefix is output 
 		|-- *input_prefix*.rna.blast.all.contigs.tsv **<-**   
 	|-- learning  
 		|-- *input_prefix*.plasflow0.7.taxo **<-**  
-
+```
 
 
  		
