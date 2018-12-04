@@ -6,9 +6,9 @@ relative_catAb$Sample=factor(relative_catAb$Sample,levels=c("NG-14342_NG-17411_B
 normalized_catAb$Sample=factor(normalized_catAb$Sample,levels=c("NG-14342_NG-17411_BIOFILM.sorted","NG-14342_NG-17411_WWTP2.sorted","NG-18198_STEP10.sorted","NG-18198_FeGe10.sorted","NG-18198_Fe1210.sorted","NG-18198_Pavin10.sorted"))
 
 normalized_profile=read.table("/databis/hilpert/resultsPlasResist/abundance_matrix/resistance_matrix.normalized.matrix.sum.ResfamsProfile.morePresent",header=TRUE)
-normalized_profile$Sample=factor(normalized_profile$Sample,levels=c("NG-14342_NG-17411_BIOFILM.sorted","NG-14342_NG-17411_WWTP2.sorted","NG-18198_STEP10.sorted","NG-18198_FeGe10.sorted","NG-18198_Fe1210.sorted","NG-18198_Pavin10.sorted"))
+normalized_profile$Sample=factor(normalized_profile$Sample,levels=c("NG-14342_NG-17411_BIOFILM.sorted","NG-14342_NG-17411_WWTP2.sorted","NG-18198_STEP10.sorted","NG-18198_Fe1210.sorted","NG-18198_FeGe10.sorted","NG-18198_Pavin10.sorted"))
 relative_profile=read.table("/databis/hilpert/resultsPlasResist/abundance_matrix/resistance_matrix.relative.matrix.sum.ResfamsProfile.morePresent",header=TRUE,sep="\t")
-relative_profile$Sample=factor(relative_profile$Sample,levels=c("NG-14342_NG-17411_BIOFILM.sorted","NG-14342_NG-17411_WWTP2.sorted","NG-18198_STEP10.sorted","NG-18198_FeGe10.sorted","NG-18198_Fe1210.sorted","NG-18198_Pavin10.sorted"))
+relative_profile$Sample=factor(relative_profile$Sample,levels=c("NG-14342_NG-17411_BIOFILM.sorted","NG-14342_NG-17411_WWTP2.sorted","NG-18198_STEP10.sorted","NG-18198_Fe1210.sorted","NG-18198_FeGe10.sorted","NG-18198_Pavin10.sorted"))
 
 colors_catAb=c("#EB466E", "#62c36e", "#ffe746", "#6882df", "#f79b5a", "#a74ac3", "#67dcf6", "#f35aeb","#bfef45","#fabebe","#469990","#e6beff","#9A6324","#fffac8","#800000","#aaffc3")
 colors_profile=c("grey","#EB466E", "#62c36e", "#ffe746", "#6882df", "#f79b5a", "#a74ac3", "#67dcf6", "#f35aeb","#bfef45","#fabebe","#469990")
