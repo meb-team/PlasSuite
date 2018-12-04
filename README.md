@@ -70,6 +70,32 @@ Launch PlasTaxo to obtain taxonomy
 bash plasmidome_scripts/PlasTaxo/PlasTaxo.sh --predicted_plasmids_dir resultsPlasPredict --predicted_plasmids_prefix myAssembly -o resultsPlasTaxo --prefix myAssembly
 ```
 
+This first 3 steps are done with all your assemblies. Then you can launch resistances genes treatment. To do that, you must create an input file with all your assemblies prefix. For example, the file `prefix.txt` which contains 3 lines for 3 assemblies :  
+```
+myAssembly
+myAssembly2
+myAssembly3
+```
+You also need a directory with cleaned reads use for assembly. This directory, for example `cleaned_reads` must be organized with one directory per sample. Reads must be zipped and R1 reads must have "R1" in their name, R2 reads "R2" and single-ends reads "se". 
+```
+|-- cleaned_reads 
+	|-- myAssembly 
+		|-- myAssembly_R1_trimmed_pe.fastq.gz
+		|-- myAssembly_R2_trimmed_pe.fastq.gz 
+		|-- myAssembly_trimmed_se.fastq.gz  
+	|-- myAssembly2 
+		|-- myAssembly2_R1_trimmed_pe.fastq.gz
+		|-- myAssembly2_R2_trimmed_pe.fastq.gz 
+		|-- myAssembly2_trimmed_se.fastq.gz 
+	|-- myAssembly3 
+		|-- myAssembly3_R1_trimmed_pe.fastq.gz
+		|-- myAssembly3_R2_trimmed_pe.fastq.gz 
+		|-- myAssembly3_trimmed_se.fastq.gz 			
+```
+
 ### 2.4. PlasResist 
 Launch PlasResist to treat resistances genes 
 
+```
+bash plasmidome_scripts/PlasResist/PlasResist.sh -i prefix.txt -o resultsPlasResist --reads_dir cleaned_reads
+```
