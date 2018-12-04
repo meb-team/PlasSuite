@@ -32,6 +32,24 @@ Input directory is output directory from PlasPredict and input prefix is output 
 		|-- input_prefix*.plasflow0.7.taxo <-  
 ```
 
+### Outputs 
+
+| Suffix | Description | 
+|---------|------------|
+|.taxo|All taxonomies assigned to all contigs| 
+|.taxo.predicted_plasmids|All taxonomies assigned to predicted plasmids|
+|.taxo.differentTaxo|Contigs with non consistent taxonomy between PlasFlow and others| 
+|.taxo.differentTaxo.count|Count PlasFlow phylum of contigs with non consistent taxonomy between PlasFlow and others| 
+|.sameTaxo|Contigs with consistent taxonomy between PlasFlow and others| 
+|.sameTaxo.count|Count PlasFlow phylum of contigs with consistent taxonomy between PlasFlow and others|
+|.taxo.plasflowPrediction.stats|Statistics about PlasFlow taxonomy prediction| 
+
+### Required tools/libraries/languages
+Version indicated are tested versions. It can be work (or not) with others.  
+It has been tested with Ubuntu 16.04.03 distribution.  
+* [Python](https://www.python.org/download/releases/3.0/) v3.5.5
+* [ete3](http://etetoolkit.org/) v3.0.0b35
+
 
  		
 		
