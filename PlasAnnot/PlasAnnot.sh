@@ -33,16 +33,16 @@ function verif_args(){
 		prefix=$(echo $assembly | rev | cut -f 1 -d "/" | cut -f 2- -d "." | rev)
 	fi
 	if [[ ! $markers_db ]]; then 
-		markers_db=plasmidome_databases/plasmids_markers
+		markers_db=$HOME/plasmidome_databases/plasmids_markers
 	fi
 	if [[ ! $hmm ]]; then 
-		hmm=plasmidome_databases/Resfams/Resfams.hmm 
+		hmm=$HOME/plasmidome_databases/Resfams/Resfams.hmm 
 	fi
 	if [[ ! $resfam_annot ]]; then 
-		resfam_annot=plasmidome_databases/Resfams/Resfams.annot
+		resfam_annot=$HOME/plasmidome_databases/Resfams/Resfams.annot
 	fi 
 	if [[ ! $resfam_info ]]; then 
-		resfam_info=plasmidome_databases/Resfams/Resfams.info 
+		resfam_info=$HOME/plasmidome_databases/Resfams/Resfams.info 
 	fi 
 	verif_file $hmm "[PlasAnnot] Resfam HMM profile doesn't found in $hmm. Use --resfam to specify an other." "[PlasAnnot] Resfam HMM profile found in $hmm"
 	verif_dir $markers_db "[PlasAnnot] Plasmids markers database doesn't found in $markers_db. Use --markers_db to specify an other." "[PlasAnnot] Plasmids markers database found in $markers_db" 
