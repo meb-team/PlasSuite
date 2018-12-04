@@ -53,15 +53,22 @@ You starts with a plasmidome assembly obtained from cleaned reads. Let's imagine
 ### 2.1. PlasPredict 
 Launch PlasPredict to isolate predicted plasmids from your assembly. 
  
-```bash plasmidome_scripts/PlasPredict/PlasPredict.sh -a myAssembly.fasta -o resultsPlasPredict``` 
+```
+bash plasmidome_scripts/PlasPredict/PlasPredict.sh -a myAssembly.fasta -o resultsPlasPredict
+``` 
 
 ### 2.2. PlasAnnot 
 Launch PlasAnnot to annotate predicted plasmids 
 
-```bash plasmidome_scripts/PlasAnnot/PlasAnnot.sh -f resultsPlasPredict/myAssembly.predicted_plasmids.fasta -o resultsPlasAnnot```
+```
+bash plasmidome_scripts/PlasAnnot/PlasAnnot.sh -f resultsPlasPredict/myAssembly.predicted_plasmids.fasta -o resultsPlasAnnot
+```
 
 ### 2.3. PlasTaxo 
 Launch PlasTaxo to obtain taxonomy
+```
+bash plasmidome_scripts/PlasTaxo/PlasTaxo.sh --predicted_plasmids_dir resultsPlasPredict --predicted_plasmids_prefix myAssembly -o resultsPlasTaxo --prefix myAssembly
+```
 
 ### 2.4. PlasResist 
 Launch PlasResist to treat resistances genes 
