@@ -16,7 +16,7 @@ Databases are by default searched in `$HOME/plasmidome_databases`. For PlasTaxo,
 ```
 You can also directly specified databases files by optionnal arguments `--plasmids_taxo`, `--chrm_taxo` and `--rna_taxo`.   
 Taxonomy files can be obtained by provided scripts : 
-*** to complete***	
+***to complete***	
 
 **Mandatory arguments** :  
 Input directory is output directory from PlasPredict and input prefix in output prefix from PlasPredict. If PlasPredict wasn't used, you must have 4 files in input directory, stored like this :  
