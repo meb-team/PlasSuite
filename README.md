@@ -20,13 +20,13 @@ Analyze Resfams resistance from assembly annotation. Produce abundance matrix.
 To be found by defaults, databases must be stored in `$HOME/plasmidome_databases` so create this directory.  
 
 ### 1.1. Plasmids database  
-	* Sequences   
-		`$HOME/plasmidome_databases/all_plasmids.fasta` is default name.  
-		Plasmids sequences must be a fasta file contained complete plasmids.    
-		You can obtained last version of NCBI plasmids databases with  
-		```plasmidome_scripts/bin/update_plasmids_database.sh -o $HOME/plasmidome_databases/all_plasmids.fasta```  
-		If you already have plasmids fasta file and you just want to add new sequences, use `--db <your_file>` option. If you want to clean deprecated sequences (present in your file but not in ncbi database) use `--clean` option.      
-	* Taxonomy   
+* Sequences   
+	`$HOME/plasmidome_databases/all_plasmids.fasta` is default name.  
+	Plasmids sequences must be a fasta file contained complete plasmids.    
+	You can obtained last version of NCBI plasmids databases with  
+	```plasmidome_scripts/bin/update_plasmids_database.sh -o $HOME/plasmidome_databases/all_plasmids.fasta```  
+	If you already have plasmids fasta file and you just want to add new sequences, use `--db <your_file>` option. If you want to clean deprecated sequences (present in your file but not in ncbi database) use `--clean` option.      
+* Taxonomy   
 	
 ### 1.2. Chromosomes database 
 	* Sequences  
