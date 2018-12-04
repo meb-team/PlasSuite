@@ -40,9 +40,10 @@ function run_fastqc(){
 }		
 
 function run_cleaning(){
-	dir=$1
-	input_reads=$2 
+	mkdir $1 
+	dir=$1/$prefix
 	mkdir -p $dir 
+	input_reads=$2 
 	cp $input_reads $dir/ 	
 	r1="$(ls $dir/*_1.fastq.gz)" 
 	gunzip $r1  
@@ -99,10 +100,15 @@ tmp=$(mktemp -d -p .)
 
 
 echo "# FASTQC" 
-#run_fastqc $outdir/fastqc "$(ls $reads_dir/*.gz)" 
+run_fastqc $outdir/fastqc "$(ls $reads_dir/*.gz)" 
 
 echo "# CLEANING" 
-run_cleaning $outdir/cleaning "$(ls $reads_dir/*.gz)" 
+run_cleaning $outdir/cleaned_reads "$(ls $reads_dir/*.gz)" 
+
+echo "# NON PAREIL" 
+dir=$outdir/nonpareil
+mkdir -p $dir
+bash $BIN/run_nonpareil.sh $outdir/cleaned_reads/$prefix/$prefix\_R1_trimmed_pe.fastq $dir $prefix
 
 rm -r $tmp 
 
