@@ -139,7 +139,9 @@ for prefix in $(ls $reads_dir); do
 	fi   
 done 
 if [[ $all_align || $FORCE ]]; then 
-	/data/chochart/lib/MAPme/bin/MAPme -s $all_resistances.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16
+	rm -r $dir 
+	mkdir $dir 
+	/data/chochart/lib/MAPme/bin/MAPme -s $clust_resistances.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16
 	rm $dir/*.sam	
 else
 	echo "Reads realignments already exists. Use --force to overwrite"
@@ -163,21 +165,21 @@ else
 		done 
 		echo -e "$dir/$read_prefix.sorted.bam,$cumul_length"  
 	done > $ab_dir/mama_input.txt 
-	/data/chochart/lib/MAMa/bin/MAMa.py -a $matrix.matrix -r $matrix.relative.matrix -n $matrix.normalized.matrix $all_resistances.ffn.fai $ab_dir/mama_input.txt  
+	/data/chochart/lib/MAMa/bin/MAMa.py -a $matrix.matrix -r $matrix.relative.matrix -n $matrix.normalized.matrix $clust_resistances.ffn.fai $ab_dir/mama_input.txt  
 fi
 
 echo "# TREAT MATRIX" 
 
-#treat_matrix $matrix.matrix > $matrix.matrix.desc 
-#paste $matrix.matrix $matrix.matrix.desc > $matrix.matrix.detailed 
+treat_matrix $matrix.matrix > $matrix.matrix.desc 
+paste $matrix.matrix $matrix.matrix.desc > $matrix.matrix.detailed 
 
-#treat_matrix $matrix.normalized.matrix > $matrix.normalized.matrix.desc  
-#paste $matrix.normalized.matrix $matrix.normalized.matrix.desc > $matrix.normalized.matrix.detailed 
+treat_matrix $matrix.normalized.matrix > $matrix.normalized.matrix.desc  
+paste $matrix.normalized.matrix $matrix.normalized.matrix.desc > $matrix.normalized.matrix.detailed 
 
-#treat_matrix $matrix.relative.matrix > $matrix.relative.matrix.desc 
-#paste $matrix.relative.matrix $matrix.relative.matrix.desc > $matrix.relative.matrix.detailed 
+treat_matrix $matrix.relative.matrix > $matrix.relative.matrix.desc 
+paste $matrix.relative.matrix $matrix.relative.matrix.desc > $matrix.relative.matrix.detailed 
 
-#rm $matrix.*.desc 
+rm $matrix.*.desc 
 
 python3 $BIN/sum_resistance_matrix.py $matrix.matrix.detailed $matrix.matrix.sum
 python3 $BIN/sum_resistance_matrix.py $matrix.normalized.matrix.detailed $matrix.normalized.matrix.sum
