@@ -54,7 +54,8 @@ You starts with a plasmidome assembly obtained from cleaned reads. Let's imagine
 Launch PlasPredict to isolate predicted plasmids from your assembly. 
  
 ```
-bash plasmidome_scripts/PlasPredict/PlasPredict.sh -a myAssembly.fasta -o resultsPlasPredict``` 
+bash plasmidome_scripts/PlasPredict/PlasPredict.sh -a myAssembly.fasta -o resultsPlasPredict
+```   
 
 ### 2.2. PlasAnnot 
 Launch PlasAnnot to annotate predicted plasmids 
