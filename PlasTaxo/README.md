@@ -16,7 +16,7 @@ Databases are by default searched in `$HOME/plasmidome_databases`. For PlasTaxo,
 		|-- SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.taxo.tsv <-  
 ```
 You can also directly specified databases files by optionnal arguments `--plasmids_taxo`, `--chrm_taxo` and `--rna_taxo`.   
-See [general readme](https://github.com/meb-team/plasmidome_scripts/) for create this files. 	
+See [general readme](https://github.com/meb-team/plasmidome_scripts/)(1.Prepare your databases section) to create this files. 	
 
 **Mandatory arguments** :  
 Input directory is output directory from PlasPredict and input prefix is output prefix from PlasPredict. If PlasPredict wasn't used, you must have 4 files in input directory, stored like this :    
