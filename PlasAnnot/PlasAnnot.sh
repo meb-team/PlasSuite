@@ -144,7 +144,11 @@ else
 	rm -r $outdir/markers 
 fi
 
-echo "STEP 3 : ISOLATE RESISTANCES" 
+echo "STEP 3 : TREAT CIRCULAR ANNOTATION" 
+python3 $BIN/format_circular_gff.py $prokka_gff > $prokka_gff.proper
+mv $prokka_gff.proper $prokka_gff
+
+echo "STEP 4 : ISOLATE RESISTANCES" 
 resistances=$outdir/$prefix.resistances
 python3 $BIN/extract_res.py $prokka_gff > $resistances 
 tail -n +2 $resistances > $resistances.nohead
@@ -157,7 +161,7 @@ cat $resistances.head $resistances.all_desc > $resistances.detailed
 rm $resistances.head $resistances.desc $resistances.nohead $resistances.all_desc
 mv $resistances.detailed $resistances 
 
-echo "STEP 4 : STATS" 
+echo "STEP 5 : STATS" 
 all=$outdir/$prefix.ffn
 nb_all=$(grep "^>" -c $all) 
 tail -n +2 $resistances | cut -f 1 > $resistances.id 
@@ -175,7 +179,7 @@ grep -P '_circ\t' $prokka_gff > $prokka_gff.circular
 grep -v -P '_circ\t' $prokka_gff > $prokka_gff.linear
 set -e 
 
-echo "STEP 5 : DRAW >10KB CONTIGS" 
+echo "STEP 6 : DRAW >10KB CONTIGS" 
 verif_result $draw_contigs_10kb
 if [[ $file_exist == 1 ]]; then 
 	echo ">10kb contigs are already representated. Use --force to overwrite" 
@@ -185,7 +189,7 @@ fi
 rm $prokka_gff.linear 
 
 if [[ -s $prokka_gff.circular ]]; then 
-	echo "STEP 6 : DRAW CIRCULAR CONTIGS" 
+	echo "STEP 7 : DRAW CIRCULAR CONTIGS" 
 	verif_result $draw_contigs_circular 
 	if [[ $file_exist == 1 ]]; then 
 		echo "Circular contigs draws are already exists. Use --force to overwrite" 
