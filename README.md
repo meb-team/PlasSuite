@@ -23,13 +23,18 @@ To be found by defaults, databases must be stored in `$HOME/plasmidome_databases
 * **Sequences**   
 	`$HOME/plasmidome_databases/all_plasmids.fasta` is default name.  
 	Plasmids sequences must be a fasta file contained complete plasmids.    
-	You can obtained last version of NCBI plasmids databases with  
+	You can obtained last version of NCBI plasmids database with  
 	```plasmidome_scripts/bin/update_plasmids_database.sh -o $HOME/plasmidome_databases/all_plasmids.fasta```  
 	If you already have plasmids fasta file and you just want to add new sequences, use `--db <your_file>` option. If you want to clean deprecated sequences (present in your file but not in ncbi database) use `--clean` option.      
 * **Taxonomy**   
 	
 ### 1.2. Chromosomes database 
 * **Sequences**  
+`$HOME/plasmidome_databases/all_plasmids.fasta` is default name.  
+Chromosomes sequences must be a fasta file contained complete chromosomes.    
+You can obtained last version of NCBI prokaryotes database with  
+```bash plasmidome_scripts/bin/update_prokaryotes_database.sh -o $HOME/plasmidome_databases/all_prokaryotes.fasta```  
+If you already have plasmids fasta file and you just want to add new sequences, use `--db <your_file>` option. If you want to clean deprecated sequences (present in your file but not in ncbi database) use `--clean` option.      
 * **Taxonomy**  
 	
 ### 1.3. Plasmids markers database   
@@ -42,8 +47,28 @@ This files has been download from [mob_suite](https://github.com/phac-nml/mob-su
 		
 ### 1.4. rRNA database
 * **Sequences** 
+rRNA sequences must be a fasta file contained rRNA, and stored in `$HOME/plasmidome_databases/rRNA/SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.fasta` to be found by default. 
+You can use [SILVA](https://www.arb-silva.de) database. 
+Sequences must be back transcribed (U -> T). You can use `bash plasmidome_scripts/bin/back_transcribe.py <input fasta> <output fasta>` to do that. 
+
 * **Taxonomy** 
-	
+If you have tax_fila file from SILVA for your rRNA database, you can use `python3 plasmidome_scripts/bin/taxo_silva.py <SILVA database.fasta> <output directory> <output prefix>` to construct taxonomy file. 
+Example of sequence in tax_file file 
+```
+>GY193009.2153721.2155249 Bacteria;Firmicutes;Bacilli;Lactobacillales;Streptococcaceae;Streptococcus;unidentified
+AGAGTTTGATCCTGGCTCAGGACGAACGCTGGCGGCGTGCCTAATACATGCAAGTAGAAC
+....
+>AM182288.1.505 Bacteria;Proteobacteria;Alphaproteobacteria;Rhodobacterales;Rhodobacteraceae;Loktanella;uncultured alpha proteobacterium
+GCCTGATCTAGCCATGCCGCGTGAGTGACGAAGGCCTTAGGGTCGTAAAGCTCTTTCGCC
+...
+```
+Example of taxonomy file 
+```
+#reference	description	Kingdom	Phylum	Class	Order	Family	Genus	Species
+GY193009.2153721.2155249	Bacteria	Firmicutes	Bacilli	Lactobacillales	Streptococcaceae	Streptococcus	-
+AM182288.1.505	Bacteria	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodobacteraceae	Loktanella	-
+```
+
 ### 1.5. Phylogenetic markers database
 
 ## 2. Launch workflow 
