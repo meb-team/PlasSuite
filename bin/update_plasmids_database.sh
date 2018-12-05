@@ -1,7 +1,7 @@
 set -e 
 
 function usage(){
-	echo "usage : bash update_database.sh -o <output.fasta>
+	echo "usage : bash update_database.sh -o <output.fasta> --info <output.ncbi.info> 
 	Options : 
 	--db <fasta> : existing database to update. If not provided, create database.
 	--clean : delete deprecated sequences which exists in current database but not in new NCBI plasmids databases.
@@ -13,6 +13,10 @@ function treat_args(){
 		quit=1 
 		echo "You must give output file. Use -o option" 
 	fi
+	if [[ ! $info ]]; then 
+		quit=1
+		echo "You must give output ncbi info file. Use --info option" 
+	fi	
 	if [[ $quit ]]; then 
 		exit 1
 	fi 
@@ -26,7 +30,7 @@ function verif_args(){
 
 
 
-TEMP=$(getopt -o h,o: -l db:,clean -- "$@")
+TEMP=$(getopt -o h,o: -l db:,clean,info: -- "$@")
 eval set -- "$TEMP" 
 
 while true ; do 
@@ -40,6 +44,9 @@ while true ; do
 		--clean)
 			clean=1 
 			shift ;;
+		--info) 
+			info=$2
+			shift 2;; 
 		-h) 
 			usage
 			exit 1 
@@ -64,9 +71,9 @@ source $BIN/common_functions.sh
 treat_args
 verif_args
 
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/plasmids.txt -O $tmp/plasmids.txt 
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/GENOME_REPORTS/plasmids.txt -O $info 
 
-tail -n +2 $tmp/plasmids.txt | cut -f 6 | grep -v "-" > $tmp/plasmids.id 
+tail -n +2 $info | cut -f 6 | grep -v "-" > $tmp/plasmids.id 
 
 if [[ $current_db ]]; then 
 	echo "# Compare old and new database" 
