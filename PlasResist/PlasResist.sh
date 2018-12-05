@@ -93,6 +93,7 @@ while true ; do
 			shift 2;; 
 		-h) 
 			usage 
+			exit 
 			shift ;;
 		--)  
 			shift ; break ;; 					
