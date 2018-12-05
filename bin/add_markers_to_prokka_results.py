@@ -54,7 +54,7 @@ for l in gff :
 					if desc.startswith("inference"):
 						desc=desc+",similar to sequence:mob_suite:"+marker_type+":"+dic_final[prot_id]    
 					new_desc+=desc+";"
-				new_desc=new_desc.rstrip(",") 	  				
+				new_desc=new_desc.rstrip(";") 	  				
 				out.write("\t".join(l_split[:8])+"\t"+new_desc+"\n") 
 			else:
 				out.write(l) 	
