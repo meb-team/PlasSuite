@@ -193,3 +193,6 @@ Launch PlasResist to treat resistances genes
 ```
 bash plasmidome_scripts/PlasResist/PlasResist.sh -i prefix.txt -o resultsPlasResist --reads_dir cleaned_reads
 ```
+
+### Authors 
+* Cécile Hilpert - [cecilpert](https://github.com/cecilpert)

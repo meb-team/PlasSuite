@@ -19,11 +19,6 @@ If not specified, databases are searched in `hilpert/databis/plasmidome_database
 * --resfams <hmm> : Resfams hmm profile 
 * --markers_db <dir> : dir where plasmids markers databases are stored
 
-#### Used databases 
-*To come...* 
-* Resfams : 
-* Plasmids markers : mob_suite database 
-
 ### Outputs 
 
 | Suffix | Description | 
@@ -32,6 +27,7 @@ If not specified, databases are searched in `hilpert/databis/plasmidome_database
 |.ffn|Predicted proteins in nucleotides (fasta)|
 |.gff|Gff file for annotation, completed by Resfams and plasmids markers info| 
 |.pdf|`.linear.10kb.pdf` is graphic representation of linear contigs >= 10kb and `.circular.pdf` is graphical representation of circular contigs|   
+|.resistances|Tsv file with resistances genes and descriptions| 
 
 ### Required tools/libraries/languages
 Version indicated are tested versions. It can be work (or not) with others.  

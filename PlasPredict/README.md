@@ -20,14 +20,6 @@ If not specified, databases are searched in `hilpert/databis/plasmidome_database
 * --markers_db <dir> : dir where plasmids markers databases are stored
 * --plasmids_db <fasta> : fasta file with complete plasmids sequences you want to use
 
-**Default databases**
-*To come...* 
-* Chromosomes 
-* rRNA : SILVA 
-* Phylogenetic markers : wu2013
-* Plasmids markers 
-* Plasmids  
-
 ### Outputs 
 
 The script will generate several output files. 

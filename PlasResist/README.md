@@ -8,7 +8,7 @@ PlasResist creates abundance matrix for resistances in several samples
 bash PlasResist.sh  bash PlasTaxo.sh -i <input file> -o <output directory> --reads_dir <reads directory> --annot_dir <annotation directory>"  
 ```
 
-* *Mandatory arguments*  
+**Mandatory arguments** 
 * *input file* : input file is .txt file with list of your assemblies prefix. Example :  
 ```
 NG-14342_NG-17411_BIOFILM.megahit
@@ -26,7 +26,7 @@ NG-14342_NG-17411_WWTP2.megahit
 		|-- NG-14342_NG-17411_WWTP2_R2_trimmed_pe.fastq.gz
 		|-- NG-14342_NG-17411_WWTP2_trimmed_se.fastq.gz
 ```
-* *annotation directory * : directory where annotation product by PlasAnnot is stored. Directory must at least contains .ffn and .resistances file for each assembly. See PlasAnnot readme for description of this file (in outputs category). Files must have same prefix than prefix provided in input file. Example :  
+* *annotation directory* : directory where annotation product by PlasAnnot is stored. Directory must at least contains .ffn and .resistances file for each assembly. See PlasAnnot readme for description of this file (in outputs category). Files must have same prefix than prefix provided in input file. Example :  
 ```
 |-- annotation directory 
 	|-- NG-14342_NG-17411_BIOFILM.megahit.predicted_plasmids.ffn 
