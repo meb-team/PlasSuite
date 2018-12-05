@@ -136,7 +136,7 @@ AM182288.1.505	Bacteria	Proteobacteria	Alphaproteobacteria	Rhodobacterales	Rhodo
 ### 1.5. Phylogenetic markers database
 
 Phylogenetic markers must be stored in `$HOME/plasmidome_databases/phylogenetic_markers/wu2013/bacteria_and_archaea_dir/BA.hmm`
-Phylogenetic markers can be download from (Wu 2013)[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3798382/] publication, in figshare associated : https://figshare.com/articles/Systematically_identify_phylogenetic_markers_at_different_taxonomic_levels_for_bacteria_and_archaea/722713  
+Phylogenetic markers can be download from [Wu 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3798382/) publication, in figshare associated : https://figshare.com/articles/Systematically_identify_phylogenetic_markers_at_different_taxonomic_levels_for_bacteria_and_archaea/722713  
 `BA.hmm` is the concatenation of all `BA*.hmm` files in `bacteria_and_archaea_dir.tar.gz`. 
 If you want to use other database, it must be hmm profiles. 
 
