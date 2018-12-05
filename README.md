@@ -49,6 +49,13 @@ Enterobacter cloacae	Bacteria	Proteobacteria	Gammaproteobacteria	pM12X01451	NZ_C
 ```
 Organism/Name and RefSeq columns are used for taxonomy construction, so you can provide any file with organism name in 1st column and sequence id in 6th column. 
 
+Example of *all_plasmids.taxo.tsv* file 
+```
+#reference	Kingdom	Phylum	Class	Order	Family	Genus	Species
+NZ_CP011122.1	Bacteria	Proteobacteria	Alphaproteobacteria	Rhodospirillales	Acetobacteraceae	Acetobacter	Acetobacter oryzifermentans
+NZ_CP017473.1	Bacteria	Proteobacteria	Gammaproteobacteria	Enterobacterales	Enterobacteriaceae	Enterobacter	Enterobacter cloacae
+```
+
 
 ### 1.2. Chromosomes database 
 * **Sequences**  
@@ -82,6 +89,13 @@ Sinorhizobium fredii	380	PRJNA415486	415486	Proteobacteria	Alphaproteobacteria	6
 Pseudomonas aeruginosa	287	PRJNA419916	419916	Proteobacteria	Gammaproteobacteria	6.75287	66.2	chromosome:NZ_CP025055.1/CP025055.1	-	1	6419	6238	2017/12/06	2017/12/08	Complete Genome	New York Medical College	SAMN08101543	GCA_002812905.1	-	ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/812/905/GCA_002812905.1_ASM281290v1	-	PB350
 ```
 TaxID and Replicons columns are used for taxonomy construction, so you can provide any file with TaxID in 2nd column and chromosome id like `chromosome:id` in 9th column. 
+
+Example of *all_prokaryotes.taxo.tsv* file 
+```
+#reference	description	Kingdom	Phylum	Class	Order	Family	Genus	Species
+CP024307.1	Sinorhizobium fredii strain NXT3 chromosome	Bacteria	Proteobacteria	Alphaproteobacteria	Rhizobiales	Rhizobiaceae	Sinorhizobium	Sinorhizobium fredii
+CP025055.1	Pseudomonas aeruginosa strain PB350 chromosome	Bacteria	Proteobacteria	Gammaproteobacteria	Pseudomonadales	Pseudomonadaceae	Pseudomonas	Pseudomonas aeruginosa
+```
 	
 ### 1.3. Plasmids markers database   
 Plasmids markers database must be stored in `$HOME/plasmidome_databases/plasmids_markers` directory. 4 files must be in this directory :
