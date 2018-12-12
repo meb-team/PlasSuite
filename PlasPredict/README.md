@@ -1,8 +1,8 @@
 # PlasPredict 
 
 PlasPredict takes an input assembly and predict plasmids in this assembly. 
-
-*pipeline figure soon...*
+First, PlasPredict identifies plasmids contigs with alignment against plasmids database and plasmid markers and with circular sequence searching. It identifies chromosomes contigs with alignment against 16S/23S rRNA, phylogenetic markers and chromosomes database. It predicts plasmids by learning with PlasFlow. 
+Plasmids contigs identified by alignment are added to learning predicted plasmids. Identified chromosomes contigs are then removed from this new predicted plasmids to obtain final predicted plasmids.   
 
 ### How to launch 
 
