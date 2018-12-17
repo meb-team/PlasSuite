@@ -22,17 +22,23 @@ bash parallelize_simulation.sh simulation_database/plasmids.selectall.fasta --il
 ```
 Modify `--illumina` for other coverage. 
 * for PacBio 1X sequencing simulation 
+```
 bash parallelize_simulation.sh simulation_database/plasmids.selectall.fasta --pacbio 1 --ab_file plasmids_abundance.txt -o simulated_reads
+```
 Modify `--pacbio` for other coverage. 
 * for Illumina 10X sequencing with 20% contamination
 ```
 bash parallelize_simulation.sh simulation_database/plasmids.selectall.fasta --illumina 10 --ab_file plasmids_abundance.txt --contamination 0.2 --contamination_f simulation_database/prokaryotes.select500.fasta --ab_file_cont contaminants_abundance.txt -o simulated_reads
 ```
 `--contamination 0.2` is for 20% contamination. It means the number of contaminants reads added is 20% of plasmids reads. 
-* for PacBio 1X sequencing with 20% contamination 
+* for PacBio 1X sequencing with 20% contamination
+```
 bash parallelize_simulation.sh simulation_database/plasmids.selectall.fasta --pacbio 1 --ab_file plasmids_abundance.txt --contamination 0.2 --contamination_f simulation_database/prokaryotes.select500.fasta --ab_file_cont contaminants_abundance.txt -o simulated_reads
-* for PacBio 1X and Illumina 10X sequencing with contamination  
+```
+* for PacBio 1X and Illumina 10X sequencing with contamination
+```
 bash parallelize_simulation.sh simulation_database/plasmids.selectall.fasta --pacbio 1 --illumina 10 --ab_file plasmids_abundance.txt --contamination 0.2 --contamination_f simulation_database/prokaryotes.select500.fasta --ab_file_cont contaminants_abundance.txt -o simulated_reads
+```
 
 ## 3. Assembly 
 
