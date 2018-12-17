@@ -1,8 +1,19 @@
 import sys 
 
 def usage(): 
-	print("usage : python3 sum_resistance_matrix.py <resistance matrix> <new matrix prefix>")
+	print("usage : python3 sum_resistance_matrix.py <resistance matrix> <new matrix prefix> <mama_input>")
 	
+	
+def set_dic_library_size(mama_input): 
+	dic={}
+	f=open(mama_input,"r") 
+	for l in f : 
+		l_split=l.rstrip().split(",")  
+		sample=l_split[0].split("/")[-1].rstrip(".bam") 
+		dic[sample]=l_split[1]	
+	f.close()
+	return dic  	
+		
 def complete_dic(sample,abundance,res,dic): 
 	if res in dic[sample]: 
 		dic[sample][res]+=abundance
@@ -29,7 +40,7 @@ def initialize(matrix):
 	return dic_samples_index,dic_desc_index 
 	
 		
-def create_dic(matrix,cat_name): 
+def create_dic(matrix,cat_name):  
 	f=open(matrix,"r")
 	f.readline()  
 	dic={}
@@ -60,15 +71,15 @@ def write_new_matrix(matrix,dic,l,cat):
 		
 def write_R_formatted(out,dic): 
 	o=open(out,"w") 
-	o.write("Profile\tSample\tCount\n")
+	o.write("Profile\tSample\tCount\tLibrary_size\n")
 	for s in dic : 
 		for c in dic[s] : 
-			o.write(c+"\t"+s+"\t"+str(dic[s][c])+"\n") 
+			o.write(c+"\t"+s+"\t"+str(dic[s][c])+"\t"+dic_library_size[s]+"\n") 
 	o.close() 		
 	
 def most_present(dic,out): 
 	out=open(out,"w") 
-	out.write("Profile\tSample\tCount\n") 
+	out.write("Profile\tSample\tCount\tLibrary_size\n") 
 	common_top5=set()
 	for s in dic : 
 		sorted_dic=sorted(dic[s].items(),key=lambda x: x[1],reverse=True) 
@@ -80,16 +91,18 @@ def most_present(dic,out):
 		sum_others=0
 		for rf in dic[s] : 
 			if rf in common_top5: 
-				out.write(rf+"\t"+s+"\t"+str(dic[s][rf])+"\n")
+				out.write(rf+"\t"+s+"\t"+str(dic[s][rf])+"\t"+dic_library_size[s]+"\n")
 			else:
 				sum_others+=dic[s][rf] 
-		out.write("Others\t"+s+"\t"+str(sum_others)+"\n") 			  
+		out.write("Others\t"+s+"\t"+str(sum_others)+"\t"+dic_library_size[s]+"\n") 			  
 	out.close() 		  	  
 			
 		
-if len(sys.argv)!=3: 
+if len(sys.argv)!=4: 
 	usage()
 	exit() 
+
+dic_library_size=set_dic_library_size(sys.argv[3]) 	
 	
 dic_samples_index,dic_desc_index=initialize(sys.argv[1]) 
 dic_cat_ab,list_cat_ab=create_dic(sys.argv[1],"Resfams_Ab_classif") 

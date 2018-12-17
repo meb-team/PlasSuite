@@ -1,11 +1,11 @@
-# PlasResist
+# PlasAbund
 
-PlasResist creates abundance matrix for resistances in several samples 
+PlasResist creates abundance matrix for predicted genes clusters, and abundance matrix for resistances genes. 
 
 ### How to launch ?
 
 ```
-bash PlasResist.sh  bash PlasTaxo.sh -i <input file> -o <output directory> --reads_dir <reads directory> --annot_dir <annotation directory>"  
+bash PlasAbund.sh -i <input file> -o <output directory> --reads_dir <reads directory> --annot_dir <annotation directory>"  
 ```
 
 **Mandatory arguments** 
@@ -42,25 +42,28 @@ NG-14342_NG-17411_WWTP2.megahit
 
 | File | Description | 
 |---------|------------|
-|all_predicted_resistances.ffn|All resistances genes in all assemblies| 
-|all_predicted_resistances.clust.ffn|Resistances genes after clustering|
-|all_predicted_resistances.tsv|All resistances genes description| 
+|all_prot.ffn|All predicted genes in all assemblies| 
+|all_prot.95.ffn|Predicted genes after 95% clustering|
+|all_resistances.tsv|All resistances genes description| 
 
 * `abundance_matrix` subdirectory 
 
-3 types of abundance matrix are provided :  
-* raw matrix : raw counts of reads mapped to resistances genes for each assembly. 
-* "relative" matrix (*relative* in files names) : 1st type of matrix normalization. Reads counts are rapported to total reads count mapped with resistances genes. Useful to compare assemblies in terms of resistances genes proportion. 
-* "normalized" matrix (*normalized* in files names) : 2nd type of matrix normalization to overcome library size. Reads counts are rapported to library size (+ multiplied by a factor for clearer outputs). It conserves the information of quantity provided in raw matrix but take into account library size. 
+* **Full abundance matrix**  
+* raw matrix : `abundance.matrix` raw counts of reads mapped to resistances genes for each assembly. 
+* "relative" matrix (*relative* in files names) : `abundance.relative.matrix` 1st type of matrix normalization. Reads counts are rapported to total reads count mapped with resistances genes. Useful to compare assemblies in terms of resistances genes proportion. 
+* "normalized" matrix (*normalized* in files names) : `abundance.normalized.matrix` 2nd type of matrix normalization to overcome library size. Reads counts are rapported to library size (+ multiplied by a factor for clearer outputs). It conserves the information of quantity provided in raw matrix but take into account library size. 
 
-| Suffix | Description | 
+* **Resistances matrix** 
+
+| File | Description | 
 |---------|------------|
-|.matrix|Raw matrix with only predicted resistances id| 
-|.matrix.detailed|Same as .matrix with supplementary colums to describe each gene|
-|.matrix.sum.catAb|Matrix with counts group by "Antibiotics category" defined by Resfams|
-|.matrix.sum.drugClass|Matrix with counts group by "Drug Class" defined by CARDS with ARO of each gene| 
-|.matrix.sum.ResfamsProfile|Matrix with counts group by Resfams profiles| 
-|.format|Same matrixes in another format more convenient to create graphical representations| 
+|resistances_abundance.matrix|Raw matrix with only predicted resistances id| 
+|resistances_abundance.matrix.detailed|Same as .matrix with supplementary colums to describe each gene|
+|resistances_abundance.matrix.sum.catAb|Matrix with counts group by "Antibiotics category" defined by Resfams|
+|resistances_abundance.matrix.sum.drugClass|Matrix with counts group by "Drug Class" defined by CARDS with ARO of each gene| 
+|resistances_abundance.matrix.sum.ResfamsProfile|Matrix with counts group by Resfams profiles| 
+|resistances_abundance.matrix.sum.ResfamsProfile.morePresent|Matrix with counts for 5 most present Resfams profile in each assembly. Other profiles are classified in Others.|
+|Files with .format suffix|Same matrixes in another format more convenient to create graphical representations| 
 
 ### Required tools/libraries/languages
 Version indicated are tested versions. It can be work (or not) with others.  
