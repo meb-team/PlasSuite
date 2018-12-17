@@ -42,9 +42,6 @@ function verif_args(){
 	if [[ ! $n_chrm ]]; then 
 		n_chrm=500
 	fi 
-	if [[ ! $n_plasmids ]]; then 
-		n_plasmids=2000
-	fi 
 	if [[ ! $rna_db ]]; then 
 		rna_db=$HOME/plasmidome_databases/rRNA/SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.fasta
 	fi 
@@ -103,7 +100,12 @@ tmp=$(mktemp -d -p .)
 
 echo "# PLASMIDS SELECTION" 
 tail -n +2 $plasmids_taxo | sort -u -k 8 > $plasmids_taxo.oneSpecie 
-shuf -n $n_plasmids $plasmids_taxo.oneSpecie | cut -f 1 > $plasmids_taxo.oneSpecie.select$n_plasmids 
+if [[ $n_plasmids ]]; then 
+	shuf -n $n_plasmids $plasmids_taxo.oneSpecie | cut -f 1 > $plasmids_taxo.oneSpecie.select$n_plasmids 
+else 
+	n_plasmids="all" 
+	cut -f 1 $plasmids_taxo.oneSpecie > $plasmids_taxo.oneSpecie.select$n_plasmids 
+fi 	
 python3 $BIN/seq_from_list.py --keep $plasmids_taxo.oneSpecie.select$n_plasmids --input_fasta $plasmids_db --output_fasta $outdir/plasmids.select$n_plasmids.fasta
 
 echo "# CHRM SELECTION" 
