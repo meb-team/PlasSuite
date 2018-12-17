@@ -42,6 +42,21 @@ bash parallelize_simulation.sh simulation_database/plasmids.selectall.fasta --pa
 
 ## 3. Assembly 
 
+For assembly steps, you can assemble using several tools in one step. Available tools are Megahit, SPAdes, MetaSPAdes, hybridSPAdes and Unicycler. For Unicycler and HybridSPAdes, you have to provide PacBio and Illumina simulated sequencing. 
+
+Example for assembly with all available tools, for Illumina 10X and PacBio 1X sequencing with 20% contamination : 
+```
+bash run_assembly.sh -i simulated_reads/grinder-illumina-10X-am0.1-with-cont0.2-reads.fastq -l simulated_reads/grinder-pacbio-1X-am0.1-with-cont0.2-reads.fastq --megahit --metaspades --spades --unicycler --hybridspades -o assembly
+```
+
+* CAP3 assembly 
+
+CAP3 hybrid assembly can be launch separately with 
+```
+bash run_cap3.sh simulated_reads/grinder-illumina-10X-am0.1-with-cont0.2-reads.fastq --l_fq simulated_reads/grinder-pacbio-1X-am0.1-with-cont0.2-reads.fastq -o assembly
+```
+You can change overlap thresholds with `--ov_length` and `--ov_percent`
+
 ## 4. Decontamination 
 
 ## 5. Treatment 
