@@ -17,7 +17,7 @@ You will obtain simulation database with one plasmid per specie, and 500 random 
 
 For simulation sequencing, you must have an abundance file for your plasmids and contaminants. It's a .tsv file with sequences reference in first column and abundance in 2nd column. The sum of all abundance must be equal to 100. Abundance files for [used plasmids](simulation_ref/plasmids_abundance.txt) and [used contaminants](simulation_ref/contaminants_abundance.txt) are given in [simulation_ref](simulation_ref) (generate by Grinder with powerlaw 0.1)    
 * for Illumina 10X sequencing simulation  
-``̀  
+``̀ 
 bash parallelize_simulation.sh simulation_database/plasmids.selectall.fasta --illumina 10 --ab_file plasmids_abundance.txt -o simulated_reads
 ```
 Modify `--illumina` for other coverage. 
