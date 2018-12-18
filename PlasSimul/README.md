@@ -69,7 +69,7 @@ You can generate this directories from multi fasta with
 python3 plasmidome_scripts/bin/write_separate_fasta.py simulation_database/plasmids.selectall.fasta simulation_database/plasmids_sequences 
 python3 plasmidome_scripts/bin/write_separate_fasta.py simulation_database/contaminants.select500.fasta simulation_database/contaminants_sequences
 ```
-   * Plasmids length file   
+* Plasmids length file   
 You will need a tsv file with plasmids reference in first column and plasmids length in second column. You can generate it with 
 ```
 python3 plasmidome_scripts/bin/sequences_length.py simulation_database/plasmids.selectall.fasta simulation_database/plasmids.selectall.length 
