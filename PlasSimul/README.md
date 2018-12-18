@@ -63,7 +63,7 @@ You can change overlap thresholds with `--ov_length` and `--ov_percent`
 
 * Prerequisites 
 
-..* Single fasta databases 
+	* Single fasta databases 
 You will need one directory per database (1 for plasmids and 1 for contaminants) with single fasta of each sequences. 
 You can generate this directories from multi fasta with 
 ```
@@ -72,7 +72,7 @@ python3 plasmidome_scripts/bin/write_separate_fasta.py simulation_database/plasm
 python3 plasmidome_scripts/bin/write_separate_fasta.py simulation_database/contaminants.select500.fasta simulation_database/contaminants_sequences
 ```
 
-..* Plasmids length file 
+	* Plasmids length file 
 You will need a tsv file with plasmids reference in first column and plasmids length in second column. You can generate it with 
 ```
 python3 plasmidome_scripts/bin/sequences_length.py simulation_database/plasmids.selectall.fasta simulation_database/plasmids.selectall.length 
@@ -91,7 +91,8 @@ bash run_assembly_treatment.sh hybridspades,unicycler,megahitCap3 assembly/hybri
 If you don't use contamination, delete `--metaquast_cont` option. 
 
 * Main output files 
-Output files are in `<outdir>/metaquast_treatment_<suffix>/`
+Output files are in `<outdir>/metaquast_treatment_<suffix>/`  
+
 | File | Description | 
 |---------|------------|
 |assemblies_stats.tsv|Main result file with all assembly statistics| 
@@ -108,16 +109,16 @@ Decontamination can be done with several tools. cBar and PlasFlow use learning t
 
 You can launch PlasFlow with several detection threshold, cBar, or a combination of cBar and PlasFlow. 
 
-..* PlasFlow with 70 (default) and 80% threshold for Megahit assembly 
+	* PlasFlow with 70 (default) and 80% threshold for Megahit assembly 
 ```
 bash run_learning_decontamination.sh -f assembly/megahit/final.contigs.fa -o decontamination --plasflow 70,80 --real_plasmids assembly_evaluation/metaquast_treatment_short_reads_assembly/plasmids_contigs.megahit.id --real_chrm assembly_evaluation/metaquast_treatment_short_reads_assembly/chromosomes_contigs.megahit.id --prefix megahit10X
 ```
-..* cBar for Megahit assembly  
+	* cBar for Megahit assembly  
 ```
 bash run_learning_decontamination.sh -f assembly/megahit/final.contigs.fa -o decontamination --cbar --real_plasmids assembly_evaluation/metaquast_treatment_short_reads_assembly/plasmids_contigs.megahit.id --real_chrm assembly_evaluation/metaquast_treatment_short_reads_assembly/chromosomes_contigs.megahit.id --prefix megahit10X
 ```
 
-..* Combination of cBar and PlasFlow at threshold 70% for Megahit assembly 
+	* Combination of cBar and PlasFlow at threshold 70% for Megahit assembly 
 ```
 bash run_learning_decontamination.sh -f assembly/megahit/final.contigs.fa -o decontamination --cbar_plasflow 70 --real_plasmids assembly_evaluation/metaquast_treatment_short_reads_assembly/plasmids_contigs.megahit.id --real_chrm assembly_evaluation/metaquast_treatment_short_reads_assembly/chromosomes_contigs.megahit.id --prefix megahit10X
 ```
@@ -128,6 +129,7 @@ You can combine `--plasflow`, `--cbar` and `--cbar_plasflow` options to have di
 
 You have one subdirectory by method : `plasflow`, `cbar`, `cbar_plasflow`. 
 In each directory these files are present :  
+
 | File extension | Description | 
 |---------|------------|
 |.chrm.id or .chromosomes.id|List of contigs identified as chromosomes| 
