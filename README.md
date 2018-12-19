@@ -1,6 +1,9 @@
 # plasmidome_scripts
 Scripts for plasmidome analysis 
 
+## [PlasSimul](PlasSimul)
+Scripts for plasmidome sequencing simulation and analysis  
+
 ## [PlasPredict](PlasPredict) 
 Predict plasmids contigs from assembly 
 
@@ -143,6 +146,11 @@ If you want to use other database, it must be hmm profiles.
 ## 2. Launch workflow 
 
 You starts with a plasmidome assembly obtained from cleaned reads. Let's imagine this assembly is called myAssembly.fasta and your are localised in directory where you clone this repository. 
+
+Cleaned reads can be obtained with [PlasPreAssembl](PlasPreAssembl). In this work, assemblies are done with default Megahit but you can use any assembly as long as it produces fasta file. Example for running Megahit : 
+```
+megahit -1 <R1_cleaned_reads.fastq> -2 <R2_cleaned_reads.fastq> -r <single_end_reads.fastq> -t 6
+```
 
 ### 2.1. PlasPredict 
 Launch PlasPredict to isolate predicted plasmids from your assembly. 
