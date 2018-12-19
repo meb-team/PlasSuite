@@ -1,8 +1,11 @@
 # plasmidome_scripts
 Scripts for plasmidome analysis 
 
-## [PlasSimul](PlasSimul) 
+## [PlasSimul](PlasSimul) 
 Scripts for plasmidome sequencing simulation and analysis  
+
+## [PlasPreAssembl](PlasPreAssembl) 
+Treat and clean raw reads before assembly
 
 ## [PlasPredict](PlasPredict) 
 Predict plasmids contigs from assembly 
