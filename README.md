@@ -10,8 +10,8 @@ Annotate plasmids contigs from assembly (preferentially with only predicted plas
 ## [PlasTaxo](PlasTaxo) 
 Retrieve and compare taxonomy from assembly using PlasFlow taxonomy and plasmids alignment 
 
-## [PlasResist](PlasResist) 
-Analyze Resfams resistance from assembly annotation. Produce abundance matrix.  
+## [PlasAbund](PlasAbund) 
+Produce abundance matrix of predicted genes clusters, and resistances genes abundance matrix. 
 
 # Example of workflow 
 
@@ -187,12 +187,12 @@ You also need a directory with cleaned reads use for assembly. This directory, f
 		|-- myAssembly3_trimmed_se.fastq.gz 			
 ```
 
-### 2.4. PlasResist 
-Launch PlasResist to treat resistances genes 
+### 2.4. PlasAbund 
+Launch PlasAbund to have abundance matrix. 
 
 ```
-bash plasmidome_scripts/PlasResist/PlasResist.sh -i prefix.txt -o resultsPlasResist --reads_dir cleaned_reads
+bash plasmidome_scripts/PlasAbund/PlasAbund.sh -i prefix.txt -o resultsPlasAbund --reads_dir cleaned_reads
 ```
 
-### Authors 
+### Authors 
 * Cécile Hilpert - [cecilpert](https://github.com/cecilpert)
