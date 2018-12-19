@@ -136,12 +136,12 @@ bash run_chrm_decontamination -i assembly/megahit/final.contigs.fa -o decontamin
 Plasmids markers decontamination use alignment against plasmids markers to identity plasmids. Contigs unaligned are considered as chromosomes. 
 
 ```
-bash run_plasmids_markers_decontamination.sh 
+bash run_plasmids_markers_decontamination.sh -i assembly/megahit/final.contigs.fa -o decontamination/markers_decontamination --real_plasmids assembly_evaluation/metaquast_treatment_short_reads_assembly/plasmids_contigs.megahit.id --real_chrm assembly_evaluation/metaquast_treatment_short_reads_assembly/chromosomes_contigs.megahit.id --prefix megahit10X 
 ```
 
 * **Main output files**   
 
-You have one subdirectory by method : `plasflow`, `cbar`, `cbar_plasflow`, `chrm_decontamination`
+You have one subdirectory by method : `plasflow`, `cbar`, `cbar_plasflow`, `chrm_decontamination` and `markers_decontamination`
 In each directory these files are present :  
 
 | File extension | Description | 
@@ -154,4 +154,10 @@ In each directory these files are present :
 
 ## 5. Treatment 
 
+Finally, you can relaunch assembly treatment on predicted plasmids from differents methods to compare contamination rate and plasmids coverage before and after decontamination. 
+
+For example, assembly evaluation on predicted plasmids by chromosomes decontamination 
+```
+bash run_assembly_treatment.sh megahitChrmDecontamination decontamination/chrm_decontamination/megahit10X.chrm_decont.clust0.plasmids.fasta --suffix chrm_decontamination --metaquast --metaquast_treatment --metaquast_cont --sr_cov 10X --cont 20% --plasmid_db simulation_database/plasmids_sequences --cont_db simulation_database/contaminants_sequences --plasmids_length simulation_database/plasmids.selectall.fasta --plasmids_ab plasmids_abundance.txt
+```
 

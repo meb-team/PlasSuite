@@ -143,7 +143,6 @@ if [[ $plasflow_thres ]]; then
 	grep "^>" $contigs | tr -d ">" > $tmp/assembly.id 
 	
 	for thr in $thresholds; do
-		echo "## DRAW RANDOM VERIF (plasflow $thr)" 
 		thr=$(echo $thr | awk '{print $1/100}') 
 		grep "^>" $dir/$pref.plasflow$thr.unclassified.fasta | tr -d ">" > $dir/$pref.plasflow$thr.unclassified.id
 		predict_plasmids=$dir/$pref.plasflow$thr.plasmids.id
@@ -190,31 +189,4 @@ if [[ $cbar_plas_thres ]]; then
 	done 	
 fi 	
 	
-exit 	
-
-if [[ $plasmark ]]; then 
-	echo "## PLASMIDS MARKERS" 
-	predicted_proteins=$outdir/protein_prediction/$pref.predicted_proteins.faa
-	markers_db=/databis/hilpert/plasmidome_realdata2/databases/plasmids_markers
-	
-	
-	dir=$outdir/plasmids_markers
-	bash $BIN/search_plasmids_markers.sh $contigs $predicted_proteins $markers_db $dir $pref
-	
-	predict_plasmids=$dir/$pref.all_plasmids_markers.plasmids.id 
-	predict_chrm=$dir/$pref.all_plasmids_markers.chrm.id 
-	
-	bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.plasmids_markers $dir/$pref.plasmids_markers.stats
-	
-	number_predict_plasmids=$(wc -l $predict_plasmids | cut -f 1 -d " ")
-	number_common=$(python3 $BIN2/common_size.py $predict_plasmids $real_plasmids)
-	
-	bash $BIN2/random_verif.sh $contigs.id $real_plasmids $number_predict_plasmids 1000 $dir $pref.plasmids_markers.random $number_common
-	
-	
-fi 
-	
-
-
-
 rm -r $tmp 

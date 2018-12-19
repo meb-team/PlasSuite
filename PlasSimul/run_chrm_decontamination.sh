@@ -191,7 +191,7 @@ for thr in $clustering; do
 	echo "-- with $thr % clustering" 
 	paf=$outdir/$prefix.chrm_alignment.clust$thr.paf
 	chrm_id=$outdir/$prefix.chrm_decont.clust$thr.chrm.id 
-	plasmids_id=$outdir/$prefix.chrm_decont.clust$thr.plasmids.id 
+	plasmids=$outdir/$prefix.chrm_decont.clust$thr.plasmids 
 	stats=$outdir/$prefix.chrm_decont.clust$thr.stats 
 	if [[ $thr == 0 ]]; then 
 		current_db=$chrm_db 
@@ -206,8 +206,9 @@ for thr in $clustering; do
 		minimap2 -x asm5 -N $number_chrm $current_db $assembly > $paf  
 		awk '{if ($10/$2 >= 0.8) print}' $paf > $paf.keep 
 		cut -f 1 $paf.keep | sort -u > $outdir/$prefix.chrm_decont.clust$thr.chrm.id 
-		python3 $BIN/delete_id.py $assembly.id $chrm_id $plasmids_id 
-		bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $plasmids_id $chrm_id $assembly clust$thr $stats
+		python3 $BIN/delete_id.py $assembly.id $chrm_id $plasmids.id 
+		python3 $BIN/seq_from_list.py --input_fasta $assembly --keep $plasmids.id --output_fasta $plasmids.fasta
+		bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $plasmids.id $chrm_id $assembly $prefix.chrmClust$thr $stats
 	fi
 	
 done 
