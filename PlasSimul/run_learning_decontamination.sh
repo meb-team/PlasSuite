@@ -105,7 +105,7 @@ elif [[ $tool_dir == $0 ]]; then
 	tool_dir=".." 	
 fi 
 tool_dir=$(readlink -f $tool_dir)
-BIN=$tool_dir/bin
+BIN=$tool_dir/BIN
 
 tmp=`mktemp -d -p .`
 mkdir -p $outdir 
@@ -128,10 +128,10 @@ if [[ $plasflow_thres ]]; then
 		predict_chrm=$dir/$pref.plasflow$thr.chromosomes.id
 		if [[ $(($count%$t)) == 0 ]]; then
 			nb_file=$(($nb_file+1)) 
-			echo bash $bin/run_plasflow.sh $pref $contigs -o $dir --thres $thr ';' bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.plasflow$thr $dir/$pref.plasflow$thr.stats > $tmp/plasflow_commands.$nb_file.txt
+			echo bash $BIN/run_plasflow.sh $pref $contigs -o $dir --thres $thr ';' bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.plasflow$thr $dir/$pref.plasflow$thr.stats > $tmp/plasflow_commands.$nb_file.txt
 			 
 		else 
-			echo bash $bin/run_plasflow.sh $pref $contigs -o $dir --thres $thr ';' bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.plasflow$thr $dir/$pref.plasflow$thr.stats >> $tmp/plasflow_commands.$nb_file.txt
+			echo bash $BIN/run_plasflow.sh $pref $contigs -o $dir --thres $thr ';' bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.plasflow$thr $dir/$pref.plasflow$thr.stats >> $tmp/plasflow_commands.$nb_file.txt
 		fi 	
 		count=$(($count+1))
 	done 	
@@ -149,7 +149,7 @@ if [[ $plasflow_thres ]]; then
 		predict_plasmids=$dir/$pref.plasflow$thr.plasmids.id
 		predict_noplasmids=$dir/$pref.plasflow$thr.noplasmids.id 
 		cat $dir/$pref.plasflow$thr.unclassified.id $dir/$pref.plasflow$thr.chromosomes.id > $predict_noplasmids
-		bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_noplasmids $contigs $pref.plasflow$thr.withunclassified $dir/$pref.plasflow$thr.withunclassified.stats
+		bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_noplasmids $contigs $pref.plasflow$thr.withunclassified $dir/$pref.plasflow$thr.withunclassified.stats
 	done 
 	
 	
@@ -158,12 +158,12 @@ fi
 if [[ $cbar ]]; then 
 	dir=$outdir/cbar 
 	mkdir -p $dir 
-	bash $bin/run_cbar.sh $pref $contigs -o $dir 
+	bash $BIN/run_cbar.sh $pref $contigs -o $dir 
 	predict_plasmids=$dir/$pref.cbar.plasmids.id 
 	predict_chrm=$dir/$pref.cbar.chrm.id
 	awk '{if ($3 == "Plasmid") print $1}' $dir/$pref.cbar.prediction.txt > $predict_plasmids
 	awk '{if ($3 == "Chromosome") print $1}' $dir/$pref.cbar.prediction.txt > $predict_chrm
-	bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.cbar $dir/$pref.cbar.stats
+	bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.cbar $dir/$pref.cbar.stats
 fi 
 
 if [[ $cbar_plas_thres ]]; then 
@@ -178,10 +178,10 @@ if [[ $cbar_plas_thres ]]; then
 		predict_noplasmids=$dir/$pref.cbar.plasflow$thr.noplasmids.id
 		if [[ $(($count%$t)) == 0 ]]; then
 			nb_file=$(($nb_file+1)) 
-			echo bash $bin/run_cbar_plasflow.sh $thr $dir $pref $contigs ";" bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_noplasmids $contigs $pref.cbar.plasflow$thr.withunclassified $dir/$pref.cbar.plasflow$thr.withunclassified.stats > $tmp/cbar_plasflow_commands.$nb_file.txt
+			echo bash $BIN/run_cbar_plasflow.sh $thr $dir $pref $contigs ";" bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_noplasmids $contigs $pref.cbar.plasflow$thr.withunclassified $dir/$pref.cbar.plasflow$thr.withunclassified.stats > $tmp/cbar_plasflow_commands.$nb_file.txt
 			 
 		else 
-			echo bash $bin/run_cbar_plasflow.sh $thr $dir $pref $contigs ";" bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_noplasmids $contigs $pref.cbar.plasflow$thr.withunclassified $dir/$pref.cbar.plasflow$thr.withunclassified.stats >> $tmp/cbar_plasflow_commands.$nb_file.txt	
+			echo bash $BIN/run_cbar_plasflow.sh $thr $dir $pref $contigs ";" bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_noplasmids $contigs $pref.cbar.plasflow$thr.withunclassified $dir/$pref.cbar.plasflow$thr.withunclassified.stats >> $tmp/cbar_plasflow_commands.$nb_file.txt	
 		fi 	
 		count=$(($count+1))
 	done 	
@@ -191,22 +191,6 @@ if [[ $cbar_plas_thres ]]; then
 fi 	
 	
 exit 	
-	
-if [[ $chrm_alignment ]]; then 
-	echo "## CHROMOSOMES ALIGNMENT" 
-	dir=$outdir/chrm_alignment
-	predict_plasmids=$dir/$pref.chrm_alignment$length.plasmids.id
-	predict_chrm=$dir/$pref.chrm_alignment$length.chrm.id 
-	number_chrm=$(grep "^>" -c $chrm_db) 
-	mkdir -p $dir
-	source activate plasmidome
-	minimap2 -x asm5 -N $number_chrm $chrm_db $contigs > $dir/$pref.chrm_alignment.paf
-	source deactivate plasmidome
-	awk '{if ($10/$2 >= 0.8) print}' $dir/$pref.chrm_alignment.paf > $dir/$pref.chrm_alignment$length.keep.paf
-	cut -f 1 $dir/$pref.chrm_alignment$length.keep.paf | sort -u > $dir/$pref.chrm_alignment$length.chrm.id 
-	python3 $BIN2/delete_id.py $contigs.id $dir/$pref.chrm_alignment$length.chrm.id $dir/$pref.chrm_alignment$length.plasmids.id
-	bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.chrm_alignment$length $dir/$pref.chrm_alignment$length.stats
-fi	
 
 if [[ $plasmark ]]; then 
 	echo "## PLASMIDS MARKERS" 
@@ -215,12 +199,12 @@ if [[ $plasmark ]]; then
 	
 	
 	dir=$outdir/plasmids_markers
-	bash $bin/search_plasmids_markers.sh $contigs $predicted_proteins $markers_db $dir $pref
+	bash $BIN/search_plasmids_markers.sh $contigs $predicted_proteins $markers_db $dir $pref
 	
 	predict_plasmids=$dir/$pref.all_plasmids_markers.plasmids.id 
 	predict_chrm=$dir/$pref.all_plasmids_markers.chrm.id 
 	
-	bash $bin/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.plasmids_markers $dir/$pref.plasmids_markers.stats
+	bash $BIN/stats_plasmid_detection.sh $real_plasmids $real_chrm $predict_plasmids $predict_chrm $contigs $pref.plasmids_markers $dir/$pref.plasmids_markers.stats
 	
 	number_predict_plasmids=$(wc -l $predict_plasmids | cut -f 1 -d " ")
 	number_common=$(python3 $BIN2/common_size.py $predict_plasmids $real_plasmids)
