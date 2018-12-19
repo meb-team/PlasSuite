@@ -121,9 +121,27 @@ bash run_learning_decontamination.sh -f assembly/megahit/final.contigs.fa -o dec
 
 You can combine `--plasflow`, `--cbar` and `--cbar_plasflow` options to have directly each decontamination with only one command.  
 
+* **Chromosomes decontamination** 
+
+Chromosomes decontamination identified contaminated contigs by mapping with chromosome database. For evaluation, mapping can be done with several clusterised databases. Database is clusterised with contaminants sequences as seeds, with given threshold. 
+
+* Decontamination with raw database, and clusterised databases at 95,97 and 99% identity percent. Megahit short-reads assembly. 
+
+```
+bash run_chrm_decontamination -i assembly/megahit/final.contigs.fa -o decontamination/chrm_decontamination -c 0,95,97,99 --cont_db simulation_database/contaminants.select500.fasta --chrm_db all_prokaryotes.fasta --real_plasmids assembly_evaluation/metaquast_treatment_short_reads_assembly/plasmids_contigs.megahit.id --real_chrm assembly_evaluation/metaquast_treatment_short_reads_assembly/chromosomes_contigs.megahit.id --prefix megahit10X 
+```
+
+* **Plasmids markers decontamination** 
+
+Plasmids markers decontamination use alignment against plasmids markers to identity plasmids. Contigs unaligned are considered as chromosomes. 
+
+```
+bash run_plasmids_markers_decontamination.sh 
+```
+
 * **Main output files**   
 
-You have one subdirectory by method : `plasflow`, `cbar`, `cbar_plasflow`. 
+You have one subdirectory by method : `plasflow`, `cbar`, `cbar_plasflow`, `chrm_decontamination`
 In each directory these files are present :  
 
 | File extension | Description | 
