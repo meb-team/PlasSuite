@@ -45,3 +45,10 @@ Example :
 		|-- NG-18198_FeGe10.nonPareil.pdf
 		|-- ... 
 ```    
+
+### Required tools/libraries/languages
+Version indicated are tested versions. It can be work (or not) with others.  
+It has been tested with Ubuntu 16.04.03 distribution. 
+* [fastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) v0.11.4
+* [Nonpareil](https://nonpareil.readthedocs.io/en/latest/index.html) v3.301
+* [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) v0.33
