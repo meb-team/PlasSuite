@@ -40,7 +40,7 @@ function run_fastqc(){
 }		
 
 function run_cleaning(){
-	mkdir $1 
+	mkdir -p $1 
 	dir=$1/$prefix
 	mkdir -p $dir 
 	input_reads=$2 
@@ -57,7 +57,6 @@ function run_cleaning(){
 	rm $r2 
 	bash $BIN/run_trimmomatic.sh $dir/$prefix.R1.fastq $dir/$prefix.R2.fastq $dir $prefix
 	rm $dir/$prefix.R1.fastq $dir/$prefix.R2.fastq
-	tar -zcvf $dir.tar.gz $dir 
 }	
 
 TEMP=$(getopt -o h,r:,o:,p: -l force  -- "$@")
@@ -100,16 +99,18 @@ verif_args
 tmp=$(mktemp -d -p .) 
 
 
-#echo "# FASTQC" 
-#run_fastqc $outdir/fastqc "$(ls $reads_dir/*.gz)" 
+echo "# FASTQC" 
+run_fastqc $outdir/fastqc "$(ls $reads_dir/*.gz)" 
 
 echo "# CLEANING" 
 run_cleaning $outdir/cleaned_reads "$(ls $reads_dir/*.gz)" 
 
-#echo "# NON PAREIL" 
-#dir=$outdir/nonpareil
-#mkdir -p $dir
-#bash $BIN/run_nonpareil.sh $outdir/cleaned_reads/$prefix/$prefix\_R1_trimmed_pe.fastq $dir $prefix
+echo "# NON PAREIL" 
+dir=$outdir/nonpareil
+mkdir -p $dir
+bash $BIN/run_nonpareil.sh $outdir/cleaned_reads/$prefix/$prefix\_R1_trimmed_pe.fastq $dir $prefix
+
+tar -zcvf $outdir/cleaned_reads/$prefix.tar.gz $outdir/cleaned_reads/$prefix 
 
 rm -r $tmp 
 
