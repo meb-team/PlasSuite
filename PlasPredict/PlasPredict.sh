@@ -1,7 +1,7 @@
 set -e 
 
 function usage(){
-	echo 'usage : all_analysis.sh -a assembly.fasta -o outdir 
+	echo 'usage : PlasPredict.sh -a assembly.fasta -o outdir 
 	[OPTIONS]
 	-h : print help
 	#Output  
@@ -12,6 +12,7 @@ function usage(){
 	--phylo_db <hmm> : hmm profile(s) with phylogenetic markers (default : /databis/hilpert/databases/phylogenetic_markers/wu2013/bacteria_and_archaea_dir/BA.hmm)
 	--markers_db <dir> : dir where plasmids markers databases are stored (mob.proteins.faa,mpf.proteins.faa,rep.dna.fas and orit.fas) (default : /databis/hilpert/databases/plasmids_markers) 
 	--plasmids_db <fasta> : fasta file with complete plasmids sequences you want to use (default : /databis/hilpert/databases/all_plasmids.fasta)
+	--all_db <db directory> : path of plasmidome database directory 
 	' 
 }
 
@@ -36,20 +37,23 @@ function verif_args(){
 	if [[ ! $prefix ]]; then 
 		prefix=$(echo $assembly | rev | cut -f 1 -d "/" | cut -f 2- -d "." | rev)
 	fi
+	if [[ ! $all_db ]]; then 
+		all_db=$HOME/plasmidome_databases
+	fi 
 	if [[ ! $markers_db ]]; then 
-		markers_db=/databis/hilpert/plasmidome_databases/plasmids_markers
+		markers_db=$all_db/plasmids_markers
 	fi
 	if [[ ! $chrm_db ]]; then 
-		chrm_db=/databis/hilpert/plasmidome_databases/all_prokaryotes.fasta 
+		chrm_db=$all_db/all_prokaryotes.fasta 
 	fi 
 	if [[ ! $rna_db ]]; then 
-		rna_db=/databis/hilpert/plasmidome_databases/rRNA/SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.fasta
+		rna_db=$all_db/rRNA/SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.fasta
 	fi 
 	if [[ ! $phylo_db ]]; then 
-		phylo_db=/databis/hilpert/plasmidome_databases/phylogenetic_markers/wu2013/bacteria_and_archaea_dir/BA.hmm	
+		phylo_db=$all_db/phylogenetic_markers/wu2013/bacteria_and_archaea_dir/BA.hmm	
 	fi 
 	if [[ ! $plasmids_db ]]; then 
-		plasmids_db=/databis/hilpert/plasmidome_databases/all_plasmids.fasta 
+		plasmids_db=$all_db/all_plasmids.fasta 
 	fi 
 	verif_file $chrm_db "[PlasPredict] Chromosomes database doesn't found in $chrm_db" "[PlasPredict] Chromosomes database found in $chrm_db"
 	verif_file $rna_db "[PlasPredict] rRNA database doesn't found in $rna_db" "[PlasPredict] rRNA database found in $rna_db"
@@ -100,7 +104,7 @@ function identify_complete_plasmids(){
 	done >> $contigs_plasmids.complete.tsv 
 }	
 
-TEMP=$(getopt -o h,a:,o: -l prefix:,chrm_db:,rna_db:,phylo_db:,force,markers_db:,plasmids_db:  -- "$@")
+TEMP=$(getopt -o h,a:,o: -l prefix:,chrm_db:,rna_db:,phylo_db:,force,markers_db:,plasmids_db:,all_db:  -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
@@ -134,6 +138,9 @@ while true ; do
 			PLASMIDS_DB=1 
 			plasmids_db=$2
 			shift 2;;	 
+		--all_db) 
+			all_db=$2
+			shift 2 ;; 
 		--force)
 			FORCE=1
 			shift ;; 

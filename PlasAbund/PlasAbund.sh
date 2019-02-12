@@ -10,7 +10,8 @@ function usage(){
 	--annot_dir <dir> : Directory where annotation results are stored (default : resultsPlasAnnot)
 	--reads_dir <dir> : Directory where cleaned reads are stored (default : resultsPreAssembl/cleaned_reads)  
 	--cluster_id <int[0:1]> : Identity percentage for cd-hit clustering (default : 0.95) 
-	--force : overwrite results"  
+	--force : overwrite results
+	--all_db <dir> : path to directory with plasmidome databases"  
 }
 
 function treat_args(){
@@ -30,8 +31,11 @@ function treat_args(){
 function verif_args(){
 	verif_file $i "[PlasResist] $i doesn't found" "[PlasResist] $i found"
 	mkdir -p $outdir 
+	if [[ ! $all_db ]]; then 
+		all_db=$HOME/plasmidome_databases
+	fi
 	if [[ ! $resfams_info ]]; then 
-		resfams_info=plasmidome_databases/Resfams/Resfams.info 
+		resfams_info=$all_db/Resfams/Resfams.info 
 	fi
 	if [[ ! $annot_dir ]]; then 
 		annot_dir=resultsPlasAnnot
@@ -75,7 +79,7 @@ function treat_matrix(){
 	done 
 }	 
 
-TEMP=$(getopt -o h,i:,o: -l resfams_metadata:,force,annot_dir:,reads_dir:,cluster_id: -- "$@")
+TEMP=$(getopt -o h,i:,o: -l resfams_metadata:,force,annot_dir:,reads_dir:,cluster_id:,all_db: -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
@@ -99,6 +103,9 @@ while true ; do
 			shift 2;; 
 		--cluster_id) 
 			cluster_id=$2
+			shift 2;; 
+		--all_db)
+			all_db=$2
 			shift 2;; 
 		-h) 
 			usage 

@@ -9,7 +9,8 @@ function usage(){
 	--resfam : resfam hmm you want to use first for prokka annotation (default : plasmidome_databases/Resfams/Resfams.hmm)
 	--resfam_annot : resfam annotations (default : plasmidome_databases/Resfams/Resfams.annot) 
 	--resfam_info : Resfams metadata (default : plasmidome_databases/Resfams/Resfams.info) 
-	--markers_db : plasmids markers databases directory (default : plasmidome_databases/plasmids_markers)" 
+	--markers_db : plasmids markers databases directory (default : plasmidome_databases/plasmids_markers)
+	--all_db <database directoy> : path of plasmidome database" 
 }	 
 
 function treat_args(){
@@ -35,14 +36,17 @@ function verif_args(){
 	if [[ ! $markers_db ]]; then 
 		markers_db=$HOME/plasmidome_databases/plasmids_markers
 	fi
+	if [[ ! $all_db ]]; then 
+		all_db=$HOME/plasmidome_databases
+	fi 
 	if [[ ! $hmm ]]; then 
-		hmm=$HOME/plasmidome_databases/Resfams/Resfams.hmm 
+		hmm=$all_db/Resfams/Resfams.hmm 
 	fi
 	if [[ ! $resfam_annot ]]; then 
-		resfam_annot=$HOME/plasmidome_databases/Resfams/Resfams.annot
+		resfam_annot=$all_db/Resfams/Resfams.annot
 	fi 
 	if [[ ! $resfam_info ]]; then 
-		resfam_info=$HOME/plasmidome_databases/Resfams/Resfams.info 
+		resfam_info=$all_db/Resfams/Resfams.info 
 	fi 
 	verif_file $hmm "[PlasAnnot] Resfam HMM profile doesn't found in $hmm. Use --resfam to specify an other." "[PlasAnnot] Resfam HMM profile found in $hmm"
 	verif_dir $markers_db "[PlasAnnot] Plasmids markers database doesn't found in $markers_db. Use --markers_db to specify an other." "[PlasAnnot] Plasmids markers database found in $markers_db" 
@@ -68,7 +72,7 @@ function set_default(){
 	markers=$outdir/$prefix.markers.id
 }	
 
-TEMP=$(getopt -o h,f:,o: -l prefix:,force,resfam:,markers_db:,resfam_annot:,resfam_info: -- "$@")
+TEMP=$(getopt -o h,f:,o: -l prefix:,force,resfam:,markers_db:,resfam_annot:,resfam_info:,all_db: -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
@@ -96,6 +100,9 @@ while true ; do
 		--resfam_info)
 			resfam_info=$2 
 			shift 2 ;; 
+		--all_db)
+			all_db=$2
+			shift 2 ;; 	
 		-h) 
 			usage 
 			shift ;;

@@ -8,7 +8,8 @@ function usage(){
 	#Databases 
 	--plasmids_taxo <fasta> : plasmids database taxonomy file 
 	--chrm_taxo <fasta> : chromosomes database taxonomy file 
-	--rna_taxo <fasta> : rRNA database taxonomy file'
+	--rna_taxo <fasta> : rRNA database taxonomy file
+	--all_db <dir> : path to directory with plasmidome database'
 }
 
 function treat_args(){
@@ -36,14 +37,17 @@ function treat_args(){
 function verif_args(){
 	verif_dir $inpdir "[PlasTaxo] Input directory doesn't found in $inpdir" "[PlasTaxo] Input directory found in $inpdir"
 	mkdir -p $outdir 
+	if [[ ! $all_db ]]; then 
+		all_db=$HOME/plasmidome_databases
+	fi 
 	if [[ ! $plasmids_taxo ]]; then 
-		plasmids_taxo=plasmidome_databases/all_plasmids.taxo.tsv
+		plasmids_taxo=$all_db/all_plasmids.taxo.tsv
 	fi 
 	if [[ ! $chrm_taxo ]];then
-		chrm_taxo=plasmidome_databases/all_prokaryotes.taxo.tsv 
+		chrm_taxo=$all_db/all_prokaryotes.taxo.tsv 
 	fi
 	if [[ ! $rna_taxo ]]; then 
-		rna_taxo=plasmidome_databases/rRNA/SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.taxo.tsv
+		rna_taxo=$all_db/rRNA/SILVA_132_SSUParc_LSUParc_tax_silva_trunc.T.taxo.tsv
 	fi 
 	chrm_align=$inpdir/chrm_search/$inpprefix.0.8.paf 
 	plasflow_taxo=$inpdir/learning/$inpprefix.plasflow0.7.taxo 
@@ -59,7 +63,7 @@ function verif_args(){
 	verif_file $plasmids_align "[PlasTaxo] Plasmids alignment doesn't found in $plasmids_align." "[PlasTaxo] Plasmids alignment found in $plasmids_align"
 }
 
-TEMP=$(getopt -o h,o: -l prefix:,force,plasmids_taxo:,rna_taxo:,chrm_taxo:,predicted_plasmids_dir:,predicted_plasmids_prefix: -- "$@")
+TEMP=$(getopt -o h,o: -l prefix:,force,plasmids_taxo:,rna_taxo:,chrm_taxo:,predicted_plasmids_dir:,predicted_plasmids_prefix:,all_db: -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
@@ -87,6 +91,9 @@ while true ; do
 		--predicted_plasmids_prefix)
 			inpprefix=$2
 			shift 2;; 
+		--all_db) 
+			all_db=$2
+			shift 2 ;; 	
 		-h) 
 			usage 
 			exit
