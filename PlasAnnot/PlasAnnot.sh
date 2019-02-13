@@ -33,12 +33,13 @@ function verif_args(){
 	if [[ ! $prefix ]]; then 
 		prefix=$(echo $assembly | rev | cut -f 1 -d "/" | cut -f 2- -d "." | rev)
 	fi
-	if [[ ! $markers_db ]]; then 
-		markers_db=$HOME/plasmidome_databases/plasmids_markers
-	fi
 	if [[ ! $all_db ]]; then 
 		all_db=$HOME/plasmidome_databases
 	fi 
+	if [[ ! $markers_db ]]; then 
+		markers_db=$all_db/plasmids_markers
+	fi
+
 	if [[ ! $hmm ]]; then 
 		hmm=$all_db/Resfams/Resfams.hmm 
 	fi
