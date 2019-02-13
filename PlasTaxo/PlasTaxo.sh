@@ -104,8 +104,13 @@ while true ; do
 done
 
 
-BIN=/databis/hilpert/plasmidome_scripts/bin
-BIN2=/databis/hilpert/plasmidome_realdata2/bin
+tool_dir=$(echo $0 | rev | cut -f 3- -d "/" | rev)
+if [[ $tool_dir == "" ]]; then 
+	tool_dir="." 
+elif [[ $tool_dir == $0 ]]; then 
+	tool_dir=".." 	
+fi 
+BIN=$tool_dir/bin
 source $BIN/common_functions.sh 
 treat_args 
 verif_args 
