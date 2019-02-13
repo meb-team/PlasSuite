@@ -118,7 +118,7 @@ verif_args
 echo "=== TREAT ASSEMBLY TAXONOMY ===" 
 taxo=$outdir/$prefix.taxo 
 
-python3 $BIN/treat_taxo.py $chrm_align $chrm_taxo $plasflow_taxo $rna_align $rna_taxo $plasmids_align $plasmids_taxo > $taxo
+python3 $BIN/treat_taxo.py $chrm_align $chrm_taxo $plasflow_taxo $rna_align $rna_taxo $plasmids_align $plasmids_taxo $taxo
 python3 $BIN/comp_taxo.py $taxo 
 
 tail -n +2 $taxo > $taxo.tmp

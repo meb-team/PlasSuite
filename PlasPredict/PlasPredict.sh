@@ -169,8 +169,7 @@ define_paths
 mkdir -p $outdir 
 resume=$outdir/$prefix.resume.tsv
 
-tmp=$(mktemp -d -p .) 
-echo $tmp 
+tmp=$(mktemp -d -p .)
 
 echo -e "step\tcontigs_number\tcontigs_length" > $resume 
 

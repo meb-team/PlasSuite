@@ -1,7 +1,7 @@
 set -e 
 
 function usage(){ 
-	echo "usage : bash draw_circular.sh <linear fasta> <linear gff> <outfile>" 		
+	echo "usage : bash draw_linear.sh <linear fasta> <linear gff> <outfile>" 		
 }	
 
 if [[ $# -ne 3 ]]; then 
@@ -31,7 +31,6 @@ tail -n +2 $assembly.length | awk '{if ($2 >= 10000) print}' | sort -k 2 -n > $a
 cut -f 1 $assembly.10kb.length | grep -v "_circ" > $tmp/contigs.txt 
 grep -w -f $tmp/contigs.txt $gff > $tmp/selected_contigs.gff 
 python3 $BIN/format_genoplot_linear.py $tmp/selected_contigs.gff $assembly.10kb.length $tmp 
-
 curdir=$(pwd)
 outfile=$curdir/$outfile  
 

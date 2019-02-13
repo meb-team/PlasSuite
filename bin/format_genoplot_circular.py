@@ -55,7 +55,7 @@ for l in gff :
 		start=l_split[3]
 		end=l_split[4]
 		strand=l_split[6]
-		if types != "repeat_region" and int(start)<int(dic_length[contig]): 
+		if types != "repeat_region" and int(start)<int(dic_length[contig]) and types !="CRISPR": 
 			if types=="tRNA": 
 				name="tRNA" 
 				col="orange"

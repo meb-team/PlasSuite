@@ -12,7 +12,7 @@ class Taxo:
 		self.species=species
 
 def usage(): 
-	print("usage : python3 treat_taxo.py <.paf alignment chrm file> <chrm taxonomy.tsv> <plasflow_taxonomy.tsv> <rna_alignment.tsv> <rna_taxonomy.tsv> <.paf plasmids alignment> <plasmids_taxonomy.tsv>")  
+	print("usage : python3 treat_taxo.py <.paf alignment chrm file> <chrm taxonomy.tsv> <plasflow_taxonomy.tsv> <rna_alignment.tsv> <rna_taxonomy.tsv> <.paf plasmids alignment> <plasmids_taxonomy.tsv> <output taxonomy.tsv>")  
 
 def set_dic_chrm(f_align,dic):
 	f=open(f_align,"r") 
@@ -150,7 +150,7 @@ def get_phylum(taxo_list):
 		return(kingdom) 							
 	return("Undefined") 		
 
-if len(sys.argv) != 8: 
+if len(sys.argv) != 9: 
 	usage() 
 	exit() 	
 	
@@ -162,9 +162,10 @@ dic_taxo=initialize_dic(sys.argv[3],ncbi)
 dic_taxo=set_dic_chrm(sys.argv[1],dic_taxo) 
 dic_taxo=set_dic_rna(sys.argv[4],dic_taxo) 
 dic_taxo=set_dic_plasmids(sys.argv[6],dic_taxo) 
+out_taxo=open(sys.argv[8],"w") 
 
 
-print("#Contig_id\tPlasflow_taxo\tChrm_taxo\tRNA_taxo\tPlasmid_taxo\tChrm_phylum\tRNA_phylum\tPlasmid_phylum")
+out_taxo.write("#Contig_id\tPlasflow_taxo\tChrm_taxo\tRNA_taxo\tPlasmid_taxo\tChrm_phylum\tRNA_phylum\tPlasmid_phylum\n")
 for contig in dic_taxo: 
 	to_print=contig+"\t"+dic_taxo[contig]["plasflow"]+"\t" 
 	if len(dic_taxo[contig]["chrm"])==0:
@@ -189,8 +190,8 @@ for contig in dic_taxo:
 		plasmid_phylum=get_phylum(dic_taxo[contig]["plasmid"])
 		to_print+=tax_level+"\t"
 	to_print+=chrm_phylum+"\t"+rna_phylum+"\t"+plasmid_phylum	
-	print(to_print) 
- 
+	out_taxo.write(to_print+"\n")  
+out_taxo.close()  
 	
  
 

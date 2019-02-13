@@ -96,8 +96,6 @@ source $BIN/common_functions.sh
 treat_args
 verif_args
 
-mkdir -p $results/treat
-
 all_chrm_id=$results/$prefix.all_chrm_identification.id
 all_plasmids_id=$results/$prefix.all_plasmids_identification.id
 cat $phylo_markers $rna $chrm | sort -u > $all_chrm_id 
