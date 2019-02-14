@@ -5,7 +5,6 @@ def usage():
 	print("usage : python3 comp_taxo.py <taxo file>") 
 	
 def compare_two_taxo(taxo1,taxo2,ncbi): 
-	print("TAXO1 "+taxo1+" TAXO2 "+taxo2) 
 	if taxo1=="DeinococcusThermus":
 		taxo1="Deinococcus-Thermus" 
 	if taxo2=="DeinococcusThermus": 
@@ -17,10 +16,8 @@ def compare_two_taxo(taxo1,taxo2,ncbi):
 	else: 
 		taxid1=ncbi.get_name_translator([taxo1])[taxo1][0]
 		taxid2=ncbi.get_name_translator([taxo2])[taxo2][0]
-		print("TAXID1 "+str(taxid1)+" TAXID2 "+str(taxid2))  
 		rank1=ncbi.get_rank([taxid1])[taxid1]
-		rank2=ncbi.get_rank([taxid2])[taxid2]
-		print("RANK1 "+rank1+" RANK2 "+rank2) 	
+		rank2=ncbi.get_rank([taxid2])[taxid2]	
 		lineage1=ncbi.get_lineage(taxid1) 
 		lineage2=ncbi.get_lineage(taxid2) 
 		ranks1=ncbi.get_rank(lineage1)
