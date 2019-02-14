@@ -23,7 +23,6 @@ gff=$2
 outfile=$3
 
 tmp=$(mktemp -d -p .) 
-echo $tmp 
 
 python3 $BIN/sequences_length.py $assembly $assembly.length 
 
@@ -35,7 +34,7 @@ curdir=$(pwd)
 
 cd $tmp 
 
-Rscript --vanilla $BIN/draw_linear.R contigs.txt linear_contigs.pdf 
+Rscript --vanilla $BIN/draw_linear.R contigs.txt linear_contigs.pdf > R.log
 
 cd $curdir 
 
