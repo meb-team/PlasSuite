@@ -5,6 +5,7 @@ def usage():
 	print("usage : python3 comp_taxo.py <taxo file>") 
 	
 def compare_two_taxo(taxo1,taxo2,ncbi): 
+	print("TAXO1 "+taxo1+" TAXO2 "+taxo2) 
 	if taxo1=="DeinococcusThermus":
 		taxo1="Deinococcus-Thermus" 
 	if taxo2=="DeinococcusThermus": 
@@ -16,36 +17,47 @@ def compare_two_taxo(taxo1,taxo2,ncbi):
 	else: 
 		taxid1=ncbi.get_name_translator([taxo1])[taxo1][0]
 		taxid2=ncbi.get_name_translator([taxo2])[taxo2][0]
+		print("TAXID1 "+str(taxid1)+" TAXID2 "+str(taxid2))  
 		rank1=ncbi.get_rank([taxid1])[taxid1]
-		rank2=ncbi.get_rank([taxid2])[taxid2]	
-		highest_rank=dic_taxo_inv[max(dic_taxo[rank1],dic_taxo[rank2])]
-		if rank1 == highest_rank: 
-			lineage2=ncbi.get_lineage(taxid2) 
-			ranks2=ncbi.get_rank(lineage2)
-			new_taxid2=[taxid for taxid in ranks2 if ranks2[taxid]==highest_rank] 
-			while new_taxid2==[]: 
-				print("ooo") 
-				numb_rank=dic_taxo[highest_rank]
-				if numb_rank < 7 :
-					numb_rank=numb_rank+1
-					print(numb_rank) 
-					highest_rank=dic_taxo_inv[numb_rank] 
-					print(highest_rank) 
-					new_taxid2=[taxid for taxid in ranks2 if ranks2[taxid]==highest_rank] 
-					print(new_taxid2) 
-				else : 
-					return False 					 
-			taxo2=ncbi.get_taxid_translator(new_taxid2)[new_taxid2[0]]
-		elif rank2 == highest_rank: 	
-			lineage1=ncbi.get_lineage(taxid1) 
-			ranks1=ncbi.get_rank(lineage1)
-			taxid1=[taxid for taxid in ranks1 if ranks1[taxid]==highest_rank] 
-			taxo1=ncbi.get_taxid_translator(taxid1)[taxid1[0]]
-		if taxo1==taxo2: 
-			return True  
-		else:
-			return False 	 	
+		rank2=ncbi.get_rank([taxid2])[taxid2]
+		print("RANK1 "+rank1+" RANK2 "+rank2) 	
+		lineage1=ncbi.get_lineage(taxid1) 
+		lineage2=ncbi.get_lineage(taxid2) 
+		ranks1=ncbi.get_rank(lineage1)
+		ranks2=ncbi.get_rank(lineage2)
+		highest_common_rank=get_highest_common_ranks(ranks1,ranks2,0) 
+		if highest_common_rank: 
+			taxid1=[taxid for taxid in ranks1 if ranks1[taxid]==highest_common_rank] 
+			taxid2=[taxid for taxid in ranks2 if ranks2[taxid]==highest_common_rank]
+			taxo1=ncbi.get_taxid_translator(taxid1)[taxid1[0]]  
+			taxo2=ncbi.get_taxid_translator(taxid2)[taxid2[0]]  
+			while taxo1!=taxo2: 
+				numb_rank=dic_taxo[highest_common_rank]
+				if numb_rank==7:
+					return False
+				numb_rank+=1 
+				highest_common_rank=get_highest_common_ranks(ranks1,ranks2,numb_rank-1)  
+				if highest_common_rank: 
+					taxid1=[taxid for taxid in ranks1 if ranks1[taxid]==highest_common_rank] 
+					taxid2=[taxid for taxid in ranks2 if ranks2[taxid]==highest_common_rank]
+					taxo1=ncbi.get_taxid_translator(taxid1)[taxid1[0]] 
+					taxo2=ncbi.get_taxid_translator(taxid2)[taxid2[0]]	
+				else: 
+					return True	
+			return True 	
+		else : 
+			return False 	
 			
+def get_highest_common_ranks(ranks1,ranks2,begin_rank):
+	ranks1=list(ranks1.values()) 
+	ranks2=list(ranks2.values())
+	taxo_ranks=["species","genus","family","order","class","phylum","superkingdom"]
+	taxo_treat=taxo_ranks[begin_rank:] 
+	for t in taxo_treat: 
+		if t in ranks1 and t in ranks2 : 
+			return t 
+	return False 			
+	 	
 def is_same_taxo(list_same): 
 	same=True	
 	for s in list_same: 			
@@ -97,10 +109,9 @@ for l in f:
 				list_same.append(same_rna_plasmid)
 		if plasmid != "-" : 
 			same_plasflow_plasmid=compare_two_taxo(plasflow,plasmid,ncbi) 
-			list_same.append(same_plasflow_plasmid) 
-
+			list_same.append(same_plasflow_plasmid)
 		if is_same_taxo(list_same): 
-			o1.write(l) 
+			o1.write(l)
 		else :
 			o2.write(l) 			
 				
