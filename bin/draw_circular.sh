@@ -34,13 +34,14 @@ python3 $BIN/format_genoplot_circular.py $gff $assembly.reallength $tmp
 grep -w -f $tmp/contigs.txt $assembly.reallength | cut -f 1 > $tmp/contigs2.txt 
 mv $tmp/contigs2.txt $tmp/contigs.txt 
 
-curdir=$(pwd)
-outfile=$curdir/$outfile  
+curdir=$(pwd) 
 
 cd $tmp
 
-Rscript --vanilla $BIN/draw_circular.R contigs.txt $outfile 
+Rscript --vanilla $BIN/draw_circular.R contigs.txt circular_contigs.pdf
 
 cd $curdir 
+
+mv $tmp/circular_contigs.pdf $outfile
 
 rm -r $tmp 

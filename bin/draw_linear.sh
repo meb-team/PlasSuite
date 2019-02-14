@@ -32,12 +32,13 @@ cut -f 1 $assembly.10kb.length | grep -v "_circ" > $tmp/contigs.txt
 grep -w -f $tmp/contigs.txt $gff > $tmp/selected_contigs.gff 
 python3 $BIN/format_genoplot_linear.py $tmp/selected_contigs.gff $assembly.10kb.length $tmp 
 curdir=$(pwd)
-outfile=$curdir/$outfile  
 
 cd $tmp 
 
-Rscript --vanilla $BIN/draw_linear.R contigs.txt $outfile 
+Rscript --vanilla $BIN/draw_linear.R contigs.txt linear_contigs.pdf 
 
 cd $curdir 
+
+mv $tmp/linear_contigs.pdf $outfile
 
 rm -r $tmp 
