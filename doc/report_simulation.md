@@ -69,9 +69,16 @@ Data are Illumina sequencing from several environment : Pavin lake, hospital bio
 
 ### Pre-treatment 
 
+Reads are cleaned with Trimmomatic. 
+NonPareil is used to estimate rarefaction curve. 
+
 ### Assembly 
 
+Assemblies are done with Megahit. 
+
 ### Plasmids prediction 
+
+
 
 ### Plasmids annotation 
 
