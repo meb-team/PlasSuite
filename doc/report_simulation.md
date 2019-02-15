@@ -23,6 +23,8 @@ List of assemblies done for each tool :
 * HybridSPAdes and Unicycler : Illumina coverage of 10X, all PacBio coverage for 0% contamination. Illumina coverage of 10X and PacBio coverage of 1X for other contamination rates. 
 * CAP3 : Used with Megahit, MetaSPAdes and SPAdes short assemblies (10X) and with PacBio long reads for coverage 1X.   
 
+After assembly, only contigs >= 1kb are conserved. 
+
 ### Assembly evaluation 
 
 Assembly evaluation is done with MetaQuast and the treatment of its output files. Evaluation parameters are : 
@@ -45,10 +47,37 @@ Plasmid prediction is done for two assemblies : Megahit and MetaSPAdes short-rea
 
 ### Plasmid prediction evaluation
 
+To evaluate plasmid prediction, we compare real affectation (if a contig represents plasmid or chromosome, determined by alignment against reference done for assembly evaluation) and predicted affectation (contigs classified as plasmids or chromosomes by plasmid prediction methods). 
+Based on this comparison, we can define true positives, true negatives, false positives and false negatives contigs. 
+* True positives (TP) : contigs classified as plasmids and really represents plasmids 
+* True negatives (TN) : contigs classified as chromosomes and really represents chromosomes
+* False positives (FP) : contigs classified as plasmids but really represents chromosomes
+* False negatives (FN) : contigs classified as chromosomes but really represents plasmids. 
+With this parameters, we can compute metrics : 
+* Recall : TP / (TP + FP). Number of correctly predicted plasmids among all plasmids. Reflects how much real plasmids are correctly predicted. 
+* Precision : TP / (TP + TN). Number of correctly predicted plasmids among all contigs predicted as plasmids. Reflects how much predicted plasmids are real plasmids. 
+* Accuracy : (TP+TN) / (TP+TN+FN+FP). Number of correctly predicted contigs, plasmids or chromosomes among all contigs. Reflects how much sequences are correctly predicted. 
+* [F1-Score](https://en.wikipedia.org/wiki/F1_score) and F0.5-Score : Summarize recall and precision (harmonic average of recall and precision for F1-Score).
 
 # Plasmidome analysis (real sequencing) 
 
+## Material and methods 
+
 ### Data 
+
+Data are Illumina sequencing from several environment : Pavin lake, hospital biofilm, human feces and wastewater treatment plant. 
+
+### Pre-treatment 
+
+### Assembly 
+
+### Plasmids prediction 
+
+### Plasmids annotation 
+
+### Plasmids taxonomy 
+
+### Genes abundance 
 
 
 
