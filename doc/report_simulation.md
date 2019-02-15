@@ -26,13 +26,22 @@ List of assemblies done for each tool :
 ### Assembly evaluation 
 
 Assembly evaluation is done with MetaQuast and the treatment of its output files. Evaluation parameters are : 
-* N50 
+* N50 : N50 is a classical assembly evaluation parameters. It means that 50% of assembly bases are in contigs with N50 length or more. 
 * Number of misassembled contigs : misassembled contigs are defined like that by Metaquast, and represents contigs that can be chimeric (different part of contigs maps against different plasmids), inverted (maps in two directions against same plasmid) or relocalised (left and right part of contig maps against same plasmid with gap or overlap > 1 kb) 
-* Longest contig : longest contig produces by assembly 
-* Reference coverage : 
-* Complete plasmids : 
+* Longest contig : longest contig produces by assembly.
+* Reference coverage : reference coverage is the percentage of bases in reference sequences (plasmids used to simulate sequencing) covered by good contigs (correct or ambiguous, misassembled are discarded). 
+* Complete plasmids : A plasmid is complete when at least 90% of its length is covered by only one contig. 
+* Contaminated contigs : Contaminated contigs are contigs that doesn't map with reference plasmids and maps against reference contaminants. 
 
 ### Plasmid prediction 
+
+Plasmid prediction is done for two assemblies : Megahit and MetaSPAdes short-reads assemblies, defined as the best with assembly evaluation. Several methods for separate plasmids contigs and contaminants contigs are tested. Two tools designed for this purpose are first tested : 
+* PlasFlow : PlasFlow is a tool that uses learning to create models for plasmid prediction. Each contig will have a probability to be plasmids or chromosomes. Probability threshold can be defined, if a contig have a probability greater than this threshold to be plasmids or chromosomes, it will be assigned to the corresponding category. If not, it will be defined as "unclassified". PlasFlow has been tested with all probability threshold from 10 to 90, with steps of 10. 
+* cBar : cBar is another tool that classify contigs as plasmids or chromosomes with learning. There's no adjustable threshold and contigs can just be classify as plasmids or chromosomes, not unclassified. 
+* cBar + PlasFlow : cBar and PlasFlow seems to produce relatively complementary results, so a combination of the tools has been tested. 
+2 others methods are also tested : 
+* Chromosomes alignment : The purpose is to align against known prokaryotic chromosomes to eliminate chromosomes contigs. The database of chromosomes is NCBI prokaryotes chromosomes, the same used for select contaminants genomes in Database construction part. Contaminants genomes are discarded. Contigs are aligned against this new database. Contigs that maps are considered as chromosomes and others as plasmids. Several clustering are then done to estimate if we can decontaminate samples when we have a chromosomes with more distant genome. Clustering is done using contaminants chromosomes as seeds and it deletes chromosomes from database wich are closer than 90, 95, 97 and 99% identity.      
+* Plasmids markers searching : 
 
 ### Plasmid prediction evaluation
 
