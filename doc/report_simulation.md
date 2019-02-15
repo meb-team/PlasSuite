@@ -41,20 +41,9 @@ Plasmid prediction is done for two assemblies : Megahit and MetaSPAdes short-rea
 * cBar + PlasFlow : cBar and PlasFlow seems to produce relatively complementary results, so a combination of the tools has been tested. 
 2 others methods are also tested : 
 * Chromosomes alignment : The purpose is to align against known prokaryotic chromosomes to eliminate chromosomes contigs. The database of chromosomes is NCBI prokaryotes chromosomes, the same used for select contaminants genomes in Database construction part. Contaminants genomes are discarded. Contigs are aligned against this new database. Contigs that maps are considered as chromosomes and others as plasmids. Several clustering are then done to estimate if we can decontaminate samples when we have a chromosomes with more distant genome. Clustering is done using contaminants chromosomes as seeds and it deletes chromosomes from database wich are closer than 90, 95, 97 and 99% identity.      
-* Plasmids markers searching : 
+* Plasmids markers searching : The purpose is to search plasmids markers in contigs. When a plasmid marker is found, contig is classified as plasmids. Markers used are markers from mob_suite tool. It contains replicase dna, oriT dna, mobilization proteins and mate-pair formation proteins. For proteins, search is done with blastp against contigs predicted genes translate to proteins. For DNA, search is done with blastn against contigs. Same treatment parameters as mob_suite are applied. If markers maps with contigs or predicted genes at 80% identity and on 80% of its length (90 and 90% for oriT dna), it's considered as found. 
 
 ### Plasmid prediction evaluation
-
-## Results 
-
-### Short reads assemblies (no contamination)  
-
-### Hybrid assemblies 
-
-#### Variation of long reads coverage 
-
-### 
-
 
 
 # Plasmidome analysis (real sequencing) 
