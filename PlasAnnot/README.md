@@ -25,8 +25,8 @@ If not specified, databases are searched in `hilpert/databis/plasmidome_database
 |---------|------------|
 |.faa|Predicted proteins in amino acids (fasta)| 
 |.ffn|Predicted proteins in nucleotides (fasta)|
-|.gff|Gff file for annotation, completed by Resfams and plasmids markers info| 
-|.pdf|`.linear.10kb.pdf` is graphic representation of linear contigs >= 10kb and `.circular.pdf` is graphical representation of circular contigs|   
+|.gff|Gff file for annotation, completed by Resfams and plasmids markers info. .gff.circular contains only circular contigs and .gff.linear contains only linear contig.| 
+|.pdf|`.linear.10kb.pdf` is graphic representation of linear contigs >= 10kb and `.circular.pdf` is graphical representation of circular contigs. It's representation of gff annotation. For long contigs, annotation can be difficult to see graphically, you can search your contig of interest with `grep` in gff file to have details.|   
 |.resistances|Tsv file with resistances genes and descriptions| 
 
 ### Required tools/libraries/languages

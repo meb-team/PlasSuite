@@ -194,7 +194,6 @@ if [[ $file_exist == 1 ]]; then
 else
 	bash $BIN/draw_linear.sh $assembly $prokka_gff.linear $draw_contigs_10kb 
 fi 
-rm $prokka_gff.linear 
 
 if [[ -s $prokka_gff.circular ]]; then 
 	echo "STEP 7 : DRAW CIRCULAR CONTIGS" 
@@ -205,4 +204,3 @@ if [[ -s $prokka_gff.circular ]]; then
 		bash $BIN/draw_circular.sh $assembly $prokka_gff.circular $draw_contigs_circular
 	fi	
 fi
-rm $prokka_gff.circular
