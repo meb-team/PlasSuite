@@ -130,6 +130,8 @@ treat_args
 verif_args 
 define_paths 
 
+tmp=$(mktemp -d -p $outdir) 
+
 echo "# CONCATENATE PREDICTED PROTEINS" 
 verif_result $all_prot 
 if [[ $file_exist == 1 ]]; then 
@@ -167,7 +169,7 @@ done
 if [[ $all_align || $FORCE ]]; then 
 	rm -r $dir 
 	mkdir $dir 
-	/data/chochart/lib/MAPme/bin/MAPme -s $clust_prot.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16
+	$BIN/MAPme -s $clust_prot.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16 --tmp $tmp 
 else
 	echo "Reads alignments already exists. Use --force to overwrite"
 fi 
@@ -191,7 +193,7 @@ else
 		done 
 		echo -e "$dir/$read_prefix.sorted.markdup.sorted.bam,$cumul_length"  
 	done > $ab_dir/mama_input.txt 
-	/data/chochart/lib/MAMa/bin/MAMa.py -a $matrix.matrix -r $matrix.relative.matrix -n $matrix.normalized.matrix $clust_prot.ffn.fai $ab_dir/mama_input.txt  
+	$BIN/MAMa.py -a $matrix.matrix -r $matrix.relative.matrix -n $matrix.normalized.matrix $clust_prot.ffn.fai $ab_dir/mama_input.txt  
 fi
 
 echo "# CONCATENATE RESISTANCES" 
@@ -230,6 +232,7 @@ else
 	python3 $BIN/sum_resistance_matrix.py $resistances_matrix.matrix.detailed $resistances_matrix.matrix.sum $ab_dir/mama_input.txt 
 fi 	
 
+rm -r $tmp 
 
 
 

@@ -1,0 +1,312 @@
+#!/usr/bin/env bash
+# VERSION 0.1.0
+#########################################################################################
+# This script automatically process the alignement of set of reads samples against a 	#
+# reference sequence file.											                    #
+#########################################################################################
+#                                                                                       #
+# This program is free software: you can redistribute it and/or modify it under the     #
+# terms of the GNU General Public License as published by the Free Software Foundation, #
+# either version 3 of the License, or (at your option) any later version.               #
+#                                                                                       #
+#########################################################################################
+## THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, ##
+## INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A       ##
+## PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT  ##
+## HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION   ##
+## OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      ##
+## SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                              ##
+#########################################################################################
+
+## PROGRAM CONFIGURATION BEGIN
+
+## Get the path of the program
+INSTALL_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+VERSION=0.1.0
+
+######################
+##     Functions    ##
+######################
+
+function error {
+    filename=$0
+    error=$1
+    >&2 echo "$filename (error): $error. Execution halted."
+    usage
+    exit 1
+}
+
+function warning {
+    filename=$0
+    message=$1
+    >&2 echo "$filename (info): $message."
+    echo "$filename (info): $message." >> $OUTPUT/MAPme.log 
+}
+
+function usage {
+    >&2 echo "usage: MAPme [-h] [--sequence sequence] [--reads reads]
+             [--output output] [--quality QUALITY] [--memory MEMORY]
+             [--threads threads] [--remove_duplicates]"
+}
+
+function help {
+    >&2 echo "
+                ...::: MAPme v$VERSION :::...
+            "
+    usage
+    >&2 echo "
+Synopsis: This script automatically process the alignement of set of reads samples against a reference sequence file. 
+        
+Optional arguments:
+    -h	--help
+            Print this help and exit.
+
+    -q 	--quality   QUALITY
+            Only include reads with mapping quality >= INT 
+            (default: 10). 
+
+    -m 	--memory    MEMORY
+            Set maximum memory per thread; 
+            suffix K/M/G recognized (default: 10G).
+
+    -t  --threads   THREADS
+            Threads number allow to the analysis (default: 4).
+
+    --tmp   TMP
+            Temporary directory for MarkDuplicates (default: /home/$USER/tmp).
+
+    -r 	--remove_duplicates
+            Remove duplicates reads from the results. 
+
+    -k  --keep_sam
+            Keep raw alignement files in sam format.
+
+Required Options:
+
+    -s	--sequence   SEQUENCE
+            Sequences file as index.
+    
+    -r	--reads	   READS
+            Reads directory to mapped against index
+        
+    -o	--output    OUTPUT
+            Output Directory
+
+            
+Written by Corentin Hochart (corentin.hochart@uca.fr), UMR CNRSS 6023
+Laboratoire Genome et Environement (LMGE). Released under the terms of the GNU
+General Public License v3. MAPme version $VERSION.					
+    "
+    exit 1
+}
+
+function check_option {
+    if [ ! $1 ]
+    then
+        usage
+        >&2 echo "error: the following arguments are required: --$2"
+        exit 1
+    fi
+}
+
+######################
+## Pipeline Options ##
+######################
+
+OUTPUT=""
+SEQUENCE=""
+READS=""
+MEMORY=10G
+THREADS=4
+QUALITY=10
+remove_duplicates=false
+keep_sam=false
+TMPDIR=/home/$USER/tmp
+
+
+PICARD="/usr/local/picard-tools-2.2.2/picard.jar"
+# command="$0"
+while test $# -gt 0; do
+    case "$1" in
+        -h|--help)
+            help
+            exit 0;
+            ;;
+        -s|--sequence)
+            shift
+            if test $# -gt 0; then
+                export SEQUENCE=$1
+                if ! [ -e $1 ];then
+                    error "$1 from '--sequence' option do not exist"
+                fi
+            else
+                error "No sequences file from '--sequence' option specified"
+            fi
+            shift
+            ;; 
+        -r|--reads)
+            shift
+            if test $# -gt 0; then
+                export READS=$1
+                if ! [ -e $1 ];then
+                    error "$1 from '--reads' option do not exist"
+                fi
+            else
+                error "No reads directory from '--reads' option specified"
+            fi
+            shift
+            ;; 	
+        -o|--output)
+            shift
+            if test $# -gt 0; then
+                export OUTPUT="$1"
+            else
+                    error "No output file specified."
+            fi
+            shift
+            ;;
+        -q|--quality)
+            shift
+            if test $# -gt 0; then
+                export QUALITY="$1"
+                if ! let $1 2>/dev/null; then
+                    error "$1 from '--quality' option do not exist"
+                fi
+            fi
+            shift
+            ;;
+        -m|--memory)
+            shift
+            if test $# -gt 0; then
+                export MEMORY="$1"
+                if ! let $1 2>/dev/null; then
+                    error "$1 from '--memory' option do not exist"
+                fi
+            fi
+            shift
+            ;;
+        -t|--threads)
+            shift
+            if test $# -gt 0; then
+                export THREADS="$1"
+                if ! let $1 2>/dev/null; then
+                    error "$1 from '--threads' option do not exist"
+                fi
+            fi
+            shift
+            ;;
+        --tmp)
+            shift
+            if test $# -gt 0; then
+                export TMPDIR="$1"
+            fi
+            shift
+            ;;
+        -r|--remove_duplicates)
+            if test $# -gt 0; then
+                export remove_duplicates=true
+            fi
+            shift
+            ;;
+        -k|--keep_sam)
+            if test $# -gt 0; then
+                export keep_sam=true
+            fi
+            shift
+            ;;
+        *)
+            error "invalid option $1" 
+            break
+            ;;
+    esac
+done
+## Print wrapper usage if no arguments
+check_option "$SEQUENCE" "sequence"
+check_option "$READS" "reads"
+check_option "$OUTPUT" "output"
+
+start=`date +%s`
+date=$(date)
+warning "Date : $date"
+warning "Hi $USER. Lets do some good job together"
+mkdir -p $OUTPUT
+
+mkdir -p $TMPDIR
+if ! [[ -e $TMPDIR ]];then
+    error "'$TMPDIR' was not created."
+fi
+JAVA_OPT="-Xms1g -Xmx60g -XX:ParallelGCThreads=$THREADS -XX:+CMSClassUnloadingEnabled -Djava.io.tmpdir=$TMPDIR"
+
+######################
+## 	   Analysis     ##
+######################
+
+if [ ! -e $SEQUENCE.amb ] && [ ! -e $SEQUENCE.ann ] && [ ! -e $SEQUENCE.bwt ] \
+&& [ ! -e $SEQUENCE.pac ] && [ ! -e $SEQUENCE.sa ]; then
+    warning "BWA Index ${SEQUENCE##*/}"
+    bwa index $SEQUENCE
+fi
+if [ ! -e $database.fai ];then
+    warning "Samtools Index ${SEQUENCE##*/}"
+    samtools faidx $SEQUENCE
+fi 
+
+for sample_path in `ls -d $READS/*/`
+do
+    sample=$(basename $sample_path)
+    warning "$sample"
+
+    if [ ! -e $OUTPUT/$sample.sorted.markdup.sorted.bam ];then 
+        R1=`ls $sample_path/*R1*.fastq.gz` ;
+        R2=`ls $sample_path/*R2*.fastq.gz` ;
+        S=`ls $sample_path/*se.fastq.gz` ;
+
+        warning "	Process Mapping"	
+        bwa mem -M -t $THREADS $SEQUENCE <(zcat $S) > $OUTPUT/$sample.se.sam 
+        bwa mem -M -t $THREADS $SEQUENCE <(zcat $R1) <(zcat $R2) > $OUTPUT/$sample.pe.sam
+
+        warning "	Convert SAM to BAM"	
+        samtools view -@ $THREADS -q $QUALITY -F 4 -bt $SEQUENCE.fai $OUTPUT/$sample.pe.sam  | samtools sort -@ $THREADS - -o $OUTPUT/$sample.pe.bam
+        samtools view -@ $THREADS -q $QUALITY -F 4 -bt $SEQUENCE.fai $OUTPUT/$sample.se.sam  | samtools sort -@ $THREADS - -o $OUTPUT/$sample.se.bam
+
+        if ! $keep_sam ;then 
+            rm $OUTPUT/$sample.pe.sam $OUTPUT/$sample.se.sam
+        fi
+        
+        samtools merge -f -@ $THREADS $OUTPUT/$sample.bam $OUTPUT/$sample.pe.bam $OUTPUT/$sample.se.bam
+        samtools sort -@ $THREADS $OUTPUT/$sample.bam -o $OUTPUT/$sample.sorted.bam
+        samtools index $OUTPUT/$sample.sorted.bam
+        rm $OUTPUT/$sample.pe.bam $OUTPUT/$sample.se.bam $OUTPUT/$sample.bam
+
+        if $remove_duplicates ;then
+            warning "	Remove duplicates"
+                java ${JAVA_OPT} \
+            -jar $PICARD MarkDuplicates \
+            INPUT=$OUTPUT/$sample.sorted.bam \
+            OUTPUT=$OUTPUT/$sample.sorted.markdup.bam \
+            METRICS_FILE=$OUTPUT/$sample.sorted.markdup.metrics \
+            AS=TRUE \
+            VALIDATION_STRINGENCY=LENIENT \
+            MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 \
+            REMOVE_DUPLICATES=TRUE
+
+            warning "	Index bam file"
+            # rm $OUTPUT/$sample.sorted.bam $OUTPUT/$sample.sorted.bam.bai
+            samtools sort -@ $THREADS -m $MEMORY -o $OUTPUT/$sample.sorted.markdup.sorted.bam $OUTPUT/$sample.sorted.markdup.bam 
+            samtools index $OUTPUT/$sample.sorted.markdup.sorted.bam
+            samtools flagstat $OUTPUT/$sample.sorted.markdup.sorted.bam > $OUTPUT/$sample.sorted.markdup.sorted.flagstat
+            rm $OUTPUT/$sample.sorted.markdup.bam 
+        else 
+            warning "	Index bam file"
+            samtools index $OUTPUT/$sample.sorted.bam
+            samtools flagstat $OUTPUT/$sample.sorted.bam > $OUTPUT/$sample.sorted.flagstat
+        fi
+
+    fi
+done
+
+rmdir $TMPDIR >/dev/null 2>&1
+
+warning "Analysis done"
+end=`date +%s`
+warning "Runtime: $((end-start)) sec"
