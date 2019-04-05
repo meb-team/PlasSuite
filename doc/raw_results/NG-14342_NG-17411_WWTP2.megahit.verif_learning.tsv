@@ -1,0 +1,28 @@
+sample	input	type	length	percent
+NG-14342_NG-17411_WWTP2.megahit	all	all	388690624	100
+NG-14342_NG-17411_WWTP2.megahit	all	chrm	20391694	5.24625
+NG-14342_NG-17411_WWTP2.megahit	all	rna	620931	0.159749
+NG-14342_NG-17411_WWTP2.megahit	all	phylo_markers	4868083	1.25243
+NG-14342_NG-17411_WWTP2.megahit	all	all_chrm	25282588	6.50455
+NG-14342_NG-17411_WWTP2.megahit	all	plasmids_markers	2758533	0.709699
+NG-14342_NG-17411_WWTP2.megahit	all	circular	1819115	0.468011
+NG-14342_NG-17411_WWTP2.megahit	all	plasmids	4452405	1.14549
+NG-14342_NG-17411_WWTP2.megahit	all	all_plasmids	8412193	2.16424
+NG-14342_NG-17411_WWTP2.megahit	learning70	all	99251582	100
+NG-14342_NG-17411_WWTP2.megahit	learning70	chrm	4507336	4.54132
+NG-14342_NG-17411_WWTP2.megahit	learning70	rna	44757	0.0450945
+NG-14342_NG-17411_WWTP2.megahit	learning70	phylo_markers	346027	0.348636
+NG-14342_NG-17411_WWTP2.megahit	learning70	all_chrm	4860820	4.89747
+NG-14342_NG-17411_WWTP2.megahit	learning70	plasmids_markers	1833459	1.84728
+NG-14342_NG-17411_WWTP2.megahit	learning70	circular	935851	0.942908
+NG-14342_NG-17411_WWTP2.megahit	learning70	plasmids	3153232	3.17701
+NG-14342_NG-17411_WWTP2.megahit	learning70	all_plasmids	5391034	5.43169
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	all	97189616	100
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	chrm	0	0
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	rna	0	0
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	phylo_markers	0	0
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	all_chrm	0	0
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	plasmids_markers	2472578	2.54408
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	circular	2154823	2.21713
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	plasmids	3120934	3.21118
+NG-14342_NG-17411_WWTP2.megahit	Predicted plasmids	all_plasmids	5125580	5.27379
