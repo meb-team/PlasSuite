@@ -11,28 +11,30 @@ bash PlasAbund.sh -i <input file> -o <output directory> --reads_dir <reads direc
 **Mandatory arguments** 
 * *input file* : input file is .txt file with list of your assemblies prefix. Example :  
 ```
-NG-14342_NG-17411_BIOFILM.megahit
-NG-14342_NG-17411_WWTP2.megahit
+Plasmidome1
+Plasmidome2
 ```
 * *reads directory* : reads directory is directory where your cleaned reads are stored. In this directory, you must have one directory per sample, with paired end R1 and R2 fastq and single end fastq. R1 fastq name must contain "R1", R2 fastq name must contains "R2" and single end fastq name must contains "se". Fastq files are zipped (.fastq.gz). Example :  
 ```
 |-- reads directory 
-	|-- NG-14342_NG-17411_BIOFILM
-		|-- NG-14342_NG-17411_BIOFILM_R1_trimmed_pe.fastq.gz
-		|-- NG-14342_NG-17411_BIOFILM_R2_trimmed_pe.fastq.gz
-		|-- NG-14342_NG-17411_BIOFILM_trimmed_se.fastq.gz
-	|-- NG-14342_NG-17411_BIOFILM
-		|-- NG-14342_NG-17411_WWTP2_R1_trimmed_pe.fastq.gz
-		|-- NG-14342_NG-17411_WWTP2_R2_trimmed_pe.fastq.gz
-		|-- NG-14342_NG-17411_WWTP2_trimmed_se.fastq.gz
+	|-- Plasmidome1
+		|-- Plasmidome1_R1_trimmed_pe.fastq.gz
+		|-- Plasmidome1_R2_trimmed_pe.fastq.gz
+		|-- Plasmidome1_trimmed_se.fastq.gz
+	|-- Plasmidome2
+		|-- Plasmidome2_R1_trimmed_pe.fastq.gz
+		|-- Plasmidome2_R2_trimmed_pe.fastq.gz
+		|-- Plasmidome2_trimmed_se.fastq.gz
 ```
+All the reads included in this directory will be mapped against the genes. Check before launching the data integrity: the reads directory must correspond to the plasmidomes described in the  input file.
+
 * *annotation directory* : directory where annotation product by PlasAnnot is stored. Directory must at least contains .ffn and .resistances file for each assembly. See PlasAnnot readme for description of this file (in outputs category). Files must have same prefix than prefix provided in input file. Example :  
 ```
 |-- annotation directory 
-	|-- NG-14342_NG-17411_BIOFILM.megahit.predicted_plasmids.ffn 
-	|-- NG-14342_NG-17411_BIOFILM.megahit.predicted_plasmids.resistances 
-	|-- NG-14342_NG-17411_WWTP2.megahit.predicted_plasmids.ffn 
-	|-- NG-14342_NG-17411_WWTP2.megahit.predicted_plasmids.resistances 
+	|-- Plasmidome1.predicted_plasmids.ffn 
+	|-- Plasmidome1.predicted_plasmids.resistances 
+	|-- Plasmidome2.predicted_plasmids.ffn 
+	|-- Plasmidome2.predicted_plasmids.resistances 
 ```  
 * *output directory* : Name of output directory. Will be created if not exists. 
 
