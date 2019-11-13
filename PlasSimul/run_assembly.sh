@@ -28,7 +28,7 @@ function clean_spades(){
 	cd $current_dir
 }
 
-TEMP=$(getopt -o h,o:,i:,l: -l megahit,metaspades,hybridspades,unicycler,tmp:,spades,plasmidspades -- "$@")
+TEMP=$(getopt -o h,o:,i:,l: -l megahit,metaspades,hybridspades,unicycler,tmp:,spades,plasmidspades,unicycler_lr -- "$@")
 
 eval set -- "$TEMP" 
 
@@ -60,6 +60,10 @@ while true ; do
 		--unicycler)
 			echo 'UNICYCLER' 
 			UNICYCLER=1
+			shift ;; 	
+		--unicycler_lr)
+			echo 'UNICYCLER LONG READS'
+			UNICYCLER_LR=1
 			shift ;; 		
 		--spades) 
 			SPADES=1 
@@ -99,7 +103,7 @@ fi
 tool_dir=$(readlink -f $tool_dir)
 BIN=$tool_dir/bin
 
-if [[ ! $input_fq ]]; then 
+if [[ ! $input_fq && ! $UNICYCLER_LR ]]; then 
 	usage 
 	echo 'You have to specify short reads' 
 	exit 1 
@@ -154,6 +158,17 @@ if [ $UNICYCLER == 1 ]; then
 	python3 $BIN/transform_assembly_id.py $outdir/unicycler/assembly.fasta $outdir/unicycler/assembly.fasta2 
 	mv $outdir/unicycler/assembly.fasta2 $outdir/unicycler/assembly.fasta 
 fi	
+
+if [[ $UNICYCLER_LR == 1 ]]; then 
+	if [[ ! $input_pacbio ]]; then 
+		usage 
+		echo "You have to specify long reads for unicycler" 
+		exit
+	fi 
+	unicycler -l $input_pacbio -o $outdir/unicycler_LR$contamination_suffix --spades_path /usr/local/SPAdes-3.9.0-Linux/bin/spades.py --racon_path ~/racon/bin/racon --samtools_path /usr/local/metabat-0.26.3/samtools-1.2/samtools --pilon_path ~/pilon-1.22.jar --no_correct	
+	python3 $BIN/transform_assembly_id.py $outdir/unicycler_LR$contamination_suffix/assembly.fasta $outdir/unicycler_LR$contamination_suffix/assembly.fasta2 
+	mv $outdir/unicycler_LR$contamination_suffix/assembly.fasta2 $outdir/unicycler_LR$contamination_suffix/assembly.fasta
+fi 
 	
 rm -r $tmp_dir 
 
