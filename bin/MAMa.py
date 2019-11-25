@@ -1,4 +1,5 @@
-#!/home/chochart/lib/miniconda3/bin/python
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 # v0.1.0
 #########################################################################################
 # Constrcut abundance matrix from a list of bam files 								    #

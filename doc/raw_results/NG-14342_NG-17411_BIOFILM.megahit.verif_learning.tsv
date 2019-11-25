@@ -1,0 +1,28 @@
+sample	input	type	length	percent
+NG-14342_NG-17411_BIOFILM.megahit	all	all	81536890	100
+NG-14342_NG-17411_BIOFILM.megahit	all	chrm	15914374	19.518
+NG-14342_NG-17411_BIOFILM.megahit	all	rna	60727	0.0744779
+NG-14342_NG-17411_BIOFILM.megahit	all	phylo_markers	3441272	4.22051
+NG-14342_NG-17411_BIOFILM.megahit	all	all_chrm	17343566	21.2708
+NG-14342_NG-17411_BIOFILM.megahit	all	plasmids_markers	2485658	3.04851
+NG-14342_NG-17411_BIOFILM.megahit	all	circular	1399240	1.71608
+NG-14342_NG-17411_BIOFILM.megahit	all	plasmids	2601989	3.19118
+NG-14342_NG-17411_BIOFILM.megahit	all	all_plasmids	5723339	7.01932
+NG-14342_NG-17411_BIOFILM.megahit	learning70	all	24718683	100
+NG-14342_NG-17411_BIOFILM.megahit	learning70	chrm	2206138	8.92498
+NG-14342_NG-17411_BIOFILM.megahit	learning70	rna	8945	0.0361872
+NG-14342_NG-17411_BIOFILM.megahit	learning70	phylo_markers	120194	0.486248
+NG-14342_NG-17411_BIOFILM.megahit	learning70	all_chrm	2305586	9.3273
+NG-14342_NG-17411_BIOFILM.megahit	learning70	plasmids_markers	2065000	8.354
+NG-14342_NG-17411_BIOFILM.megahit	learning70	circular	977878	3.95603
+NG-14342_NG-17411_BIOFILM.megahit	learning70	plasmids	1894259	7.66327
+NG-14342_NG-17411_BIOFILM.megahit	learning70	all_plasmids	4220012	17.0722
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	all	23729318	100
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	chrm	0	0
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	rna	0	0
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	phylo_markers	0	0
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	all_chrm	0	0
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	plasmids_markers	2061787	8.68877
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	circular	1683785	7.0958
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	plasmids	1730312	7.29187
+NG-14342_NG-17411_BIOFILM.megahit	Predicted plasmids	all_plasmids	3229688	13.6105
