@@ -6,5 +6,6 @@ if (length(args)!=1) {
 
 f=read.table(args[1],sep="\t") 
 
-sum(f$V7)/sum(f$V6)*100 
+sum(f$V7)/sum(f$V6)*100
+sum(f$V8)/sum(f$V6)*100
 

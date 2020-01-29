@@ -6,9 +6,12 @@ class Plasmid:
 		self.length=length 
 		self.length_cat=length_cat 
 		self.bases_aligned=set() 
-		self.contigs=set() 		
-		self.complete=False 
+		self.all_bases_aligned=set()
+		self.contigs=set() 	
+		self.all_contigs=set()
+		self.complete=False
 		self.coverage=0
+		self.all_coverage=0
 
 def usage(): 
 	print('usage : python3 treat_metaquast.py <metaquast treatment dir> <plasmids length.tsv> <names of assemblies> <SR coverage> <LR coverage> <contamination> ')
@@ -45,12 +48,14 @@ def treat_plasmids(directory,a,dic_p,list_good_contigs):
 			if len(l_split)==9: 
 				plasmid="_".join(l_split[4].split("_")[:2])
 				contig=l_split[5]
+				dic_p[plasmid].all_contigs.add(contig)
+				start_p=int(l_split[0]) 
+				end_p=int(l_split[1])
+				current_bases_aligned = give_list_base_aligned(start_p,end_p) 
+				dic_p[plasmid].all_bases_aligned.update(current_bases_aligned)
 				if contig in list_good_contigs: 
-					dic_p[plasmid].contigs.add(contig)
-					start_p=int(l_split[0]) 
-					end_p=int(l_split[1]) 		
-					current_base_aligned_p=give_list_base_aligned(start_p,end_p) 
-					dic_p[plasmid].bases_aligned.update(current_base_aligned_p) 
+					dic_p[plasmid].contigs.add(contig)		
+					dic_p[plasmid].bases_aligned.update(current_bases_aligned) 
 					
 def is_plasmids_complete(dic_p,dic_c): 
 	complete_length=0
@@ -82,7 +87,7 @@ def write_plasmid_file(dic_p,a,out,SR,LR,cont):
 			status="complete"
 		else:
 			status="not.complete"	
-		out.write("%s\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%d\t%s\n"%(a,SR,LR,cont,pobj.name,pobj.length,len(pobj.bases_aligned),pobj.length_cat,len(pobj.contigs),status))
+		out.write("%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%s\t%d\t%s\n"%(a,SR,LR,cont,pobj.name,pobj.length,len(pobj.bases_aligned),len(pobj.all_bases_aligned),pobj.length_cat,len(pobj.contigs),status))
 								
 if len(sys.argv)!= 7 : 
 	usage()
@@ -92,7 +97,7 @@ if len(sys.argv)!= 7 :
 assemblies=sys.argv[3].split(",") 
 out=open(sys.argv[1]+"/plasmids_stats.tsv","w") 
 out2=open(sys.argv[1]+"/summary_plasmids_stats.tsv","w") 
-out.write("Assembly\tIllumina coverage\tPacBio coverage\tContamination\tPlasmid\tLength\tAligned_length\tLength category\tNumber contigs\tStatus\n") 
+out.write("Assembly\tIllumina coverage\tPacBio coverage\tContamination\tPlasmid\tLength\tAligned_length\tAll_aligned_length\tLength category\tNumber contigs\tStatus\n") 
 out2.write("Assembly\tNumber complete plasmids\tComplete length\t%Complete plasmids (length)\n") 
 
 for a in assemblies : 

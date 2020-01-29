@@ -40,12 +40,11 @@ if [[ $tool_dir == "" ]]; then
 elif [[ $tool_dir == $0 ]]; then 
 	tool_dir=".." 	
 fi 
-tool_dir=$(readlink -f $tool_dir)
-BIN=$tool_dir/bin
+tool_dir=$(readlink $tool_dir)
 
 cd $1 
 
-echo -e "Assembly\tIllumina coverage\tPacBio coverage\tContamination\tTotal length\tCorrect length\tAmbiguous length\tMisassembled length\tUnaligned length\tOthers_length\tTotal contigs\tCorrect contigs\tAmbiguous contigs\tMisassembled contigs\tUnaligned contigs\tOthers contigs\tMax contig length\tMax good contig length\tN50 all\tN50 good contigs\t%Plasmids coverage\tNumber plasmids complete\tPlasmids complete length\t%Plasmids complete (length)\tContamination length\tNumber contaminated contigs" > assemblies_stats.tsv
+echo -e "Assembly\tIllumina coverage\tPacBio coverage\tContamination\tTotal length\tCorrect length\tAmbiguous length\tMisassembled length\tUnaligned length\tOthers_length\tTotal contigs\tCorrect contigs\tAmbiguous contigs\tMisassembled contigs\tUnaligned contigs\tOthers contigs\tMax contig length\tMax good contig length\tN50 all\tN50 good contigs\t%Plasmids coverage (correct contigs)\t%Plasmids coverage (all contigs)\tNumber plasmids complete\tPlasmids complete length\t%Plasmids complete (length)\tContamination length\tNumber contaminated contigs" > assemblies_stats.tsv
 
 echo -e "Assembly\tIllumina coverage\tPacBio coverage\tContamination\tContig\tLength\tNumber" > contigs_stats.tsv
 
@@ -75,13 +74,15 @@ for f in $(ls all_alignments*); do
 	grep -w $suf plasmids_stats.tsv > $suf.plasmids
 	
 	plasmids_cov=$(Rscript --vanilla $BIN/plasmids_coverage.R $suf.plasmids | cut -f 2 -d " ") 
+	correct_cov=$(echo $plasmids_cov | cut -f 1 -d " ")
+	all_cov=$(echo $plasmids_cov | cut -f 2 -d " ")
 	
 	plasmids_complete=$(grep -w $suf summary_plasmids_stats.tsv | cut -f 2-)
 	
 	length_cont=$(count_length contamination_contigs.$suf.tsv)
 	contigs_cont=$(count_contig contamination_contigs.$suf.tsv)
 	
-	echo -e "$suf\t$2\t$3\t$4\t$list_length\t$list_contigs\t$max_length\t$max_good_length\t$N50\t$N50_good\t$plasmids_cov\t$plasmids_complete\t$length_cont\t$contigs_cont" >> assemblies_stats.tsv
+	echo -e "$suf\t$2\t$3\t$4\t$list_length\t$list_contigs\t$max_length\t$max_good_length\t$N50\t$N50_good\t$correct_cov\t$all_cov\t$plasmids_complete\t$length_cont\t$contigs_cont" >> assemblies_stats.tsv
 done 	
 
 grep -v -w "all" contigs_stats.tsv > contigs_stats.tsv2 
