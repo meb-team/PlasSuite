@@ -52,7 +52,7 @@ echo -e "Assembly\tIllumina coverage\tPacBio coverage\tContamination\tContig\tLe
 param="all correct ambiguous misassembled unaligned others" 
 
 for f in $(ls all_alignments*); do 
-	suf=$(echo $f | awk -F "all_alignments" '{print $2}' | cut -f 1 -d "." | sed 's/_//g')
+	suf=$(echo $f | awk -F "all_alignments_" '{print $2}' | cut -f 1 -d ".")
 	list_length=""
 	list_contigs=""
 	for p in $param; do 
