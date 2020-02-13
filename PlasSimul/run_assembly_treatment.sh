@@ -14,9 +14,8 @@ function usage(){
 	--plasmid_db <plasmids database> : directory with separate plasmids sequences (default : databases/plasmids_sequences) 
 	--cont_db <contaminants database> : directory with separate contaminants sequences (default : databases/contaminants_sequences)
 	--plasmids_length <plasmids_length.tsv> : file with length informations for plasmids, generate by sequences_length.py (default : databases/plasmids.length)
-	--plasmids_ab <plasmids_abundance.tsv> : file with plasmids abundance in simulated sequencing (default : simulated_reads/plasmids_abundance.txt)' 
+	--plasmids_ab <plasmids_abundance.tsv> : file with plasmids abundance in simulated sequencing (default : simulated_reads/plasmids_abundance.txt)'
 }
-
 function treat_args(){
 	if [[ ! $outdir ]]; then 
 		echo "You must give output directory. Use -o option" 
@@ -188,7 +187,7 @@ fi
 	
 
 if [[ $metaquast_treatment ]]; then 
-	mode_cont="nocont"
+	mode_cont="cont"
 	for i in `seq 0 $nb`; do 
 		assembly=${assemblies_format_ar[$i]} 
 		if [ ! -f $treatment_dir/all_alignments_$assembly\.rev.tsv ];then
@@ -214,7 +213,7 @@ if [[ $metaquast_treatment ]]; then
 	cd $treatment_dir
 	set +e
 	for f in $(ls all_alignments*); do 
-		suf=$(echo $f | awk -F "all_alignments" '{print $2}' | cut -f 1 -d "." | sed 's/_//g')
+		suf=$(echo $f | awk -F "all_alignments_" '{print $2}' | cut -f 1 -d ".")
 		grep "CONTIG" $f > all_contigs.$suf.tsv
 		grep "CONTIG" $f | grep -w "correct" > correct_contigs.$suf.tsv
 		grep "CONTIG" $f | grep -w "ambiguous" > ambiguous_contigs.$suf.tsv
@@ -224,20 +223,20 @@ if [[ $metaquast_treatment ]]; then
 		grep "CONTIG" $f | grep -w "unaligned" > unaligned_contigs.$suf.tsv 
 		grep "CONTIG" $f | grep -w -v "unaligned" | grep -w -v "correct" | grep -w -v "ambiguous" | grep -w -v "misassembled" > others_contigs.$suf.tsv 
 		cat correct_contigs.$suf.tsv ambiguous_contigs.$suf.tsv > good_contigs.$suf.tsv
-		if [[ $mode_cont == "cont" ]]; then 
+		if [[ $mode_cont == "cont" ]]; then
 			grep "CONTIG" cont_all_alignments_$suf.rev.tsv | grep -w "correct" > contamination_contigs.correct.$suf.tsv
 			grep "CONTIG" cont_all_alignments_$suf.rev.tsv | grep -w "ambiguous" > contamination_contigs.ambiguous.$suf.tsv
 			grep "CONTIG" cont_all_alignments_$suf.rev.tsv | grep -w "misassembled" > contamination_contigs.misassembled.$suf.tsv
+
 			cat contamination_contigs.correct.$suf.tsv contamination_contigs.ambiguous.$suf.tsv contamination_contigs.misassembled.$suf.tsv > contamination_contigs.$suf.tsv 
 			cut -f 2 contamination_contigs.$suf.tsv > chromosomes_contigs.$suf.id
 		fi
 	done	
 	set -e 
-
 	cd $curdir
 	
 	python3 $BIN/treat_metaquast.py $treatment_dir $plasmids_length $list_of_assemblies_names $sr_coverage $lr_coverage $cont
-	bash $BIN/treat_metaquast.sh $treatment_dir $sr_coverage $lr_coverage $cont 	
+	bash $BIN/treat_metaquast.sh $treatment_dir $sr_coverage $lr_coverage $cont
 	bash $BIN/add_abundance.sh $treatment_dir/plasmids_stats.tsv $plasmids_ab
 	
 fi 
