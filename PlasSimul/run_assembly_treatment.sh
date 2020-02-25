@@ -155,6 +155,7 @@ if [[ $metaquast ]]; then
 	~/quast/metaquast.py -R $db -l $list_of_assemblies_names -o $outdir/metaquast_$suffix $assemblies_files -m 1000 --no-plots --fast
 	for a in $assemblies_format ; do 
 		tail -n +2 $outdir/metaquast_$suffix/combined_reference/contigs_reports/all_alignments_$a.tsv | tac > $treatment_dir/all_alignments_$a.rev.tsv
+		cp $outdir/metaquast_$suffix/combined_reference/contigs_reports/contigs_report_$a.mis_contigs.info > $treatment_dir/contigs_report_$a.mis_contigs.info
 	done 
 fi 	
 

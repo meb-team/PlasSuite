@@ -88,7 +88,31 @@ def write_plasmid_file(dic_p,a,out,SR,LR,cont):
 		else:
 			status="not.complete"	
 		out.write("%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%s\t%d\t%s\n"%(a,SR,LR,cont,pobj.name,pobj.length,len(pobj.bases_aligned),len(pobj.all_bases_aligned),pobj.length_cat,len(pobj.contigs),status))
-								
+
+def treat_misassemblies(assembly):
+	mis_info = open(f"{sys.argv[1]}/contigs_report_{assembly}.mis_contigs.info")
+	out = open(f"{sys.argv[1]}/misassembled_contigs_types.{assembly}.tsv", "w")
+	out.write("#Contig\tMisassembled type\n")
+	i = 0
+	for l in mis_info:
+		i+=1
+		if i%2 == 0:
+			mis_type = l.rstrip()
+			if "relocation" in mis_type : 
+				mis_type = "relocation"
+			elif "inversion" in mis_type:
+				mis_type = "inversion"
+			elif "interspecies translocation" in mis_type:
+				mis_type = "interspecies translocation"
+			elif "translocation" in mis_type:
+				mis_type = "translocation"
+		out.write(f"{contig}\t{mis_type}\n")
+		else: 
+			contig = l.rstrip()
+	mis_info.close()
+	out.close()
+
+							
 if len(sys.argv)!= 7 : 
 	usage()
 	exit() 
@@ -102,6 +126,7 @@ out2.write("Assembly\tNumber complete plasmids\tComplete length\t%Complete plasm
 
 for a in assemblies : 
 	print(a) 
+	treat_misassemblies(a)
 	dic_p,total_length=initialize_plasmids(sys.argv[2])
 	list_good_contigs=give_list_good_contigs(sys.argv[1],a)
 	treat_plasmids(sys.argv[1],a,dic_p,list_good_contigs)
