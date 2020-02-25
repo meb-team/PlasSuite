@@ -39,8 +39,9 @@ if [[ $tool_dir == "" ]]; then
 	tool_dir="." 
 elif [[ $tool_dir == $0 ]]; then 
 	tool_dir=".." 	
-fi 
-tool_dir=$(readlink $tool_dir)
+fi
+tool_dir=$(readlink -f $tool_dir)
+BIN=$tool_dir/bin
 
 cd $1 
 
@@ -51,7 +52,7 @@ echo -e "Assembly\tIllumina coverage\tPacBio coverage\tContamination\tContig\tLe
 param="all correct ambiguous misassembled unaligned others" 
 
 for f in $(ls all_alignments*); do 
-	suf=$(echo $f | awk -F "all_alignments" '{print $2}' | cut -f 1 -d "." | sed 's/_//g')
+	suf=$(echo $f | awk -F "all_alignments_" '{print $2}' | cut -f 1 -d ".")
 	list_length=""
 	list_contigs=""
 	for p in $param; do 
@@ -76,7 +77,6 @@ for f in $(ls all_alignments*); do
 	plasmids_cov=$(Rscript --vanilla $BIN/plasmids_coverage.R $suf.plasmids | cut -f 2 -d " ") 
 	correct_cov=$(echo $plasmids_cov | cut -f 1 -d " ")
 	all_cov=$(echo $plasmids_cov | cut -f 2 -d " ")
-	
 	plasmids_complete=$(grep -w $suf summary_plasmids_stats.tsv | cut -f 2-)
 	
 	length_cont=$(count_length contamination_contigs.$suf.tsv)
