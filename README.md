@@ -25,7 +25,8 @@ Produce abundance matrix of predicted genes clusters, and resistances genes abun
 
 To be found by default, databases must be stored in `$HOME/plasmidome_databases` so create this directory.  
 
-These files can be downloaded here
+These files can be downloaded with the following command:
+
 wget https://s3.mesocentre.uca.fr/swift/v1/AUTH_f70cfb776e144d419461999459de06fb/PlasSuite/plasmidome_databases.tar.gz
 
 ### 1.1. Plasmids database  
