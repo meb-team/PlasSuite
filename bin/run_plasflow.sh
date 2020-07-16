@@ -80,7 +80,7 @@ for i in `seq 0 $len` ; do
 	echo $name 
 	outfile=$outdir/$name.plasflow$thres
 	echo "== plasflow $name"
-	PlasFlow.py --input $contigs --output $outfile --thres $thres --models /rawdata/share/PlasFlow_models
+	PlasFlow.py --input $contigs --output $outfile --thres $thres --models $BIN/PlasFlow_models
 	mv $outfile\_plasmids.fasta $outfile.plasmids.fasta 
 	mv $outfile\_chromosomes.fasta $outfile.chromosomes.fasta
 	mv $outfile\_unclassified.fasta $outfile.unclassified.fasta  

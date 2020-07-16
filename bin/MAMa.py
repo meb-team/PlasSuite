@@ -1,8 +1,7 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/home/chochart/miniconda3/bin/python
 # v0.1.0
 #########################################################################################
-# Constrcut abundance matrix from a list of bam files 								    #
+# Constrcut abundance matrix from a list of bam files                                   #
 #########################################################################################
 #                                                                                       #
 # This program is free software: you can redistribute it and/or modify it under the     #
@@ -60,7 +59,7 @@ def find_ex(program):
 
     return None
 
-def matrix_maker(faidx, bam_list, extension, threads,
+def matrix_maker(faidx, bam_list, extension, threads, mapq, id_cutoff,
                     abundance_file, normalised_file, relative_file,
                     base_abundance_file, base_normalised_file, base_relative_file,
                     feature_normalisation, discard_gene_length_normalisation, removed
@@ -96,6 +95,7 @@ def matrix_maker(faidx, bam_list, extension, threads,
 
     samtoolsexec=find_ex('samtools')
     samtoolsthreads='-@ ' + threads
+    samtoolsminqual='-q ' + mapq
 
     with open(bam_list,'r') as b :
         for bam in b :
@@ -108,21 +108,29 @@ def matrix_maker(faidx, bam_list, extension, threads,
             samplename = remove_extension(os.path.basename(alignementfile),extension)
             file.append(samplename)
             logger.info('\t'+samplename)
-            cmd = [ samtoolsexec,'view',samtoolsthreads,alignementfile ]
+            cmd = [ samtoolsexec,'view',samtoolsthreads,samtoolsminqual, alignementfile ]
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE).stdout
             for line in p:
                 line=line.decode(sys.getdefaultencoding()).rstrip()
-                if i > 0 and i % 100000 == 0 :
+                if i > 0 and i % 10000 == 0 :
                     logger.info("Alignment record %s processed" % i )
                 i += 1
                 LINE = line.split('\t')
                 features = LINE[2]
                 cigar = LINE[5]
-                counts[features] += 1
                 base_mapped = 0 
                 match = re.findall(r'(\d+)M',cigar)
+                read_len = len(LINE[6])  
                 for base_match in match :
                     base_mapped += int(base_match)
+                if read_len == 0 :
+                    logger.info(LINE)
+
+                if base_mapped/read_len < float(id_cutoff) : 
+                    continue 
+               
+                counts[features] += 1
+
                 if discard_gene_length_normalisation :
                     counts_base[features] += base_mapped
                 else :
@@ -236,14 +244,17 @@ def main():
     input_argument = parser.add_argument_group('optional input arguments')
     input_argument.add_argument('-x','--extension', help='bam file prefix',default='bam')
     input_argument.add_argument('-t','--threads', help='threads number for "samtools view"',default='2')
+    input_argument.add_argument('-Q','--mapQ',help='only include reads with mapping quality >= INT [10]',default='10')
+    input_argument.add_argument('-i','--id_cutoff',help='only include reads with identity >= INT [0]',default=0)
+
 
     output_argument = parser.add_argument_group('optional output arguments')
     output_argument.add_argument('-a','--abundance', help="reads count abundance output")
     output_argument.add_argument('-n','--normalised', help="reads count normalised abundance output (feature per X reads ; see '-f' argument)")
     output_argument.add_argument('-r','--relative', help="reads count relative abundance output")
-    output_argument.add_argument('--base_abundance', help="base count abundance output")
-    output_argument.add_argument('--base_normalised', help="base count normalised abundance output (feature per X reads ; see '-f' argument)")
-    output_argument.add_argument('--base_relative', help="base count relative abundance output")
+    output_argument.add_argument('-ba','--base_abundance', help="base count abundance output")
+    output_argument.add_argument('-bn','--base_normalised', help="base count normalised abundance output (feature per X reads ; see '-f' argument)")
+    output_argument.add_argument('-br','--base_relative', help="base count relative abundance output")
     output_argument.add_argument('-f','--feature_normalisation',help="get the numer of features per X reads [Default: 1000000]",default=1000000,type=int)
     output_argument.add_argument('-g','--discard_gene_length_normalisation',help="discard gene length normalisation for base count abundance output",action='store_true')
     output_argument.add_argument('--removed',help="removed features who do not appears in samples (sum of abundance through sample = 0)",action='store_true')
@@ -261,7 +272,7 @@ def main():
     if not args.abundance and not args.normalised and not args.relative  :
         parser.error('''At least one output file name must be specified with '--relative' and/or '--normalised' and/or '--abundance'.''')
 
-    matrix_maker(args.faidx, args.bam_list, args.extension, args.threads,
+    matrix_maker(args.faidx, args.bam_list, args.extension, args.threads, args.mapQ, args.id_cutoff,
                     args.abundance, args.normalised, args.relative,
                     args.base_abundance, args.base_normalised, args.base_relative,
                     args.feature_normalisation, args.discard_gene_length_normalisation, args.removed

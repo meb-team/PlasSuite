@@ -1,3 +1,5 @@
-.*
-*.pyc
-__pycache__/*
+bin/__pycache__/*
+.gitignore
+README
+test1.txt
+plasmide.txt
