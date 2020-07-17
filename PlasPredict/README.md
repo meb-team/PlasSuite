@@ -4,7 +4,7 @@ PlasPredict takes an input assembly and predict plasmids in this assembly.
 First, PlasPredict identifies plasmids contigs with alignment against plasmids database and plasmid markers and with circular sequence searching. It identifies chromosomes contigs with alignment against 16S/23S rRNA, phylogenetic markers and chromosomes database. It predicts plasmids by learning with PlasFlow. 
 Plasmids contigs identified by alignment are added to learning predicted plasmids. Identified chromosomes contigs are then removed from this new predicted plasmids to obtain final predicted plasmids. 
 
-<img src="../Images/PlasPredict-1.png" width="500">
+<img src="../Images/PlasPredict-Github.png" width="500">
 
 ### How to launch 
 
@@ -15,7 +15,9 @@ Output options :
 
 Databases options : 
 
-If not specified, databases are searched in `hilpert/databis/plasmidome_databases`
+You have to directly specified databases files by the following arguments :
+* --all_db <path>/plasmidome_databases: all databases
+or specifically:
 * --chrm_db <fasta> : fasta file with bacterial chromosomes sequences you want to use 
 * --rna_db <fasta> : fasta file with rRNA sequences (must be back transcribed) you want to use
 * --phylo_db <hmm> : hmm profile(s) with phylogenetic markers

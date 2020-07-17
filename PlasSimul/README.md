@@ -1,6 +1,11 @@
 # PlasSimul 
 
-This part is for simulation and treatment of plasmidome sequencing. 
+This part is for simulation and treatment of plasmidome sequencing described in the following paper:
+
+Hilpert C, Bricheux G, Debroas D. Reconstruction of plasmids by shotgun sequencing from environmental DNA: which bioinformatic workflow? 
+
+Brief Bioinform, DOI: 10.1093/bib/bbaa059.
+
 
 ## 1. Starting data 
 

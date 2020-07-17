@@ -15,7 +15,8 @@ Pipeline also draw circular contigs and linear contigs >= 10kb.
 * --force : overwrite results 
 
 **Databases options**    
-If not specified, databases are searched in `hilpert/databis/plasmidome_databases`
+If not specified, databases are searched in `<path>/plasmidome_databases`
+* --all_db <path>/plasmidome_databases: all databases
 * --resfams <hmm> : Resfams hmm profile 
 * --markers_db <dir> : dir where plasmids markers databases are stored
 
