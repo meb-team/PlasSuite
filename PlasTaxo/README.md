@@ -17,7 +17,9 @@ Databases are by default searched in `$HOME/plasmidome_databases`. For PlasTaxo,
 ```
 You have to directly specified databases files by the following arguments :
 * --all_db <path>/plasmidome_databases: all databases
+
 or specifically:
+
 * `--plasmids_taxo` and `--chrm_taxo` and `--rna_taxo` assiciated th the fasta file   
 See [general readme](https://github.com/meb-team/plasmidome_scripts/)(1.Prepare your databases section) to create this files. 	
 

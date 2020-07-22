@@ -17,7 +17,9 @@ Databases options :
 
 You have to directly specified databases files by the following arguments :
 * --all_db <path>/plasmidome_databases: all databases
+
 or specifically:
+
 * --chrm_db <fasta> : fasta file with bacterial chromosomes sequences you want to use 
 * --rna_db <fasta> : fasta file with rRNA sequences (must be back transcribed) you want to use
 * --phylo_db <hmm> : hmm profile(s) with phylogenetic markers

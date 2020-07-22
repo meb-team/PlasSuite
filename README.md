@@ -1,5 +1,8 @@
 # PlasSuite
-Scripts for plasmidome analysis 
+Repository associated to the following paper:
+
+Hilpert C, Bricheux G, Debroas D. Reconstruction of plasmids by shotgun sequencing from environmental DNA: which bioinformatic workflow?
+Brief Bioinform, DOI: 10.1093/bib/bbaa059.
 
 ## [PlasSimul](PlasSimul) 
 Scripts for plasmidome sequencing simulation and analysis  
@@ -23,7 +26,7 @@ Produce abundance matrix of predicted genes clusters, and resistances genes abun
 
 ## 1. Prepare or download your databases
 
-To be found by default, databases must be stored in `$HOME/plasmidome_databases` so create this directory.  
+Databases can be stored in `$HOME/plasmidome_databases`.  
 
 These files can be downloaded with the following command:
 ```
