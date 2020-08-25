@@ -46,7 +46,7 @@ function verif_args(){
 	if [[ ! $cluster_id ]]; then 
 		cluster_id=0.95 
 	fi
-	verif_file $resfams_info "[PlasResist] Resfams metadata doesn't found in $resfams_info" "[PlasResist] Resfams metadata found in $resfams_info"
+	# verif_file $resfams_info "[PlasResist] Resfams metadata doesn't found in $resfams_info" "[PlasResist] Resfams metadata found in $resfams_info"
 	verif_dir $annot_dir "[PlasResist] $annot_dir doesn't exists. Give an other with --annot_dir." "[PlasResist] $annot_dir found" 
 	verif_dir $reads_dir "[PlasResist] $reads_dir doesn't exists. Give an other with --reads_dir" "[PlasResist] $reads_dir found"
 }
@@ -191,9 +191,17 @@ else
 			length=$(zcat $cur_read_dir/$file | paste - - - - | cut -f 2 | wc -c )
 			cumul_length=$(($cumul_length+length)) 		 
 		done 
-		echo -e "$dir/$read_prefix.sorted.markdup.sorted.bam,$cumul_length"  
+		echo -e "$dir/$read_prefix.sorted.markdup.sorted.bam\t$cumul_length"  
 	done > $ab_dir/mama_input.txt 
-	$BIN/MAMa.py -a $matrix.matrix -r $matrix.relative.matrix -n $matrix.normalized.matrix $clust_prot.ffn.fai $ab_dir/mama_input.txt  
+	# $BIN/MAMa.py -a $matrix.matrix -r $matrix.relative.matrix -n $matrix.normalized.matrix $clust_prot.ffn.fai $ab_dir/mama_input.txt  
+	bamtk mm_features $clust_prot.ffn.fai $ab_dir/mama_input.txt $ab_dir -fx fnn.fai
+	for unused in $(echo "features_reads_raw_count.tsv features_base_raw_abundance.tsv features_base_normalised_abundance.tsv features_base_relative_abundance.tsv TPM.tsv")
+	do
+		rm "$ab_dir/$unused"
+	done
+	mv "$ab_dir/features_reads_raw_abundance.tsv" $matrix.matrix
+	mv "$ab_dir/features_reads_normalised_abundance.tsv" $matrix.relative.matrix
+	mv "$ab_dir/features_reads_relative_abundance.tsv" $matrix.normalized.matrix
 fi
 
 echo "# CONCATENATE RESISTANCES" 
