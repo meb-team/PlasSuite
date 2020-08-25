@@ -72,7 +72,7 @@ Version indicated are tested versions. It can be work (or not) with others.
 It has been tested with Ubuntu 16.04.03 distribution. 
 * [cd-hit](http://weizhongli-lab.org/cd-hit/) v4.6
 * MAPMe, provided in bin/, written by [Corentin Hochart](https://github.com/chochart)
-* [BAM-Tk](https://github.com/meb-team/BAM-Tk.git)(formerly MAMa) v0.1.1 
+* [BAM-Tk](https://github.com/meb-team/BAM-Tk.git) (formerly MAMa) v0.1.1 
 * [Python](https://www.python.org/download/releases/3.0/) v3.5.5
 
 
