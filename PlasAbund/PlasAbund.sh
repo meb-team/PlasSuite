@@ -30,6 +30,7 @@ function treat_args(){
 
 function verif_args(){
 	verif_file $i "[PlasResist] $i doesn't found" "[PlasResist] $i found"
+	verif_file $picard_path "[PlasResist] $picard_path doesn't found" "[PlasResist] $picard_path found"
 	mkdir -p $outdir 
 	if [[ ! $all_db ]]; then 
 		all_db=$HOME/plasmidome_databases
@@ -79,7 +80,8 @@ function treat_matrix(){
 	done 
 }	 
 
-TEMP=$(getopt -o h,i:,o: -l resfams_metadata:,force,annot_dir:,reads_dir:,cluster_id:,all_db: -- "$@")
+picard_path="/usr/local/picard-tools-2.2.2/picard.jar"
+TEMP=$(getopt -o h,i:,o: -l resfams_metadata:,force,annot_dir:,reads_dir:,cluster_id:,all_db:,picard_path: -- "$@")
 eval set -- "$TEMP" 
 while true ; do 
 	case "$1" in 
@@ -107,6 +109,9 @@ while true ; do
 		--all_db)
 			all_db=$2
 			shift 2;; 
+		--picard_path)
+			picard_path=$2
+			shift 2;;
 		-h) 
 			usage 
 			exit 
@@ -169,7 +174,7 @@ done
 if [[ $all_align || $FORCE ]]; then 
 	rm -r $dir 
 	mkdir $dir 
-	$BIN/MAPme -s $clust_prot.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16 --tmp $tmp # Mapping
+	$BIN/MAPme -s $clust_prot.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16 --tmp $tmp --picard_path $picard_path # Mapping
 else
 	echo "Reads alignments already exists. Use --force to overwrite"
 fi 
