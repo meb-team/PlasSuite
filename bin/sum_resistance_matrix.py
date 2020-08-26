@@ -8,7 +8,7 @@ def set_dic_library_size(mama_input):
 	dic={}
 	f=open(mama_input,"r") 
 	for l in f : 
-		l_split=l.rstrip().split(",")  
+		l_split=l.rstrip().split("\t")  
 		sample=l_split[0].split("/")[-1].rstrip(".bam") 
 		dic[sample]=l_split[1]	
 	f.close()
