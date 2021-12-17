@@ -87,7 +87,7 @@ verif_result $out.tsv
 if [[ $file_exist == 1 ]]; then 
 	echo "Phylogenetic markers search results already exists. Use --force to overwrite" 
 else 
-	hmmsearch --tblout $out.tsv -E 1e-5 $phylo_db $predicted_proteins > $out
+	hmmsearch --tblout $out.tsv -E 1e-5  --cpu 8  $phylo_db $predicted_proteins > $out 
 	treat_hmm $out
 	rm $out 
 fi

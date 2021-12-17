@@ -30,13 +30,25 @@ or specifically:
 
 The script will generate several output files. 
 
-#### Final outputs
+#### Final outputs - Main files
 
 | Suffix | Description | 
 |---------|------------|
 |.predicted_plasmids.fasta|All predicted plasmids in fasta format| 
 |.resume.tsv|Give informations for each step of pipeline, with number of concerned contigs and cumulated length of concerned contigs| 
 |.verif_learning.tsv|Give contamination and plasmids contents before and after learning, and after all pipeline.| 
+
+#### Final outputs - intermediary files
+
+Same suffix for non circular/linear and circular plasmids
+
+| Suffix | Description | 
+|---------|------------|
+|plasmids.(linear/circular).plasmids.id|Contigs with plasmid alignments|
+|plasmids.(linear/circular).plasmids.plasmark.id|Contigs including plasmid markers|
+|plasmids.(linear/circular).nochrm.id|Contigs|without alignements with chromosomes|
+|plasmids.(linear/circular).nochrm_norna.id|Contigs without alignements with chromosomes and RNA markers|
+
 
 #### Intermediate subdirectory
 Pipeline will create several subdirectories for each step in your output directory  

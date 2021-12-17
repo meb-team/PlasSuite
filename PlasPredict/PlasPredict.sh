@@ -8,10 +8,10 @@ function usage(){
 	--prefix <prefix> : prefix for output files (default : assembly fasta name) 
 	#Databases 
 	--chrm_db <fasta> : fasta file with bacterial chromosomes sequences you want to use (default : databases/all_chrm.fasta) 
-	--rna_db <fasta> : fasta file with rRNA sequences (must be back transcribed) you want to use (default : /databis/hilpert/databases/rRNA/SILVA_132_LSUParc_SSUParc_tax_silva_trunc.T.fasta) 
-	--phylo_db <hmm> : hmm profile(s) with phylogenetic markers (default : /databis/hilpert/databases/phylogenetic_markers/wu2013/bacteria_and_archaea_dir/BA.hmm)
-	--markers_db <dir> : dir where plasmids markers databases are stored (mob.proteins.faa,mpf.proteins.faa,rep.dna.fas and orit.fas) (default : /databis/hilpert/databases/plasmids_markers) 
-	--plasmids_db <fasta> : fasta file with complete plasmids sequences you want to use (default : /databis/hilpert/databases/all_plasmids.fasta)
+	--rna_db <fasta> : fasta file with rRNA sequences (must be back transcribed) you want to use (default : <home>/databases/rRNA/SILVA_132_LSUParc_SSUParc_tax_silva_trunc.T.fasta) 
+	--phylo_db <hmm> : hmm profile(s) with phylogenetic markers (default : <home>/databases/phylogenetic_markers/wu2013/bacteria_and_archaea_dir/BA.hmm)
+	--markers_db <dir> : dir where plasmids markers databases are stored (mob.proteins.faa,mpf.proteins.faa,rep.dna.fas and orit.fas) (default : <home>/databases/plasmids_markers) 
+	--plasmids_db <fasta> : fasta file with complete plasmids sequences you want to use (default : <home>/databases/all_plasmids.fasta)
 	--all_db <db directory> : path of plasmidome database directory 
 	' 
 }

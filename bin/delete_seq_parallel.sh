@@ -10,7 +10,7 @@ function prepare_parallelization(){
 	mv seq* $tmp/seq 
 	for f in $(ls $tmp/seq); do 
 		tmp_out=$tmp/$f.fasta 
-		echo "python3 $HOME/plasmidome_project/bin/delete_seq_from_file.py $tmp/seq/$f $ref $tmp_out $id ; rm $tmp/seq/$f" >> $tmp/commands.txt 
+		echo "python3 $BIN/delete_seq_from_file.py $tmp/seq/$f $ref $tmp_out $id ; rm $tmp/seq/$f" >> $tmp/commands.txt 
 	done  
 	
 }	
@@ -25,6 +25,17 @@ if [[ $# -ne 5 ]]; then
 	usage
 	exit 1 
 fi
+
+tool_dir=$(echo $0 | rev | cut -f 3- -d "/" | rev)
+if [[ $tool_dir == "" ]]; then 
+	tool_dir="." 
+elif [[ $tool_dir == $0 ]]; then 
+	tool_dir=".." 	
+fi 
+BIN=$tool_dir/bin
+
+
+
 
 tmp=$(mktemp -d -p .)
 inp=$1 
