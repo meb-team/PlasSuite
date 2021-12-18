@@ -137,7 +137,7 @@ else
 		hmmpress $hmm 
 	fi
 	echo "[annotation] Run Prokka..." 
-	prokka $assembly --outdir $outdir --prefix $prefix --metagenome --hmms $hmm --quiet --rawproduct --force
+	prokka $assembly --outdir $outdir --prefix $prefix --metagenome --hmms $hmm --quiet --rawproduct --force --cpus 32
 	rm $outdir/$prefix.sqn $outdir/$prefix.fna $outdir/$prefix.fsa $outdir/$prefix.tbl $outdir/$prefix.gbk 
 fi
 
