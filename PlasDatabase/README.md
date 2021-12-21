@@ -2,7 +2,7 @@
 * **Sequences**   
 	`$HOME/plasmidome_databases/all_plasmids.fasta` is default name.  
 	Plasmids sequences must be a fasta file contained complete plasmids.    
-	You can obtained last version of NCBI plasmids database with  
+	You can obtained last version of NCBI plasmids database (sequences and taxonomies) with  the following command:
 	```
 	plasmidome_scripts/bin/update_plasmids_database.sh -o $HOME/plasmidome_databases/all_plasmids.fasta --info $HOME/plasmidome_databases/all_plasmids.ncbi.info
 	```  
@@ -39,7 +39,7 @@ NZ_CP017473.1	Bacteria	Proteobacteria	Gammaproteobacteria	Enterobacterales	Enter
 * **Sequences**  
 `$HOME/plasmidome_databases/all_prokaryotes.fasta` is default name.  
 Chromosomes sequences must be a fasta file contained complete chromosomes.    
-You can obtained last version of NCBI prokaryotes database with taxonomy with the following command line  
+You can obtained last version of NCBI prokaryotes database (sequences and taxonomies) with  the following command: 
 ```
 bash plasmidome_scripts/bin/update_prokaryotes_database.sh -o $HOME/plasmidome_databases/all_prokaryotes.fasta --info $HOME/plasmidome_databases/all_prokaryotes.ncbi.info
 ```  
