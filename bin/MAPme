@@ -61,13 +61,22 @@ Optional arguments:
     -h	--help
             Print this help and exit.
 
-    -q 	--quality   QUALITY
-            Only include reads with mapping quality >= INT 
-            (default: 10). 
+    -k  --keep_sam
+            Keep raw alignement files in sam format.
 
     -m 	--memory    MEMORY
             Set maximum memory per thread; 
             suffix K/M/G recognized (default: 10G).
+
+    -p  --picard_path    PICARD_PATH
+            Full path to the picard.jar file (default: /usr/local/picard-tools-2.2.2/picard.jar)
+
+    -q 	--quality   QUALITY
+            Only include reads with mapping quality >= INT 
+            (default: 10). 
+
+    -rd --remove_duplicates
+            Remove duplicates reads from the results. 
 
     -t  --threads   THREADS
             Threads number allow to the analysis (default: 4).
@@ -75,20 +84,14 @@ Optional arguments:
     --tmp   TMP
             Temporary directory for MarkDuplicates (default: /home/$USER/tmp).
 
-    -r 	--remove_duplicates
-            Remove duplicates reads from the results. 
-
-    -k  --keep_sam
-            Keep raw alignement files in sam format.
-
 Required Options:
+
+    -r	--reads	   READS
+            Reads directory to mapped against index
 
     -s	--sequence   SEQUENCE
             Sequences file as index.
-    
-    -r	--reads	   READS
-            Reads directory to mapped against index
-        
+
     -o	--output    OUTPUT
             Output Directory
 
@@ -165,6 +168,15 @@ while test $# -gt 0; do
             fi
             shift
             ;;
+        -p|--picard_path)
+            shift
+            if test $# -gt 0; then
+                export PICARD="$1"
+            else
+                    error "No picard pathway specified."
+            fi
+            shift
+            ;;   
         -q|--quality)
             shift
             if test $# -gt 0; then
@@ -202,7 +214,7 @@ while test $# -gt 0; do
             fi
             shift
             ;;
-        -r|--remove_duplicates)
+        -rd|--remove_duplicates)
             if test $# -gt 0; then
                 export remove_duplicates=true
             fi

@@ -5,7 +5,7 @@ PlasResist creates abundance matrix for predicted genes clusters, and abundance 
 ### How to launch ?
 
 ```
-bash PlasAbund.sh -i <input file> -o <output directory> --reads_dir <reads directory> --annot_dir <annotation directory>"  
+bash PlasAbund.sh -i <input file> -o <output directory> --reads_dir <reads directory> --annot_dir <annotation directory> --picard_path <picard.jar file pathway>"  
 ```
 
 **Mandatory arguments** 
@@ -71,8 +71,11 @@ All the reads included in this directory will be mapped against the genes. Check
 Version indicated are tested versions. It can be work (or not) with others.  
 It has been tested with Ubuntu 16.04.03 distribution. 
 * [cd-hit](http://weizhongli-lab.org/cd-hit/) v4.6
-* MAPMe, provided in bin/, written by [Corentin Hochart](https://github.com/chochart)
-* MAMa, provided in bin/, written by [Corentin Hochart](https://github.com/chochart)
+* MAPme, provided in bin/, written by [Corentin Hochart](https://github.com/chochart)
+	* bwa >= 0.7.0: Li H. and Durbin R. 2009 Fast and accurate short read alignment with Burrows-Wheeler Transform. Bioinformatics, 25:1754-60.
+	* picard >= 2.2.2 : "Picard Toolkit." 2019. Broad Institute, GitHub Repository. http://broadinstitute.github.io/picard/; Broad Institute 
+	* samtools == 0.1.7: Li H., et al. 2009 The Sequence alignment/map (SAM) format and SAMtools Bioinformatics, 25, 2078-9.
+* [BAM-Tk](https://github.com/meb-team/BAM-Tk.git) (formerly MAMa) v0.1.1 
 * [Python](https://www.python.org/download/releases/3.0/) v3.5.5
 
 
