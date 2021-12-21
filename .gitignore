@@ -5,3 +5,4 @@ test1.txt
 plasmide.txt
 TODO
 bin/test.sh
+test_results*

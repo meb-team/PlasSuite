@@ -96,6 +96,22 @@ if [[ $current_db ]]; then
 	echo "-- $(grep "^>" -c $outdb) prokaryotes in new database"
 fi 
 
+
+
+
+
+# remove some fasta files  related to plasmid content
+path=$(echo $outdb | sed 's/all_prokaryotes\.fasta//')
+
+python3  $BIN/taxo_prokaryotes.py $path
+perl $BIN/filter_chromosomes.pl $path
+
+# count sequences in the clean fasta
+grep -c ">" $outdb > $outdb.ct 
+#Update
+date > $outdb.update
+
+#~ Clean
 rm -r $tmp 
 
 

@@ -95,6 +95,16 @@ if [[ $current_db ]]; then
 	echo "-- $(grep "^>" -c $outdb) plasmids in new database"
 fi 
 
+
+# remove some fasta files  related to plasmid content
+path=$(echo $outdb | sed 's/all_plasmids\.fasta//')
+python3 $BIN/taxo_plasmids.py $path
+python3 $BIN/filter_plasmids.pl $path 
+
+# count sequences in the clean fasta
+grep -c ">" $outdb > $outdb.ct 
+date > $outdb.update
+
 rm -r $tmp 
 
 

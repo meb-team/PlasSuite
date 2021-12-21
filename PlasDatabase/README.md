@@ -8,11 +8,8 @@
 	```  
 	If you already have plasmids fasta file and you just want to add new sequences, use `--db <your_file>` option. If you want to clean deprecated sequences (present in your file but not in ncbi database) use `--clean` option.      
 * **Taxonomy**   
-Taxonomy plasmids file must be a tsv file, `$HOME/plasmidome_databases/all_plasmids.taxo.tsv` is default location.  
-If you used `update_plasmids_database.sh`, you can use `taxo_plasmids.py` to obtain this file. 
-```
-python3 plasmidome_scripts/bin/taxo_plasmids.py $HOME/plasmidome_databases/all_plasmids.fasta $HOME/plasmidome_databases/all_plasmids.ncbi.info $HOME/plasmidome_databases all_plasmids.taxo
-```
+Taxonomy plasmids file must be a tsv file, `<path to plasmidome database>/all_plasmids.taxo.tsv` is default location.  
+
 Example of *all_plasmids.fasta* file 
 ```
 >NZ_CP011122.1 Acetobacter sp. SLV-7 plasmid unnamed2, complete sequence
@@ -40,20 +37,16 @@ NZ_CP017473.1	Bacteria	Proteobacteria	Gammaproteobacteria	Enterobacterales	Enter
 
 ### 2. Chromosomes database 
 * **Sequences**  
-`$HOME/plasmidome_databases/all_plasmids.fasta` is default name.  
+`$HOME/plasmidome_databases/all_prokaryotes.fasta` is default name.  
 Chromosomes sequences must be a fasta file contained complete chromosomes.    
-You can obtained last version of NCBI prokaryotes database with  
+You can obtained last version of NCBI prokaryotes database with taxonomy with the following command line  
 ```
 bash plasmidome_scripts/bin/update_prokaryotes_database.sh -o $HOME/plasmidome_databases/all_prokaryotes.fasta --info $HOME/plasmidome_databases/all_prokaryotes.ncbi.info
 ```  
 If you already have prokaryotes fasta file and you just want to add new sequences, use `--db <your_file>` option. If you want to clean deprecated sequences (present in your file but not in ncbi database) use `--clean` option.  
-    
-* **Taxonomy**  
-Taxonomy chromosomes file must be a tsv file, `$HOME/plasmidome_databases/all_prokaryotes.taxo.tsv` is default location.  
-If you used `update_prokaryotes_database.sh`, you can use `taxo_prokaryotes.py` to obtain this file. 
-```
-python3 plasmidome_scripts/bin/taxo_prokaryotes.py $HOME/plasmidome_databases/all_prokaryotes.fasta $HOME/plasmidome_databases/all_prokaryotes.ncbi.info $HOME/plasmidome_databases all_prokaryotes.taxo
-```
+ * **Taxonomy**   
+Taxonomy plasmids file must be a tsv file, `<path to plasmidome database>/all_prokaryotes.taxo.tsv` is default location.    
+
 Example of *all_prokaryotes.fasta* file 
 ```
 >CP024307.1 Sinorhizobium fredii strain NXT3 chromosome, complete genome

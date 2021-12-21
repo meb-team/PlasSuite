@@ -2,8 +2,8 @@ import sys
 from ete3 import NCBITaxa 
 
 def usage(): 
-	print("usage : python3 taxo_prokaryotes.py <INPUT> <NCBI prokaryotes summary file> <outdir> <out prefix>")
-	print("INPUT : tsv file with sequence ref in first column and sequence name in 2nd column")   
+	print("usage : python3 taxo_prokaryotes.py <path to plasmid database> ")
+	# ~ print("INPUT : tsv file with sequence ref in first column and sequence name in 2nd column")   
 	
 def set_dic_summary(summary):
 	f=open(summary,"r") 
@@ -93,13 +93,13 @@ def treat_ranks(ranks):
 	taxo=kingdom+"\t"+phylum+"\t"+classe+"\t"+order+"\t"+family+"\t"+genus+"\t"+species		
 	return taxo		
 	
-if len(sys.argv) != 5: 
+if len(sys.argv) != 2: 
 	usage() 
 	exit() 
 	
 
-out=sys.argv[3]+"/"+sys.argv[4] 	
-dic_summary=set_dic_summary(sys.argv[2]) 
+out=sys.argv[1]+"/all_prokaryotes.taxo" 	
+dic_summary=set_dic_summary(sys.argv[1]+"/all_prokaryotes.ncbi.info") 
 ncbi = NCBITaxa()
-treat_sequences(sys.argv[1],out) 	
-		 
+ncbi.update_taxonomy_database()
+treat_sequences(sys.argv[1]+"/all_prokaryotes.fasta",out) 	

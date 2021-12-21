@@ -87,8 +87,15 @@ verif_result $out.paf
 if [[ $file_exist == 1 ]]; then 
 	echo "Chromosomes search results already exists. Use --force to overwrite" 
 else 
-	echo "[minimap] Count subject sequences..." 
+	 
+	if [ -e "$subject.ct" ]
+	then
+	nb_seq=$(cat $subject.ct)
+	else
+	echo "[minimap] Count subject sequences..."
 	nb_seq=$(grep "^>" -c $subject) 
+	fi
+	
 	echo "[minimap] Run minimap2..." 
 	minimap2 -t 32 -x asm5 -N $nb_seq $subject $query 1> $out.paf
 	echo "[minimap2] Treat minimap2..." 

@@ -115,7 +115,7 @@ source $BIN/common_functions.sh
 treat_args 
 verif_args 
 
-echo "=== TREAT ASSEMBLY TAXONOMY ===" 
+echo "=== STEP 1: ASSEMBLY TAXONOMY ===" 
 taxo=$outdir/$prefix.taxo 
 
 python3 $BIN/treat_taxo.py $chrm_align $chrm_taxo $plasflow_taxo $rna_align $rna_taxo $plasmids_align $plasmids_taxo $taxo
@@ -133,6 +133,9 @@ cut -f 2 $taxo.differentTaxo | sort | uniq -c | awk '{print $2"\t"$1}' >> $taxo.
 
 python3 $BIN/count_taxo.py $taxo.sameTaxo.count $taxo.differentTaxo.count $taxo.plasflowPrediction.stats
 
-python3 $BIN/keep_taxo.py $taxo $predicted_plasmids > $taxo.predicted_plasmids
+echo "=== STEP 2: PLASMID TAXONOMY ===" 
+#~ generate new ids from fasta file to avoids truncated ids from some plaspredict results
+grep ">" $inpdir/$prefix".predicted_plasmids.fasta" | awk '{print $1}' | sed 's/>//g' | sed 's/_circ//g' > $outdir/$prefix".predicted_plasmids.id"
+python3 $BIN/keep_taxo.py $taxo $outdir/$prefix".predicted_plasmids.id" > $taxo.predicted_plasmids
 
 rm $outdir/*.tmp 

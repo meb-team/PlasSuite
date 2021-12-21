@@ -169,7 +169,7 @@ done
 if [[ $all_align || $FORCE ]]; then 
 	rm -r $dir 
 	mkdir $dir 
-	$BIN/MAPme -s $clust_prot.ffn --reads $reads_dir -o $dir --remove_duplicates -t 16 --tmp $tmp # Mapping
+	$BIN/MAPme -s $clust_prot.ffn --reads $reads_dir -o $dir --remove_duplicates -t 32 --tmp $tmp # Mapping
 else
 	echo "Reads alignments already exists. Use --force to overwrite"
 fi 
