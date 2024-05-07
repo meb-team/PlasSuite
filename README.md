@@ -1,8 +1,12 @@
 # PlasSuite
-Repository associated to the following paper:
+Repository associated to the following papers:
 
-Hilpert C, Bricheux G, Debroas D. Reconstruction of plasmids by shotgun sequencing from environmental DNA: which bioinformatic workflow?
-Brief Bioinform, DOI: 10.1093/bib/bbaa059.
+Hilpert C, Bricheux G, Debroas D. Reconstruction of plasmids by shotgun sequencing from environmental DNA: which bioinformatic workflow? (2021) Brief Bioinform, DOI: 10.1093/bib/bbaa059.
+
+Hennequin, C., Forestier, C., Traore, O., Debroas, D., and Bricheux, G. (2022) Plasmidome analysis of a hospital effluent biofilm: Status of antibiotic resistance. Plasmid 122: 102638. doi: 10.1016/j.plasmid.2022.102638
+https://hal.science/hal-03738674
+
+
 
 ## [PlasSimul](PlasSimul) 
 Scripts for plasmidome sequencing simulation and analysis  
