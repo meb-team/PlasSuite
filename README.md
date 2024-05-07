@@ -33,6 +33,8 @@ These files can be downloaded with the following command:
 https://plassuite.s3.mesocentre.uca.fr/plasmidome_databasesv2.tar.gz?AWSAccessKeyId=f6e900027dc54d06ae85a3e52434c83d&Expires=1778160319&Signature=4b6FPfMZP9qso9c0VU2EfChR%2FMA%3D
 (version databases NCBI 07/2022)
 
+wget "<link>"
+
 ```
 
 ## 2. Launch workflow 
