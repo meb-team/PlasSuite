@@ -1,5 +1,5 @@
-bin/__pycache__/*
 .gitignore
+bin/__pycache__/*
 README
 test1.txt
 plasmide.txt
@@ -7,4 +7,4 @@ TODO
 bin/test.sh
 test_results*
 tmp.*
-
+TESTS

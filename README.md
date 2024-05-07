@@ -30,9 +30,10 @@ Databases can be stored in `$HOME/plasmidome_databases`.
 
 These files can be downloaded with the following command:
 ```
-wget https://s3.mesocentre.uca.fr/swift/v1/AUTH_f70cfb776e144d419461999459de06fb/PlasSuite/plasmidome_databases.tar.gz
-```
+https://plassuite.s3.mesocentre.uca.fr/plasmidome_databasesv2.tar.gz?AWSAccessKeyId=f6e900027dc54d06ae85a3e52434c83d&Expires=1778160319&Signature=4b6FPfMZP9qso9c0VU2EfChR%2FMA%3D
+(version databases NCBI 07/2022)
 
+```
 
 ## 2. Launch workflow 
 

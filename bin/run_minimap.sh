@@ -1,9 +1,8 @@
 set -e 
 
 function usage(){ 
-	echo "bash eliminate_chrm.sh -q <query.fasta> -s <subject.fasta> -o <outdir> 
+	echo "bash run_minimap.sh -q <query.fasta> -s <subject.fasta> -o <outdir>  --prefix <prefix>
 	Options : 
-	--prefix <prefix> : prefix for results files, default : name of the fasta assembly
 	--force : overwrite results if already exists"
 }
 
